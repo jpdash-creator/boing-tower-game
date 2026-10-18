@@ -4,6 +4,8 @@ Status: **OPEN** - requested by the owner on 2026-10-19: "Start with image 1 for
 
 All 66 Tier 1 assets use **image 1** as a placeholder pick. Nothing is final until the owner verifies each one. Unverified picks must not be used for store submission.
 
+> **2026-10-19 update (owner):** the owner will RE-PICK the images, so image 1 is only a throwaway placeholder and ALL picks are reopened. **This is a blocker for roadmap task T1 (art pipeline: keying, slicing, Momo sprite, Unity import) and everything that needs sprites (T5, T7).** Do not slice or import art as final until the owner confirms picks. Claude: ask before starting T1.
+
 **How to review:** open `Art/_pick/index.html` (local contact sheet; regenerate with `python Tools/asset_cli/make_contact_sheet.py`), or the files in `Art/_candidates/<asset id>/`. Reply with e.g. `reg001_tileset: 3` to change a pick, or `ok <asset id>` / `ok all high` to confirm.
 
 **Check each image for:** stray text or labels, copied reference layout (single subject expected, not a sheet copy), matches the style bible and Momo, clean outline, glow staying off the grey background, readable at small size, tiles with usable edges.
