@@ -1,0 +1,599 @@
+{
+  "note": "Default pick is image 1 for every asset. Owner must verify (see .claude/pendingdecisions/asset-picks.md). Change a pick by editing pick + re-copying, or tell Claude \"asset: n\".",
+  "picks": {
+    "cur_coin_single": {
+      "pick": 1,
+      "candidates": 2,
+      "status": "default-unverified",
+      "finalPath": "Art/Currency/cur_coin_single.png",
+      "sourceCandidate": "Art/_candidates/cur_coin_single/1.png",
+      "priority": "High",
+      "owner_verified": false
+    },
+    "cur_gem_single": {
+      "pick": 1,
+      "candidates": 2,
+      "status": "default-unverified",
+      "finalPath": "Art/Currency/cur_gem_single.png",
+      "sourceCandidate": "Art/_candidates/cur_gem_single/1.png",
+      "priority": "High",
+      "owner_verified": false
+    },
+    "cur_star_empty": {
+      "pick": 1,
+      "candidates": 2,
+      "status": "default-unverified",
+      "finalPath": "Art/Currency/cur_star_empty.png",
+      "sourceCandidate": "Art/_candidates/cur_star_empty/1.png",
+      "priority": "High",
+      "owner_verified": false
+    },
+    "cur_star_filled": {
+      "pick": 1,
+      "candidates": 2,
+      "status": "default-unverified",
+      "finalPath": "Art/Currency/cur_star_filled.png",
+      "sourceCandidate": "Art/_candidates/cur_star_filled/1.png",
+      "priority": "High",
+      "owner_verified": false
+    },
+    "fnd_app_icon": {
+      "pick": 1,
+      "candidates": 6,
+      "status": "default-unverified",
+      "finalPath": "Art/Marketing/icon/app_icon_concept_v1.png",
+      "sourceCandidate": "Art/_candidates/fnd_app_icon/1.png",
+      "priority": "High",
+      "owner_verified": false
+    },
+    "map_region_map": {
+      "pick": 1,
+      "candidates": 4,
+      "status": "default-unverified",
+      "finalPath": "Art/Map/map_world_v1.png",
+      "sourceCandidate": "Art/_candidates/map_region_map/1.png",
+      "priority": "High",
+      "owner_verified": false
+    },
+    "pck_coin_sheet": {
+      "pick": 1,
+      "candidates": 3,
+      "status": "default-unverified",
+      "finalPath": "Art/Pickups/pickup_coin_sheet.png",
+      "sourceCandidate": "Art/_candidates/pck_coin_sheet/1.png",
+      "priority": "High",
+      "owner_verified": false
+    },
+    "pck_gem_sheet": {
+      "pick": 1,
+      "candidates": 3,
+      "status": "default-unverified",
+      "finalPath": "Art/Pickups/pickup_gem_sheet.png",
+      "sourceCandidate": "Art/_candidates/pck_gem_sheet/1.png",
+      "priority": "High",
+      "owner_verified": false
+    },
+    "pck_orbs": {
+      "pick": 1,
+      "candidates": 3,
+      "status": "default-unverified",
+      "finalPath": "Art/Pickups/pickup_orbs_sheet.png",
+      "sourceCandidate": "Art/_candidates/pck_orbs/1.png",
+      "priority": "Medium",
+      "owner_verified": false
+    },
+    "reg001_bg_far": {
+      "pick": 1,
+      "candidates": 3,
+      "status": "default-unverified",
+      "finalPath": "Art/Regions/region_001_meadow_springs/bg_far/bg_meadow_springs_far_v1.png",
+      "sourceCandidate": "Art/_candidates/reg001_bg_far/1.png",
+      "priority": "Medium",
+      "owner_verified": false
+    },
+    "reg001_bg_mid": {
+      "pick": 1,
+      "candidates": 3,
+      "status": "default-unverified",
+      "finalPath": "Art/Regions/region_001_meadow_springs/bg_mid/bg_meadow_springs_mid_v1.png",
+      "sourceCandidate": "Art/_candidates/reg001_bg_mid/1.png",
+      "priority": "Medium",
+      "owner_verified": false
+    },
+    "reg001_bg_near": {
+      "pick": 1,
+      "candidates": 3,
+      "status": "default-unverified",
+      "finalPath": "Art/Regions/region_001_meadow_springs/bg_near/bg_meadow_springs_near_v1.png",
+      "sourceCandidate": "Art/_candidates/reg001_bg_near/1.png",
+      "priority": "Medium",
+      "owner_verified": false
+    },
+    "reg001_props": {
+      "pick": 1,
+      "candidates": 3,
+      "status": "default-unverified",
+      "finalPath": "Art/Regions/region_001_meadow_springs/props/props_meadow_springs_v1.png",
+      "sourceCandidate": "Art/_candidates/reg001_props/1.png",
+      "priority": "Medium",
+      "owner_verified": false
+    },
+    "reg001_signature": {
+      "pick": 1,
+      "candidates": 3,
+      "status": "default-unverified",
+      "finalPath": "Art/Regions/region_001_meadow_springs/hazards/signature_meadow_springs_v1.png",
+      "sourceCandidate": "Art/_candidates/reg001_signature/1.png",
+      "priority": "Medium",
+      "owner_verified": false
+    },
+    "reg001_tileset": {
+      "pick": 1,
+      "candidates": 4,
+      "status": "default-unverified",
+      "finalPath": "Art/Regions/region_001_meadow_springs/tiles/tileset_meadow_springs_v1.png",
+      "sourceCandidate": "Art/_candidates/reg001_tileset/1.png",
+      "priority": "High",
+      "owner_verified": false
+    },
+    "reg002_bg_far": {
+      "pick": 1,
+      "candidates": 3,
+      "status": "default-unverified",
+      "finalPath": "Art/Regions/region_002_mushroom_grove/bg_far/bg_mushroom_grove_far_v1.png",
+      "sourceCandidate": "Art/_candidates/reg002_bg_far/1.png",
+      "priority": "Medium",
+      "owner_verified": false
+    },
+    "reg002_bg_mid": {
+      "pick": 1,
+      "candidates": 3,
+      "status": "default-unverified",
+      "finalPath": "Art/Regions/region_002_mushroom_grove/bg_mid/bg_mushroom_grove_mid_v1.png",
+      "sourceCandidate": "Art/_candidates/reg002_bg_mid/1.png",
+      "priority": "Medium",
+      "owner_verified": false
+    },
+    "reg002_bg_near": {
+      "pick": 1,
+      "candidates": 3,
+      "status": "default-unverified",
+      "finalPath": "Art/Regions/region_002_mushroom_grove/bg_near/bg_mushroom_grove_near_v1.png",
+      "sourceCandidate": "Art/_candidates/reg002_bg_near/1.png",
+      "priority": "Medium",
+      "owner_verified": false
+    },
+    "reg002_props": {
+      "pick": 1,
+      "candidates": 3,
+      "status": "default-unverified",
+      "finalPath": "Art/Regions/region_002_mushroom_grove/props/props_mushroom_grove_v1.png",
+      "sourceCandidate": "Art/_candidates/reg002_props/1.png",
+      "priority": "Medium",
+      "owner_verified": false
+    },
+    "reg002_signature": {
+      "pick": 1,
+      "candidates": 3,
+      "status": "default-unverified",
+      "finalPath": "Art/Regions/region_002_mushroom_grove/hazards/signature_mushroom_grove_v1.png",
+      "sourceCandidate": "Art/_candidates/reg002_signature/1.png",
+      "priority": "Medium",
+      "owner_verified": false
+    },
+    "reg002_tileset": {
+      "pick": 1,
+      "candidates": 4,
+      "status": "default-unverified",
+      "finalPath": "Art/Regions/region_002_mushroom_grove/tiles/tileset_mushroom_grove_v1.png",
+      "sourceCandidate": "Art/_candidates/reg002_tileset/1.png",
+      "priority": "High",
+      "owner_verified": false
+    },
+    "reg003_bg_far": {
+      "pick": 1,
+      "candidates": 3,
+      "status": "default-unverified",
+      "finalPath": "Art/Regions/region_003_sunny_beach/bg_far/bg_sunny_beach_far_v1.png",
+      "sourceCandidate": "Art/_candidates/reg003_bg_far/1.png",
+      "priority": "Medium",
+      "owner_verified": false
+    },
+    "reg003_bg_mid": {
+      "pick": 1,
+      "candidates": 3,
+      "status": "default-unverified",
+      "finalPath": "Art/Regions/region_003_sunny_beach/bg_mid/bg_sunny_beach_mid_v1.png",
+      "sourceCandidate": "Art/_candidates/reg003_bg_mid/1.png",
+      "priority": "Medium",
+      "owner_verified": false
+    },
+    "reg003_bg_near": {
+      "pick": 1,
+      "candidates": 3,
+      "status": "default-unverified",
+      "finalPath": "Art/Regions/region_003_sunny_beach/bg_near/bg_sunny_beach_near_v1.png",
+      "sourceCandidate": "Art/_candidates/reg003_bg_near/1.png",
+      "priority": "Medium",
+      "owner_verified": false
+    },
+    "reg003_props": {
+      "pick": 1,
+      "candidates": 3,
+      "status": "default-unverified",
+      "finalPath": "Art/Regions/region_003_sunny_beach/props/props_sunny_beach_v1.png",
+      "sourceCandidate": "Art/_candidates/reg003_props/1.png",
+      "priority": "Medium",
+      "owner_verified": false
+    },
+    "reg003_signature": {
+      "pick": 1,
+      "candidates": 3,
+      "status": "default-unverified",
+      "finalPath": "Art/Regions/region_003_sunny_beach/hazards/signature_sunny_beach_v1.png",
+      "sourceCandidate": "Art/_candidates/reg003_signature/1.png",
+      "priority": "Medium",
+      "owner_verified": false
+    },
+    "reg003_tileset": {
+      "pick": 1,
+      "candidates": 4,
+      "status": "default-unverified",
+      "finalPath": "Art/Regions/region_003_sunny_beach/tiles/tileset_sunny_beach_v1.png",
+      "sourceCandidate": "Art/_candidates/reg003_tileset/1.png",
+      "priority": "High",
+      "owner_verified": false
+    },
+    "reg004_bg_far": {
+      "pick": 1,
+      "candidates": 3,
+      "status": "default-unverified",
+      "finalPath": "Art/Regions/region_004_candy_canyon/bg_far/bg_candy_canyon_far_v1.png",
+      "sourceCandidate": "Art/_candidates/reg004_bg_far/1.png",
+      "priority": "Medium",
+      "owner_verified": false
+    },
+    "reg004_bg_mid": {
+      "pick": 1,
+      "candidates": 3,
+      "status": "default-unverified",
+      "finalPath": "Art/Regions/region_004_candy_canyon/bg_mid/bg_candy_canyon_mid_v1.png",
+      "sourceCandidate": "Art/_candidates/reg004_bg_mid/1.png",
+      "priority": "Medium",
+      "owner_verified": false
+    },
+    "reg004_bg_near": {
+      "pick": 1,
+      "candidates": 3,
+      "status": "default-unverified",
+      "finalPath": "Art/Regions/region_004_candy_canyon/bg_near/bg_candy_canyon_near_v1.png",
+      "sourceCandidate": "Art/_candidates/reg004_bg_near/1.png",
+      "priority": "Medium",
+      "owner_verified": false
+    },
+    "reg004_props": {
+      "pick": 1,
+      "candidates": 3,
+      "status": "default-unverified",
+      "finalPath": "Art/Regions/region_004_candy_canyon/props/props_candy_canyon_v1.png",
+      "sourceCandidate": "Art/_candidates/reg004_props/1.png",
+      "priority": "Medium",
+      "owner_verified": false
+    },
+    "reg004_signature": {
+      "pick": 1,
+      "candidates": 3,
+      "status": "default-unverified",
+      "finalPath": "Art/Regions/region_004_candy_canyon/hazards/signature_candy_canyon_v1.png",
+      "sourceCandidate": "Art/_candidates/reg004_signature/1.png",
+      "priority": "Medium",
+      "owner_verified": false
+    },
+    "reg004_tileset": {
+      "pick": 1,
+      "candidates": 4,
+      "status": "default-unverified",
+      "finalPath": "Art/Regions/region_004_candy_canyon/tiles/tileset_candy_canyon_v1.png",
+      "sourceCandidate": "Art/_candidates/reg004_tileset/1.png",
+      "priority": "High",
+      "owner_verified": false
+    },
+    "reg005_bg_far": {
+      "pick": 1,
+      "candidates": 3,
+      "status": "default-unverified",
+      "finalPath": "Art/Regions/region_005_bamboo_temple/bg_far/bg_bamboo_temple_far_v1.png",
+      "sourceCandidate": "Art/_candidates/reg005_bg_far/1.png",
+      "priority": "Medium",
+      "owner_verified": false
+    },
+    "reg005_bg_mid": {
+      "pick": 1,
+      "candidates": 3,
+      "status": "default-unverified",
+      "finalPath": "Art/Regions/region_005_bamboo_temple/bg_mid/bg_bamboo_temple_mid_v1.png",
+      "sourceCandidate": "Art/_candidates/reg005_bg_mid/1.png",
+      "priority": "Medium",
+      "owner_verified": false
+    },
+    "reg005_bg_near": {
+      "pick": 1,
+      "candidates": 3,
+      "status": "default-unverified",
+      "finalPath": "Art/Regions/region_005_bamboo_temple/bg_near/bg_bamboo_temple_near_v1.png",
+      "sourceCandidate": "Art/_candidates/reg005_bg_near/1.png",
+      "priority": "Medium",
+      "owner_verified": false
+    },
+    "reg005_props": {
+      "pick": 1,
+      "candidates": 3,
+      "status": "default-unverified",
+      "finalPath": "Art/Regions/region_005_bamboo_temple/props/props_bamboo_temple_v1.png",
+      "sourceCandidate": "Art/_candidates/reg005_props/1.png",
+      "priority": "Medium",
+      "owner_verified": false
+    },
+    "reg005_signature": {
+      "pick": 1,
+      "candidates": 3,
+      "status": "default-unverified",
+      "finalPath": "Art/Regions/region_005_bamboo_temple/hazards/signature_bamboo_temple_v1.png",
+      "sourceCandidate": "Art/_candidates/reg005_signature/1.png",
+      "priority": "Medium",
+      "owner_verified": false
+    },
+    "reg005_tileset": {
+      "pick": 1,
+      "candidates": 4,
+      "status": "default-unverified",
+      "finalPath": "Art/Regions/region_005_bamboo_temple/tiles/tileset_bamboo_temple_v1.png",
+      "sourceCandidate": "Art/_candidates/reg005_tileset/1.png",
+      "priority": "High",
+      "owner_verified": false
+    },
+    "trl_rainbow_ribbon": {
+      "pick": 1,
+      "candidates": 3,
+      "status": "default-unverified",
+      "finalPath": "Art/Items/trail/trail_rainbow_ribbon_sheet.png",
+      "sourceCandidate": "Art/_candidates/trl_rainbow_ribbon/1.png",
+      "priority": "High",
+      "owner_verified": false
+    },
+    "ui_banners_ribbons": {
+      "pick": 1,
+      "candidates": 3,
+      "status": "default-unverified",
+      "finalPath": "Art/UI/ui_banners_ribbons.png",
+      "sourceCandidate": "Art/_candidates/ui_banners_ribbons/1.png",
+      "priority": "Medium",
+      "owner_verified": false
+    },
+    "ui_buttons_icon_round": {
+      "pick": 1,
+      "candidates": 3,
+      "status": "default-unverified",
+      "finalPath": "Art/UI/ui_buttons_icon_round.png",
+      "sourceCandidate": "Art/_candidates/ui_buttons_icon_round/1.png",
+      "priority": "Medium",
+      "owner_verified": false
+    },
+    "ui_buttons_primary": {
+      "pick": 1,
+      "candidates": 3,
+      "status": "default-unverified",
+      "finalPath": "Art/UI/ui_buttons_primary.png",
+      "sourceCandidate": "Art/_candidates/ui_buttons_primary/1.png",
+      "priority": "High",
+      "owner_verified": false
+    },
+    "ui_dividers_corners": {
+      "pick": 1,
+      "candidates": 3,
+      "status": "default-unverified",
+      "finalPath": "Art/UI/ui_dividers_corners.png",
+      "sourceCandidate": "Art/_candidates/ui_dividers_corners/1.png",
+      "priority": "Medium",
+      "owner_verified": false
+    },
+    "ui_frames_rarity": {
+      "pick": 1,
+      "candidates": 3,
+      "status": "default-unverified",
+      "finalPath": "Art/UI/ui_frames_rarity.png",
+      "sourceCandidate": "Art/_candidates/ui_frames_rarity/1.png",
+      "priority": "Medium",
+      "owner_verified": false
+    },
+    "ui_hud_icons": {
+      "pick": 1,
+      "candidates": 3,
+      "status": "default-unverified",
+      "finalPath": "Art/UI/ui_hud_icons.png",
+      "sourceCandidate": "Art/_candidates/ui_hud_icons/1.png",
+      "priority": "High",
+      "owner_verified": false
+    },
+    "ui_keyboard_free_input": {
+      "pick": 1,
+      "candidates": 3,
+      "status": "default-unverified",
+      "finalPath": "Art/UI/ui_keyboard_free_input.png",
+      "sourceCandidate": "Art/_candidates/ui_keyboard_free_input/1.png",
+      "priority": "Medium",
+      "owner_verified": false
+    },
+    "ui_level_nodes": {
+      "pick": 1,
+      "candidates": 3,
+      "status": "default-unverified",
+      "finalPath": "Art/UI/ui_level_nodes.png",
+      "sourceCandidate": "Art/_candidates/ui_level_nodes/1.png",
+      "priority": "High",
+      "owner_verified": false
+    },
+    "ui_loading_screen_art": {
+      "pick": 1,
+      "candidates": 3,
+      "status": "default-unverified",
+      "finalPath": "Art/UI/ui_loading_screen_art.png",
+      "sourceCandidate": "Art/_candidates/ui_loading_screen_art/1.png",
+      "priority": "High",
+      "owner_verified": false
+    },
+    "ui_loading_spinner": {
+      "pick": 1,
+      "candidates": 3,
+      "status": "default-unverified",
+      "finalPath": "Art/UI/ui_loading_spinner.png",
+      "sourceCandidate": "Art/_candidates/ui_loading_spinner/1.png",
+      "priority": "Medium",
+      "owner_verified": false
+    },
+    "ui_map_nodes": {
+      "pick": 1,
+      "candidates": 3,
+      "status": "default-unverified",
+      "finalPath": "Art/UI/ui_map_nodes.png",
+      "sourceCandidate": "Art/_candidates/ui_map_nodes/1.png",
+      "priority": "High",
+      "owner_verified": false
+    },
+    "ui_notification_badges": {
+      "pick": 1,
+      "candidates": 3,
+      "status": "default-unverified",
+      "finalPath": "Art/UI/ui_notification_badges.png",
+      "sourceCandidate": "Art/_candidates/ui_notification_badges/1.png",
+      "priority": "Medium",
+      "owner_verified": false
+    },
+    "ui_panel_glass": {
+      "pick": 1,
+      "candidates": 3,
+      "status": "default-unverified",
+      "finalPath": "Art/UI/ui_panel_glass.png",
+      "sourceCandidate": "Art/_candidates/ui_panel_glass/1.png",
+      "priority": "High",
+      "owner_verified": false
+    },
+    "ui_panel_popup": {
+      "pick": 1,
+      "candidates": 3,
+      "status": "default-unverified",
+      "finalPath": "Art/UI/ui_panel_popup.png",
+      "sourceCandidate": "Art/_candidates/ui_panel_popup/1.png",
+      "priority": "Medium",
+      "owner_verified": false
+    },
+    "ui_progress_bars": {
+      "pick": 1,
+      "candidates": 3,
+      "status": "default-unverified",
+      "finalPath": "Art/UI/ui_progress_bars.png",
+      "sourceCandidate": "Art/_candidates/ui_progress_bars/1.png",
+      "priority": "Medium",
+      "owner_verified": false
+    },
+    "ui_settings_icons": {
+      "pick": 1,
+      "candidates": 3,
+      "status": "default-unverified",
+      "finalPath": "Art/UI/ui_settings_icons.png",
+      "sourceCandidate": "Art/_candidates/ui_settings_icons/1.png",
+      "priority": "Medium",
+      "owner_verified": false
+    },
+    "ui_toggles_sliders": {
+      "pick": 1,
+      "candidates": 3,
+      "status": "default-unverified",
+      "finalPath": "Art/UI/ui_toggles_sliders.png",
+      "sourceCandidate": "Art/_candidates/ui_toggles_sliders/1.png",
+      "priority": "Medium",
+      "owner_verified": false
+    },
+    "ui_tutorial_hints": {
+      "pick": 1,
+      "candidates": 3,
+      "status": "default-unverified",
+      "finalPath": "Art/UI/ui_tutorial_hints.png",
+      "sourceCandidate": "Art/_candidates/ui_tutorial_hints/1.png",
+      "priority": "Medium",
+      "owner_verified": false
+    },
+    "vfx_coin_burst": {
+      "pick": 1,
+      "candidates": 2,
+      "status": "default-unverified",
+      "finalPath": "Art/VFX/vfx_coin_burst.png",
+      "sourceCandidate": "Art/_candidates/vfx_coin_burst/1.png",
+      "priority": "Medium",
+      "owner_verified": false
+    },
+    "vfx_confetti": {
+      "pick": 1,
+      "candidates": 2,
+      "status": "default-unverified",
+      "finalPath": "Art/VFX/vfx_confetti.png",
+      "sourceCandidate": "Art/_candidates/vfx_confetti/1.png",
+      "priority": "Medium",
+      "owner_verified": false
+    },
+    "vfx_dust_puff": {
+      "pick": 1,
+      "candidates": 2,
+      "status": "default-unverified",
+      "finalPath": "Art/VFX/vfx_dust_puff.png",
+      "sourceCandidate": "Art/_candidates/vfx_dust_puff/1.png",
+      "priority": "Medium",
+      "owner_verified": false
+    },
+    "vfx_glow_blobs": {
+      "pick": 1,
+      "candidates": 2,
+      "status": "default-unverified",
+      "finalPath": "Art/VFX/vfx_glow_blobs.png",
+      "sourceCandidate": "Art/_candidates/vfx_glow_blobs/1.png",
+      "priority": "Medium",
+      "owner_verified": false
+    },
+    "vfx_shockwave_ring": {
+      "pick": 1,
+      "candidates": 2,
+      "status": "default-unverified",
+      "finalPath": "Art/VFX/vfx_shockwave_ring.png",
+      "sourceCandidate": "Art/_candidates/vfx_shockwave_ring/1.png",
+      "priority": "Medium",
+      "owner_verified": false
+    },
+    "vfx_sparkles": {
+      "pick": 1,
+      "candidates": 2,
+      "status": "default-unverified",
+      "finalPath": "Art/VFX/vfx_sparkles.png",
+      "sourceCandidate": "Art/_candidates/vfx_sparkles/1.png",
+      "priority": "Medium",
+      "owner_verified": false
+    },
+    "vfx_speed_streaks": {
+      "pick": 1,
+      "candidates": 2,
+      "status": "default-unverified",
+      "finalPath": "Art/VFX/vfx_speed_streaks.png",
+      "sourceCandidate": "Art/_candidates/vfx_speed_streaks/1.png",
+      "priority": "Medium",
+      "owner_verified": false
+    },
+    "vfx_wall_spark": {
+      "pick": 1,
+      "candidates": 2,
+      "status": "default-unverified",
+      "finalPath": "Art/VFX/vfx_wall_spark.png",
+      "sourceCandidate": "Art/_candidates/vfx_wall_spark/1.png",
+      "priority": "Medium",
+      "owner_verified": false
+    }
+  }
+}
