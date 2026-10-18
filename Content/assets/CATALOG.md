@@ -6,20 +6,20 @@ Source of truth for rules: docs 02, 04, 08, 09. Style lock: `cute chibi cartoon 
 
 ## Totals
 
-- Asset requests: **367** (365 still need generation; B00 model gate is done: 40 credits spent, Seedream 5 Lite 2K locked)
-- Images still to generate (all candidates): **1115**
-- Credits at the real locked-model price (Seedream 5 Lite, 15 per image; no hero tier, std 15): **16,725**
+- Asset requests: **367** (363 still need generation; B00 model gate and B01a style bible done: 100 credits spent, Seedream 5 Lite 2K locked, style bible image 4 chosen; Momo master skipped)
+- Images still to generate (all candidates): **1105**
+- Credits at the real locked-model price (Seedream 5 Lite, 15 per image; no hero tier, std 15): **16,575**
 - Plus plan allowance: 12,000 credits/month
 
 ### Sensitivity (same image count, different model price per image)
 
 | Credits per image | Total credits | Months of Plus allowance |
 |---|---|---|
-| 10 | 11,150 | 0.9 |
-| 15 | 16,725 | 1.4 |
-| 20 | 22,300 | 1.9 |
-| 30 | 33,450 | 2.8 |
-| 40 | 44,600 | 3.7 |
+| 10 | 11,050 | 0.9 |
+| 15 | 16,575 | 1.4 |
+| 20 | 22,100 | 1.8 |
+| 30 | 33,150 | 2.8 |
+| 40 | 44,200 | 3.7 |
 
 Real cost depends on the model locked in Gate 0 (B00) and settings (resolution, count). Each batch is re-quoted with `openart_model_cost` before asking for approval.
 
@@ -31,7 +31,7 @@ Real cost depends on the model locked in Gate 0 (B00) and settings (resolution, 
 | [boots](catalog/boots.md) | 30 | 90 | 1,350 |
 | [character](catalog/character.md) | 15 | 60 | 900 |
 | [currency](catalog/currency.md) | 12 | 24 | 360 |
-| [foundation](catalog/foundation.md) | 7 | 24 | 360 |
+| [foundation](catalog/foundation.md) | 7 | 14 | 210 |
 | [hat](catalog/hat.md) | 30 | 90 | 1,350 |
 | [map](catalog/map.md) | 1 | 4 | 60 |
 | [marketing](catalog/marketing.md) | 5 | 20 | 300 |
@@ -55,7 +55,7 @@ Each batch is a separate approval. Batches are capped near 400 planning credits 
 | Batch | Assets | Images | Planning credits | First asset | Groups |
 |---|---|---|---|---|---|
 | B00 | 1 | 3 | 0 | fnd_model_gate | gate0 |
-| B01 | 4 | 12 | 180 | fnd_style_bible | style |
+| B01 | 4 | 12 | 30 | fnd_style_bible | style |
 | B02 | 2 | 12 | 180 | fnd_logo | brand |
 | B03 | 8 | 24 | 360 | bts_cloud_runner | phase1_test |
 | B04 | 4 | 13 | 195 | reg001_bg_near | phase1_test |

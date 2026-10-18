@@ -29,6 +29,12 @@ LOCKED_MODEL = "byte-plus-seedream-5-lite"   # Gate 0 winner (owner pick, B00)
 TIER_CREDITS = {"hero": 15, "std": 15}
 SCENARIOS = [10, 15, 20, 30, 40]
 BALANCE_AFTER_B00 = 11960
+STYLE_REF = {"label": "Style bible (owner pick: image 4 of B01a)", "creation": "lY5zfWGMT0zVY1Tq4p8h", "id": "vVnbzqvg1L5uSFCKydUE",
+             "url": "https://cdn.openart.ai/openart-ai/production/2026-10/create-image/eKcljWsHfmOD6SYI79NB/021792344354602ba082e75ad6045f729531cc716e805ec9f2b21_0_1792344400206_ecb4d010.png"}
+MOMO_REF = {"label": "Momo reference (owner pick in B00)", "creation": "JSJcbfsZQsoank92X5Lq", "id": "JXcAM1vuW99E8S4E8AO8",
+            "url": "https://cdn.openart.ai/openart-ai/production/2026-10/create-image/eKcljWsHfmOD6SYI79NB/0217923433042673cb8a93f7287826a4278aac7f0d089f95e0407_0_1792343333681_f967dd6a.png"}
+REF_PREFIX = ("Match the art style of the reference image exactly (outline weight, neon rim light and glow, glossy shading, colour saturation), "
+              "but draw only the new subject described here, not the reference's layout or objects. ")
 PLAN_CREDITS = 12000   # Plus plan monthly credits (owner confirmed)
 
 CHECKS_COMMON = ["Style matches the locked style bible (outline weight, neon rim light, palette)",
@@ -578,6 +584,21 @@ def build():
             a["depends_on"] = sorted(set(a["depends_on"] + ["out_sunny_tee"]))
     for a in ASSETS:
         a["model"] = LOCKED_MODEL
+        refs = " ".join(a["reference"])
+        if "fnd_style_bible" in refs and a["id"] not in ("fnd_style_bible", "fnd_model_gate"):
+            a["mode"] = "image2image"
+            a["prompt"] = REF_PREFIX + a["prompt"]
+            a["reference"] = [STYLE_REF["label"] + " creation " + STYLE_REF["creation"] + " resource " + STYLE_REF["id"]] + [r for r in a["reference"] if "fnd_style_bible" not in r and "momo" not in r.lower()]
+            a["visualReferences"] = [{"type": "image", "id": STYLE_REF["id"], "url": STYLE_REF["url"], "label": "Style reference"}]
+        if a["id"] == "fnd_style_bible":
+            a["status"] = "done"; a["spent_credits"] = 60
+            a["result"] = {"winner": "image 4 of 4", "creation": STYLE_REF["creation"], "resource": STYLE_REF["id"], "url": STYLE_REF["url"]}
+        if a["id"] == "fnd_momo_master":
+            a["status"] = "skipped"; a["notes"].append("Owner picked the B00 Seedream Momo; used as the master art. Re-open only if the rig needs a cleaner pose.")
+        if a["id"] == "fnd_momo_expressions":
+            a["reference"] = [MOMO_REF["label"]]
+            a["visualReferences"] = [{"type": "image", "id": MOMO_REF["id"], "url": MOMO_REF["url"], "label": "Momo reference"}]
+        a["depends_on"] = ["fnd_style_bible" if d == "fnd_momo_master" else d for d in a["depends_on"]]
         if a["id"] != "fnd_model_gate":
             if a["size"] == "1K":
                 a["size"] = "2K"
@@ -595,7 +616,7 @@ SEQ = {"fnd_model_gate": 0, "fnd_style_bible": 1, "fnd_momo_master": 2, "fnd_mom
 
 
 def credits_of(a, per_image=None):
-    if a.get("status") == "done":
+    if a.get("status") in ("done", "skipped"):
         return 0
     n = a.get("fixed_images", a["candidates"])
     c = per_image if per_image is not None else TIER_CREDITS[a["tier"]]
@@ -666,12 +687,12 @@ def main():
             for a in sorted(items, key=lambda x: x["id"]):
                 f.write(md_asset(a) + "\n")
 
-    imgs = sum(0 if a.get("status") == "done" else a.get("fixed_images", a["candidates"]) for a in assets)
+    imgs = sum(0 if a.get("status") in ("done", "skipped") else a.get("fixed_images", a["candidates"]) for a in assets)
     tot_default = sum(credits_of(a) for a in assets)
     L = ["# Boing Tower - Asset Catalog (generated)", "",
          "**Status:** planning only. Zero credits spent. Every batch below needs the owner's explicit approval (`.claude/rules/openart-credit-guardrail.md`).", "",
          "Source of truth for rules: docs 02, 04, 08, 09. Style lock: `%s`." % (STYLE + ", " + KEY), "",
-         "## Totals", "", "- Asset requests: **%d** (%d still need generation; B00 model gate is done: 40 credits spent, Seedream 5 Lite 2K locked)" % (len(assets), sum(1 for a in assets if a.get('status') != 'done' and a.get('fixed_images', a['candidates']) > 0)),
+         "## Totals", "", "- Asset requests: **%d** (%d still need generation; B00 model gate and B01a style bible done: 100 credits spent, Seedream 5 Lite 2K locked, style bible image 4 chosen; Momo master skipped)" % (len(assets), sum(1 for a in assets if a.get('status') not in ('done', 'skipped') and a.get('fixed_images', a['candidates']) > 0)),
          "- Images still to generate (all candidates): **%d**" % imgs,
          "- Credits at the real locked-model price (Seedream 5 Lite, %d per image; no hero tier, std %d): **%s**" % (TIER_CREDITS['hero'], TIER_CREDITS['std'], format(tot_default, ",")),
          "- Plus plan allowance: %s credits/month" % format(PLAN_CREDITS, ","), "",
@@ -682,7 +703,7 @@ def main():
     L += ["", "Real cost depends on the model locked in Gate 0 (B00) and settings (resolution, count). Each batch is re-quoted with `openart_model_cost` before asking for approval.", "",
           "## Classes", "", "| Class | Assets | Images | Planning credits |", "|---|---|---|---|"]
     for cls, items in sorted(by_cls.items()):
-        L.append("| [%s](catalog/%s.md) | %d | %d | %s |" % (cls, cls, len(items), sum(0 if a.get('status') == 'done' else a.get('fixed_images', a['candidates']) for a in items), format(sum(credits_of(a) for a in items), ",")))
+        L.append("| [%s](catalog/%s.md) | %d | %d | %s |" % (cls, cls, len(items), sum(0 if a.get('status') in ('done', 'skipped') else a.get('fixed_images', a['candidates']) for a in items), format(sum(credits_of(a) for a in items), ",")))
     L += ["", "## Approval batches (in order)", "",
           "Each batch is a separate approval. Batches are capped near 400 planning credits so no single approval is large.", "",
           "| Batch | Assets | Images | Planning credits | First asset | Groups |", "|---|---|---|---|---|---|"]
