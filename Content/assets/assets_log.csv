@@ -1,0 +1,4 @@
+date,batch,asset_id,model,mode,settings,seed,creation_id,resource_id,credits,prompt_ref,result
+2026-10-18,B00,fnd_model_gate,kling-3-omni,text2image,2k 1:1 x1,none (no seed field),Itz7p1Cq7atsBSNoQQLq,OaWsTpOMmbD5ER6U6qie,10,manifest fnd_model_gate,not selected
+2026-10-18,B00,fnd_model_gate,byte-plus-seedream-5-lite,text2image,2K 1:1 x1,none (no seed field),JSJcbfsZQsoank92X5Lq,JXcAM1vuW99E8S4E8AO8,15,manifest fnd_model_gate,SELECTED by owner - locked model
+2026-10-18,B00,fnd_model_gate,nano-banana-2-lite,text2image,1:1 x1 (fixed ~1K),none (no seed field),KbQhhx1vTPT6ob3BLvWD,qvdlV1slvGUvFghKSut5,15,manifest fnd_model_gate,not selected

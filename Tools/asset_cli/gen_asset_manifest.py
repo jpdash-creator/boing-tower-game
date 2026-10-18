@@ -24,8 +24,11 @@ SCENE = "no text, no watermark, simple readable shapes so gameplay stays visible
 BANNED = ["any existing game's name, character, logo or level layout", "real brand names", "text or letters inside the art"]
 
 # Planning credit assumptions (OpenArt quotes at default 1-image config; verified per batch with openart_model_cost).
-TIER_CREDITS = {"hero": 30, "std": 15}
+LOCKED_MODEL = "byte-plus-seedream-5-lite"   # Gate 0 winner (owner pick, B00)
+# Real quote (openart_model_cost): Seedream 5 Lite is a flat 15 credits per image at 2K and 3K. No separate hero tier.
+TIER_CREDITS = {"hero": 15, "std": 15}
 SCENARIOS = [10, 15, 20, 30, 40]
+BALANCE_AFTER_B00 = 11960
 PLAN_CREDITS = 12000   # Plus plan monthly credits (owner confirmed)
 
 CHECKS_COMMON = ["Style matches the locked style bible (outline weight, neon rim light, palette)",
@@ -303,14 +306,15 @@ def build():
         checks=["Same prompt on 3 models, one image each", "Result decides the locked model for FND/CHR/OUT/BTS/HAT/ACC"],
         notes=["Exactly 3 images, one per model. Free model comparison, no retries without a new approval."])
 
-    add(id="fnd_style_bible", cls="foundation", phase="A1", group="style", tier="hero", candidates=4,
+    add(id="fnd_style_bible", cls="foundation", phase="A1", group="style", tier="hero", candidates=4, mode="image2image",
         name="Style bible sheet", purpose="One-page reference image used as the locked reference for every later generation.",
-        prompt=("Style reference sheet for a mobile game: on one canvas show Momo the round chibi cloud-fox mascot (centre, large), "
-                "a glowing neon-rimmed grass platform, a spinning gold coin, a faceted blue-pink gem, a small round power-up icon, "
-                "and a colour palette strip, all drawn in the same style. " + STYLE + ", " + KEY),
+        prompt=("Using the reference image as the exact design of Momo, create a style reference artwork for a mobile game: Momo the round chibi cloud-fox mascot "
+                "(centre, large, identical to the reference), a glowing neon-rimmed grass platform, a spinning gold coin, a faceted blue-pink gem, a small round power-up icon, "
+                "and a row of six plain colour swatches with no labels, hex codes or captions, all drawn in the same style. " + STYLE + ", " + KEY),
         aspect="4:3", size="2K", path="Art/_work/style_bible/style_bible_v1.png",
-        post=["Owner approves ONE image as the locked reference; upload it as the reference for later runs (owner step in OpenArt widget)"],
-        depends_on=["fnd_model_gate"], checks=["Outline 3 px at 512 px equivalent", "Neon rim light visible but not overpowering", "Top-left light"])
+        reference=["gate-0 winner: Seedream 5 Lite Momo (creation JSJcbfsZQsoank92X5Lq, resource JXcAM1vuW99E8S4E8AO8)"],
+        post=["Owner approves ONE image as the locked style reference for later runs"],
+        depends_on=["fnd_model_gate"], checks=["Momo matches the reference", "Outline 3 px at 512 px equivalent", "Neon rim light visible but not overpowering", "Top-left light", "No labels, hex codes or captions on the swatches"])
 
     add(id="fnd_momo_master", cls="foundation", phase="A1", group="style", tier="hero", candidates=6,
         name="Momo master art (default mascot)", purpose="Brand icon and base for the rig; round chibi cloud-fox, free default character.",
@@ -572,6 +576,17 @@ def build():
     for a in ASSETS:
         if a["phase"] in ("D",) and a["id"] not in test_ids:
             a["depends_on"] = sorted(set(a["depends_on"] + ["out_sunny_tee"]))
+    for a in ASSETS:
+        a["model"] = LOCKED_MODEL
+        if a["id"] != "fnd_model_gate":
+            if a["size"] == "1K":
+                a["size"] = "2K"
+                a["notes"].append("Seedream 5 Lite has no 1K option; 2K costs the same 15 credits")
+        else:
+            a["status"] = "done"
+            a["spent_credits"] = 40
+            a["result"] = {"winner": "byte-plus-seedream-5-lite 2K 1:1", "creation": "JSJcbfsZQsoank92X5Lq",
+                           "resource": "JXcAM1vuW99E8S4E8AO8", "balance_after": BALANCE_AFTER_B00}
     return ASSETS
 
 
@@ -580,6 +595,8 @@ SEQ = {"fnd_model_gate": 0, "fnd_style_bible": 1, "fnd_momo_master": 2, "fnd_mom
 
 
 def credits_of(a, per_image=None):
+    if a.get("status") == "done":
+        return 0
     n = a.get("fixed_images", a["candidates"])
     c = per_image if per_image is not None else TIER_CREDITS[a["tier"]]
     return n * c
@@ -649,14 +666,14 @@ def main():
             for a in sorted(items, key=lambda x: x["id"]):
                 f.write(md_asset(a) + "\n")
 
-    imgs = sum(a.get("fixed_images", a["candidates"]) for a in assets)
+    imgs = sum(0 if a.get("status") == "done" else a.get("fixed_images", a["candidates"]) for a in assets)
     tot_default = sum(credits_of(a) for a in assets)
     L = ["# Boing Tower - Asset Catalog (generated)", "",
          "**Status:** planning only. Zero credits spent. Every batch below needs the owner's explicit approval (`.claude/rules/openart-credit-guardrail.md`).", "",
          "Source of truth for rules: docs 02, 04, 08, 09. Style lock: `%s`." % (STYLE + ", " + KEY), "",
-         "## Totals", "", "- Asset requests: **%d** (%d need generation)" % (len(assets), sum(1 for a in assets if a.get('fixed_images', a['candidates']) > 0)),
-         "- Images to generate (all candidates): **%d**" % imgs,
-         "- Planning credits at default tiers (hero %d, standard %d per image): **%s**" % (TIER_CREDITS['hero'], TIER_CREDITS['std'], format(tot_default, ",")),
+         "## Totals", "", "- Asset requests: **%d** (%d still need generation; B00 model gate is done: 40 credits spent, Seedream 5 Lite 2K locked)" % (len(assets), sum(1 for a in assets if a.get('status') != 'done' and a.get('fixed_images', a['candidates']) > 0)),
+         "- Images still to generate (all candidates): **%d**" % imgs,
+         "- Credits at the real locked-model price (Seedream 5 Lite, %d per image; no hero tier, std %d): **%s**" % (TIER_CREDITS['hero'], TIER_CREDITS['std'], format(tot_default, ",")),
          "- Plus plan allowance: %s credits/month" % format(PLAN_CREDITS, ","), "",
          "### Sensitivity (same image count, different model price per image)", "", "| Credits per image | Total credits | Months of Plus allowance |", "|---|---|---|"]
     for c in SCENARIOS:
@@ -665,7 +682,7 @@ def main():
     L += ["", "Real cost depends on the model locked in Gate 0 (B00) and settings (resolution, count). Each batch is re-quoted with `openart_model_cost` before asking for approval.", "",
           "## Classes", "", "| Class | Assets | Images | Planning credits |", "|---|---|---|---|"]
     for cls, items in sorted(by_cls.items()):
-        L.append("| [%s](catalog/%s.md) | %d | %d | %s |" % (cls, cls, len(items), sum(a.get('fixed_images', a['candidates']) for a in items), format(sum(credits_of(a) for a in items), ",")))
+        L.append("| [%s](catalog/%s.md) | %d | %d | %s |" % (cls, cls, len(items), sum(0 if a.get('status') == 'done' else a.get('fixed_images', a['candidates']) for a in items), format(sum(credits_of(a) for a in items), ",")))
     L += ["", "## Approval batches (in order)", "",
           "Each batch is a separate approval. Batches are capped near 400 planning credits so no single approval is large.", "",
           "| Batch | Assets | Images | Planning credits | First asset | Groups |", "|---|---|---|---|---|---|"]
