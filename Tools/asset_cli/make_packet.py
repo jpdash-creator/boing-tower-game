@@ -26,7 +26,7 @@ def main():
          "- Assets: %d (%s)" % (len(calls), ", ".join(ids)),
          "- Calls: %d (one per asset), %d images in total" % (len(calls), total_imgs),
          "- Locked model: `byte-plus-seedream-5-lite` (owner pick in B00). Style reference: B01a image 4 (resource `%s`)." %
-         (calls[0].get("visualReferences", [{}])[0].get("id", "")), "",
+         (calls[0].get("visualReferences", [{}])[-1].get("id", "")), "",
          "## 2. MCP and tools",
          "- OpenArt MCP (`mcp__73f004bd-92f2-4e13-8abf-f0c13bc6ba8f__`), `openart_generate_image` only, %d calls." % len(calls), "",
          "## 3. Calls (exact settings and prompts)", "",
@@ -36,7 +36,9 @@ def main():
         L.append("| %d | %s | %s | 2K | %s | %d | %d |" % (n, c["id"], c["mode"], c["aspect"], k, k * per_image))
     L += ["", "Every call: `autoEnhancePrompt: false`, no seed field exists, `visualReferences` = the style bible (id/url above).", ""]
     for n, c in enumerate(calls, 1):
-        L += ["### Call %d - %s (%s)" % (n, c["id"], c["name"]), "- Save to: `%s`" % c["path"], "- Purpose: " + c["purpose"], "```", c["prompt"], "```", ""]
+        refs = ", ".join("%s (%s)" % (v["label"], v["id"]) for v in c.get("visualReferences", []))
+        L += ["### Call %d - %s (%s)" % (n, c["id"], c["name"]), "- Save to: `%s`" % c["path"], "- Purpose: " + c["purpose"],
+              "- Mode / aspect / images: %s / %s / %d" % (c["mode"], c["aspect"], c.get("fixed_images", c["candidates"])), "- Reference image(s): " + (refs or "none"), "```", c["prompt"], "```", ""]
     L += ["## 4. Cost",
           "- Per image: %d credits (flat, from `openart_model_cost`). Images: %d. **Total: %d credits.**" % (per_image, total_imgs, total),
           "- Balance now: %d | after: %d" % (balance, balance - total), "",

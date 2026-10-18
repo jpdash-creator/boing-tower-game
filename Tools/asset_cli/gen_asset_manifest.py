@@ -33,6 +33,8 @@ STYLE_REF = {"label": "Style bible (owner pick: image 4 of B01a)", "creation": "
              "url": "https://cdn.openart.ai/openart-ai/production/2026-10/create-image/eKcljWsHfmOD6SYI79NB/021792344354602ba082e75ad6045f729531cc716e805ec9f2b21_0_1792344400206_ecb4d010.png"}
 MOMO_REF = {"label": "Momo reference (owner pick in B00)", "creation": "JSJcbfsZQsoank92X5Lq", "id": "JXcAM1vuW99E8S4E8AO8",
             "url": "https://cdn.openart.ai/openart-ai/production/2026-10/create-image/eKcljWsHfmOD6SYI79NB/0217923433042673cb8a93f7287826a4278aac7f0d089f95e0407_0_1792343333681_f967dd6a.png"}
+MOMO_PREFIX = ("Use the first reference image as the exact design of Momo and the second reference image as the art style guide "
+               "(outline weight, neon rim light and glow, glossy shading, colour saturation). ")
 REF_PREFIX = ("Match the art style of the reference image exactly (outline weight, neon rim light and glow, glossy shading, colour saturation), "
               "but draw only the new subject described here, not the reference's layout or objects. ")
 PLAN_CREDITS = 12000   # Plus plan monthly credits (owner confirmed)
@@ -585,7 +587,15 @@ def build():
     for a in ASSETS:
         a["model"] = LOCKED_MODEL
         refs = " ".join(a["reference"])
-        if "fnd_style_bible" in refs and a["id"] not in ("fnd_style_bible", "fnd_model_gate"):
+        needs_momo = a["id"] == "fnd_app_icon" or (a["cls"] == "marketing" and "momo" in refs.lower())
+        if needs_momo:
+            a["mode"] = "image2image"
+            a["prompt"] = MOMO_PREFIX + a["prompt"]
+            a["reference"] = [MOMO_REF["label"] + " creation " + MOMO_REF["creation"] + " resource " + MOMO_REF["id"],
+                              STYLE_REF["label"] + " creation " + STYLE_REF["creation"] + " resource " + STYLE_REF["id"]]
+            a["visualReferences"] = [{"type": "image", "id": MOMO_REF["id"], "url": MOMO_REF["url"], "label": "Momo reference"},
+                                     {"type": "image", "id": STYLE_REF["id"], "url": STYLE_REF["url"], "label": "Style reference"}]
+        elif "fnd_style_bible" in refs and a["id"] not in ("fnd_style_bible", "fnd_model_gate"):
             a["mode"] = "image2image"
             a["prompt"] = REF_PREFIX + a["prompt"]
             a["reference"] = [STYLE_REF["label"] + " creation " + STYLE_REF["creation"] + " resource " + STYLE_REF["id"]] + [r for r in a["reference"] if "fnd_style_bible" not in r and "momo" not in r.lower()]

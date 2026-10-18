@@ -294,7 +294,7 @@
       "candidates": 6,
       "name": "App icon concepts",
       "purpose": "1024x1024 app icon; Momo face bouncing, bold readable shapes.",
-      "prompt": "Mobile app icon art: Momo the round chibi cloud-fox face and shoulders, big happy eyes, magenta scarf, bouncing upward with motion sparkles, centered, bold simple shapes readable at 64 px, glowing neon rim light, full-bleed gradient sky-blue to violet background, no text. cute chibi cartoon with neon rim light and glow, thick consistent dark-hue outline, saturated gradient colors, glossy sparkle accents, top-left light, clean vector-like edges, no watermark",
+      "prompt": "Use the first reference image as the exact design of Momo and the second reference image as the art style guide (outline weight, neon rim light and glow, glossy shading, colour saturation). Mobile app icon art: Momo the round chibi cloud-fox face and shoulders, big happy eyes, magenta scarf, bouncing upward with motion sparkles, centered, bold simple shapes readable at 64 px, glowing neon rim light, full-bleed gradient sky-blue to violet background, no text. cute chibi cartoon with neon rim light and glow, thick consistent dark-hue outline, saturated gradient colors, glossy sparkle accents, top-left light, clean vector-like edges, no watermark",
       "aspect": "1:1",
       "size": "2K",
       "path": "Art/Marketing/icon/app_icon_concept_v1.png",
@@ -312,8 +312,11 @@
         "No resemblance to any existing game's character or branding",
         "Prompt, seed, model and settings logged to assets_log.csv"
       ],
-      "mode": "text2image",
-      "reference": [],
+      "mode": "image2image",
+      "reference": [
+        "Momo reference (owner pick in B00) creation JSJcbfsZQsoank92X5Lq resource JXcAM1vuW99E8S4E8AO8",
+        "Style bible (owner pick: image 4 of B01a) creation lY5zfWGMT0zVY1Tq4p8h resource vVnbzqvg1L5uSFCKydUE"
+      ],
       "notes": [],
       "forbidden": [
         "any existing game's name, character, logo or level layout",
@@ -321,6 +324,20 @@
         "text or letters inside the art"
       ],
       "model": "byte-plus-seedream-5-lite",
+      "visualReferences": [
+        {
+          "type": "image",
+          "id": "JXcAM1vuW99E8S4E8AO8",
+          "url": "https://cdn.openart.ai/openart-ai/production/2026-10/create-image/eKcljWsHfmOD6SYI79NB/0217923433042673cb8a93f7287826a4278aac7f0d089f95e0407_0_1792343333681_f967dd6a.png",
+          "label": "Momo reference"
+        },
+        {
+          "type": "image",
+          "id": "vVnbzqvg1L5uSFCKydUE",
+          "url": "https://cdn.openart.ai/openart-ai/production/2026-10/create-image/eKcljWsHfmOD6SYI79NB/021792344354602ba082e75ad6045f729531cc716e805ec9f2b21_0_1792344400206_ecb4d010.png",
+          "label": "Style reference"
+        }
+      ],
       "batch": "B02"
     },
     {
@@ -17781,10 +17798,11 @@
       "tier": "hero",
       "name": "Marketing: feature graphic",
       "purpose": "Store/social art; final text/logo overlaid by hand.",
-      "prompt": "Match the art style of the reference image exactly (outline weight, neon rim light and glow, glossy shading, colour saturation), but draw only the new subject described here, not the reference's layout or objects. wide store feature graphic: Momo bouncing up a glowing neon tower of platforms through clouds, dynamic composition, empty space on the left, no text. cute chibi cartoon with neon rim light and glow, thick consistent dark-hue outline, saturated gradient colors, glossy sparkle accents, top-left light, clean vector-like edges, no watermark",
+      "prompt": "Use the first reference image as the exact design of Momo and the second reference image as the art style guide (outline weight, neon rim light and glow, glossy shading, colour saturation). wide store feature graphic: Momo bouncing up a glowing neon tower of platforms through clouds, dynamic composition, empty space on the left, no text. cute chibi cartoon with neon rim light and glow, thick consistent dark-hue outline, saturated gradient colors, glossy sparkle accents, top-left light, clean vector-like edges, no watermark",
       "aspect": "16:9",
       "size": "2K",
       "reference": [
+        "Momo reference (owner pick in B00) creation JSJcbfsZQsoank92X5Lq resource JXcAM1vuW99E8S4E8AO8",
         "Style bible (owner pick: image 4 of B01a) creation lY5zfWGMT0zVY1Tq4p8h resource vVnbzqvg1L5uSFCKydUE"
       ],
       "depends_on": [
@@ -17812,6 +17830,12 @@
       "visualReferences": [
         {
           "type": "image",
+          "id": "JXcAM1vuW99E8S4E8AO8",
+          "url": "https://cdn.openart.ai/openart-ai/production/2026-10/create-image/eKcljWsHfmOD6SYI79NB/0217923433042673cb8a93f7287826a4278aac7f0d089f95e0407_0_1792343333681_f967dd6a.png",
+          "label": "Momo reference"
+        },
+        {
+          "type": "image",
           "id": "vVnbzqvg1L5uSFCKydUE",
           "url": "https://cdn.openart.ai/openart-ai/production/2026-10/create-image/eKcljWsHfmOD6SYI79NB/021792344354602ba082e75ad6045f729531cc716e805ec9f2b21_0_1792344400206_ecb4d010.png",
           "label": "Style reference"
@@ -17828,10 +17852,11 @@
       "tier": "std",
       "name": "Marketing: social card a",
       "purpose": "Store/social art; final text/logo overlaid by hand.",
-      "prompt": "Match the art style of the reference image exactly (outline weight, neon rim light and glow, glossy shading, colour saturation), but draw only the new subject described here, not the reference's layout or objects. vertical social share card background: Momo celebrating with confetti above a glowing tower, empty area for score, no text. cute chibi cartoon with neon rim light and glow, thick consistent dark-hue outline, saturated gradient colors, glossy sparkle accents, top-left light, clean vector-like edges, no watermark",
+      "prompt": "Use the first reference image as the exact design of Momo and the second reference image as the art style guide (outline weight, neon rim light and glow, glossy shading, colour saturation). vertical social share card background: Momo celebrating with confetti above a glowing tower, empty area for score, no text. cute chibi cartoon with neon rim light and glow, thick consistent dark-hue outline, saturated gradient colors, glossy sparkle accents, top-left light, clean vector-like edges, no watermark",
       "aspect": "9:16",
       "size": "2K",
       "reference": [
+        "Momo reference (owner pick in B00) creation JSJcbfsZQsoank92X5Lq resource JXcAM1vuW99E8S4E8AO8",
         "Style bible (owner pick: image 4 of B01a) creation lY5zfWGMT0zVY1Tq4p8h resource vVnbzqvg1L5uSFCKydUE"
       ],
       "depends_on": [
@@ -17859,6 +17884,12 @@
       "visualReferences": [
         {
           "type": "image",
+          "id": "JXcAM1vuW99E8S4E8AO8",
+          "url": "https://cdn.openart.ai/openart-ai/production/2026-10/create-image/eKcljWsHfmOD6SYI79NB/0217923433042673cb8a93f7287826a4278aac7f0d089f95e0407_0_1792343333681_f967dd6a.png",
+          "label": "Momo reference"
+        },
+        {
+          "type": "image",
           "id": "vVnbzqvg1L5uSFCKydUE",
           "url": "https://cdn.openart.ai/openart-ai/production/2026-10/create-image/eKcljWsHfmOD6SYI79NB/021792344354602ba082e75ad6045f729531cc716e805ec9f2b21_0_1792344400206_ecb4d010.png",
           "label": "Style reference"
@@ -17875,10 +17906,11 @@
       "tier": "std",
       "name": "Marketing: social card b",
       "purpose": "Store/social art; final text/logo overlaid by hand.",
-      "prompt": "Match the art style of the reference image exactly (outline weight, neon rim light and glow, glossy shading, colour saturation), but draw only the new subject described here, not the reference's layout or objects. square social share card background: glowing neon platforms ladder and sparkles, empty centre, no text. cute chibi cartoon with neon rim light and glow, thick consistent dark-hue outline, saturated gradient colors, glossy sparkle accents, top-left light, clean vector-like edges, no watermark",
+      "prompt": "Use the first reference image as the exact design of Momo and the second reference image as the art style guide (outline weight, neon rim light and glow, glossy shading, colour saturation). square social share card background: glowing neon platforms ladder and sparkles, empty centre, no text. cute chibi cartoon with neon rim light and glow, thick consistent dark-hue outline, saturated gradient colors, glossy sparkle accents, top-left light, clean vector-like edges, no watermark",
       "aspect": "1:1",
       "size": "2K",
       "reference": [
+        "Momo reference (owner pick in B00) creation JSJcbfsZQsoank92X5Lq resource JXcAM1vuW99E8S4E8AO8",
         "Style bible (owner pick: image 4 of B01a) creation lY5zfWGMT0zVY1Tq4p8h resource vVnbzqvg1L5uSFCKydUE"
       ],
       "depends_on": [
@@ -17906,6 +17938,12 @@
       "visualReferences": [
         {
           "type": "image",
+          "id": "JXcAM1vuW99E8S4E8AO8",
+          "url": "https://cdn.openart.ai/openart-ai/production/2026-10/create-image/eKcljWsHfmOD6SYI79NB/0217923433042673cb8a93f7287826a4278aac7f0d089f95e0407_0_1792343333681_f967dd6a.png",
+          "label": "Momo reference"
+        },
+        {
+          "type": "image",
           "id": "vVnbzqvg1L5uSFCKydUE",
           "url": "https://cdn.openart.ai/openart-ai/production/2026-10/create-image/eKcljWsHfmOD6SYI79NB/021792344354602ba082e75ad6045f729531cc716e805ec9f2b21_0_1792344400206_ecb4d010.png",
           "label": "Style reference"
@@ -17922,10 +17960,11 @@
       "tier": "std",
       "name": "Marketing: social card c",
       "purpose": "Store/social art; final text/logo overlaid by hand.",
-      "prompt": "Match the art style of the reference image exactly (outline weight, neon rim light and glow, glossy shading, colour saturation), but draw only the new subject described here, not the reference's layout or objects. wide social share card background: Momo mid-air with a rainbow light trail, empty right side, no text. cute chibi cartoon with neon rim light and glow, thick consistent dark-hue outline, saturated gradient colors, glossy sparkle accents, top-left light, clean vector-like edges, no watermark",
+      "prompt": "Use the first reference image as the exact design of Momo and the second reference image as the art style guide (outline weight, neon rim light and glow, glossy shading, colour saturation). wide social share card background: Momo mid-air with a rainbow light trail, empty right side, no text. cute chibi cartoon with neon rim light and glow, thick consistent dark-hue outline, saturated gradient colors, glossy sparkle accents, top-left light, clean vector-like edges, no watermark",
       "aspect": "16:9",
       "size": "2K",
       "reference": [
+        "Momo reference (owner pick in B00) creation JSJcbfsZQsoank92X5Lq resource JXcAM1vuW99E8S4E8AO8",
         "Style bible (owner pick: image 4 of B01a) creation lY5zfWGMT0zVY1Tq4p8h resource vVnbzqvg1L5uSFCKydUE"
       ],
       "depends_on": [
@@ -17953,6 +17992,12 @@
       "visualReferences": [
         {
           "type": "image",
+          "id": "JXcAM1vuW99E8S4E8AO8",
+          "url": "https://cdn.openart.ai/openart-ai/production/2026-10/create-image/eKcljWsHfmOD6SYI79NB/0217923433042673cb8a93f7287826a4278aac7f0d089f95e0407_0_1792343333681_f967dd6a.png",
+          "label": "Momo reference"
+        },
+        {
+          "type": "image",
           "id": "vVnbzqvg1L5uSFCKydUE",
           "url": "https://cdn.openart.ai/openart-ai/production/2026-10/create-image/eKcljWsHfmOD6SYI79NB/021792344354602ba082e75ad6045f729531cc716e805ec9f2b21_0_1792344400206_ecb4d010.png",
           "label": "Style reference"
@@ -17969,10 +18014,11 @@
       "tier": "hero",
       "name": "Marketing: splash screen",
       "purpose": "Store/social art; final text/logo overlaid by hand.",
-      "prompt": "Match the art style of the reference image exactly (outline weight, neon rim light and glow, glossy shading, colour saturation), but draw only the new subject described here, not the reference's layout or objects. full-screen vertical splash: Momo on a spring at the base of a glowing tower, night gradient sky, empty top area for the logo, no text. cute chibi cartoon with neon rim light and glow, thick consistent dark-hue outline, saturated gradient colors, glossy sparkle accents, top-left light, clean vector-like edges, no watermark",
+      "prompt": "Use the first reference image as the exact design of Momo and the second reference image as the art style guide (outline weight, neon rim light and glow, glossy shading, colour saturation). full-screen vertical splash: Momo on a spring at the base of a glowing tower, night gradient sky, empty top area for the logo, no text. cute chibi cartoon with neon rim light and glow, thick consistent dark-hue outline, saturated gradient colors, glossy sparkle accents, top-left light, clean vector-like edges, no watermark",
       "aspect": "9:16",
       "size": "2K",
       "reference": [
+        "Momo reference (owner pick in B00) creation JSJcbfsZQsoank92X5Lq resource JXcAM1vuW99E8S4E8AO8",
         "Style bible (owner pick: image 4 of B01a) creation lY5zfWGMT0zVY1Tq4p8h resource vVnbzqvg1L5uSFCKydUE"
       ],
       "depends_on": [
@@ -17998,6 +18044,12 @@
       ],
       "model": "byte-plus-seedream-5-lite",
       "visualReferences": [
+        {
+          "type": "image",
+          "id": "JXcAM1vuW99E8S4E8AO8",
+          "url": "https://cdn.openart.ai/openart-ai/production/2026-10/create-image/eKcljWsHfmOD6SYI79NB/0217923433042673cb8a93f7287826a4278aac7f0d089f95e0407_0_1792343333681_f967dd6a.png",
+          "label": "Momo reference"
+        },
         {
           "type": "image",
           "id": "vVnbzqvg1L5uSFCKydUE",
