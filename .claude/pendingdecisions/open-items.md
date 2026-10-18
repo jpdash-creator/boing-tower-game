@@ -2,6 +2,7 @@
 
 | Item | Detail | Since |
 |---|---|---|
+| Unity license inactive for batch runs | Headless Unity exits 198: "No valid Unity Editor license found". Owner: open Unity Hub, confirm sign-in, make sure a Unity Personal license is active, then tell Claude. Blocks compile check and project setup. | 2026-10-19 |
 | Verify default asset picks | See `asset-picks.md` (66 assets) | 2026-10-19 |
 | Second Unity Editor 6000.6.6f1 | Installed by the Hub queue (about 5 GB on E:). Project uses 6000.3.26f1. Keep or uninstall? | 2026-10-18 |
 | Windows hibernation file | `hiberfil.sys` is 12.8 GB on C:. Owner can free it with `powercfg /h off` (administrator terminal). Claude will not change system settings. | 2026-10-18 |
