@@ -209,7 +209,7 @@ Match the art style of the reference image exactly (outline weight, neon rim lig
 
 ## 4. Cost
 - Per image: 15 credits (flat, from `openart_model_cost`). Images: 58. **Total: 870 credits.**
-- Balance now: 8975 | after: 8105
+- Balance now: 10475 | after: 9605
 
 ## 5. After generation
 - Owner picks one image per asset (by number). Picks are logged in `assets_log.csv`.
