@@ -8,7 +8,7 @@ namespace BoingTower.Simulation
         public const int Jump = 4;
     }
 
-    /// <summary>All mutable simulation state. Copy with Clone() (the crumble array is the only reference member).</summary>
+    /// <summary>All mutable simulation state. Copy with Clone() (the CrumbleTick and PickupTaken arrays are the only reference members).</summary>
     public struct SimState
     {
         public int Tick;
@@ -27,10 +27,34 @@ namespace BoingTower.Simulation
         /// <summary>Per platform: tick of first landing on a crumble platform, or -1.</summary>
         public int[] CrumbleTick;
 
+        // ---- T3 run tracking (plain value fields except the PickupTaken array) ----
+        /// <summary>Coins collected this run (landing rules plus pickups). Not part of Score.</summary>
+        public int Coins;
+        public int Gems;
+        /// <summary>Hidden gems collected (FindHiddenGem goal). Counted separately from Gems.</summary>
+        public int HiddenGems;
+        /// <summary>Gong hits taken.</summary>
+        public int Hits;
+        /// <summary>Remaining ticks of hit/revive invulnerability.</summary>
+        public int Invuln;
+        public int RevivesUsed;
+        /// <summary>Platform id of the highest row landed on (revive point).</summary>
+        public int BestGroundId;
+        /// <summary>Floors gained by the most recent landing, measured from the platform jumped from.</summary>
+        public int LastJumpFloors, BestJumpFloors;
+        /// <summary>
+        /// Histogram of landing jumps by floors gained: 8 buckets of 8 bits (bucket k-1 = jumps that gained k floors,
+        /// the last bucket also counts 8 or more; saturates at 255). Read it with GoalEvaluator.JumpsWithFloors.
+        /// </summary>
+        public ulong JumpHist;
+        /// <summary>Per pickup: collected flag (index = pickup id).</summary>
+        public bool[] PickupTaken;
+
         public SimState Clone()
         {
             SimState c = this;
-            c.CrumbleTick = (int[])CrumbleTick.Clone();
+            if (CrumbleTick != null) c.CrumbleTick = (int[])CrumbleTick.Clone();
+            if (PickupTaken != null) c.PickupTaken = (bool[])PickupTaken.Clone();
             return c;
         }
     }
@@ -38,22 +62,47 @@ namespace BoingTower.Simulation
     /// <summary>
     /// Deterministic fixed-step simulation of one run. Stateless apart from the level: all mutable
     /// state lives in SimState so replays, bots and the server can branch and re-simulate cheaply.
-    /// Platforms must be sorted by Y ascending (the generator guarantees this).
+    /// Platforms must be sorted by Y ascending (the generator guarantees this); pickups and hazards too.
+    /// Step never allocates.
     /// </summary>
     public sealed class Sim
     {
         public readonly SimConfig Cfg;
+        public readonly LevelData Level;
         public readonly Platform[] Platforms;
+        public readonly Hazard[] Hazards;
+        public readonly Pickup[] Pickups;
         public readonly bool Endless;
+        /// <summary>Campaign scroll ramp (BossChase): endless step formula clamped to SimConfig.CampaignRampCapPercent.</summary>
+        public readonly bool CampaignRamp;
         private readonly Fx scrollPerTick;
+        private readonly Fx maxPickupRadius;
 
         /// <param name="difficulty">0..1 level difficulty; scales the scroll pressure.</param>
         public Sim(SimConfig cfg, Platform[] platforms, Fx difficulty, bool endless)
+            : this(cfg, LevelData.FromPlatforms(platforms), difficulty, endless, false)
+        {
+        }
+
+        /// <summary>Campaign constructor: level from LevelBuilder, difficulty and ramp taken from the spec.</summary>
+        public Sim(SimConfig cfg, LevelData level, LevelSpec spec)
+            : this(cfg, level, spec.Difficulty, false, spec.Ramp)
+        {
+        }
+
+        public Sim(SimConfig cfg, LevelData level, Fx difficulty, bool endless, bool campaignRamp)
         {
             Cfg = cfg;
-            Platforms = platforms;
+            Level = level;
+            Platforms = level.Platforms;
+            Hazards = level.Hazards;
+            Pickups = level.Pickups;
             Endless = endless;
+            CampaignRamp = campaignRamp;
             scrollPerTick = Fx.Lerp(cfg.ScrollSpeedEasy, cfg.ScrollSpeedHard, difficulty) / SimConfig.TicksPerSecond;
+            Fx maxR = Fx.Zero;
+            for (int i = 0; i < Pickups.Length; i++) if (Pickups[i].Radius > maxR) maxR = Pickups[i].Radius;
+            maxPickupRadius = maxR;
         }
 
         public SimState NewState()
@@ -64,12 +113,51 @@ namespace BoingTower.Simulation
             s.Y = start.Y;
             s.Grounded = true;
             s.GroundId = 0;
+            s.BestGroundId = 0;
             s.Coyote = Cfg.CoyoteTicks;
             s.MaxY = start.Y;
             s.KillY = start.Y - Cfg.KillDistance;
             s.CrumbleTick = new int[Platforms.Length];
             for (int i = 0; i < s.CrumbleTick.Length; i++) s.CrumbleTick[i] = -1;
+            s.PickupTaken = new bool[Pickups.Length];
             return s;
+        }
+
+        /// <summary>
+        /// Minimal revive: if dead, puts the player back on the highest platform landed on, clears speed,
+        /// grants a short invulnerability and counts the revive. UI and payment are the caller's job.
+        /// </summary>
+        public void Revive(ref SimState s)
+        {
+            if (!s.Dead) return;
+            Platform p = Platforms[s.BestGroundId];
+            s.Dead = false;
+            s.GroundId = s.BestGroundId;
+            s.X = PlatformX(s.BestGroundId, s.Tick);
+            s.Y = p.Y;
+            s.Vx = Fx.Zero;
+            s.Vy = Fx.Zero;
+            s.Grounded = true;
+            s.Coyote = Cfg.CoyoteTicks;
+            s.JumpBuffer = 0;
+            s.JumpStartRow = p.Row;
+            s.MaxY = p.Y;
+            s.KillY = p.Y - Cfg.ReviveKillDistance;
+            s.Invuln = Cfg.ReviveInvulnTicks;
+            s.Combo = 0;
+            s.RevivesUsed++;
+        }
+
+        /// <summary>Position of a hazard at a tick (triangle wave on X, small pendulum rise at the extremes).</summary>
+        public void HazardPosition(int id, int tick, out Fx x, out Fx y)
+        {
+            Hazard h = Hazards[id];
+            int half = h.Period / 2;
+            int phase = (tick + h.Phase) % h.Period;
+            int tri = phase < half ? phase : h.Period - phase;
+            Fx sway = Fx.FromRatio(tri, half) * 2 - Fx.One;
+            x = h.X + sway * h.Amplitude;
+            y = h.Y + Fx.Abs(sway) * h.Amplitude * Cfg.GongArcRisePercent / 100;
         }
 
         public Fx PlatformX(int id, int tick)
@@ -229,12 +317,25 @@ namespace BoingTower.Simulation
                 }
             }
 
+            // --- pickups and hazards ---
+            if (Pickups.Length > 0) CollectPickups(ref s);
+            if (Hazards.Length > 0) HitHazards(ref s, tick);
+
             // --- scroll pressure and death ---
             if (s.Y > s.MaxY) s.MaxY = s.Y;
             if (s.Row >= Cfg.ScrollStartRow)
             {
                 Fx scroll = scrollPerTick;
-                if (Endless) scroll = scroll * (100 + Cfg.RampPercentAt(s.Row)) / 100;
+                if (Endless)
+                {
+                    scroll = scroll * (100 + Cfg.RampPercentAt(s.Row)) / 100;
+                }
+                else if (CampaignRamp)
+                {
+                    int pct = Cfg.RampPercentAt(s.Row);
+                    if (pct > Cfg.CampaignRampCapPercent) pct = Cfg.CampaignRampCapPercent;
+                    scroll = scroll * (100 + pct) / 100;
+                }
                 s.KillY = s.KillY + scroll;
             }
             Fx follow = s.MaxY - Cfg.KillDistance;
@@ -242,7 +343,72 @@ namespace BoingTower.Simulation
             if (s.Y < s.KillY) s.Dead = true;
 
             if (s.JumpBuffer > 0) s.JumpBuffer--;
+            if (s.Invuln > 0) s.Invuln--;
             s.Tick = tick;
+        }
+
+        private static long Dist2(Fx ax, Fx ay, Fx bx, Fx by)
+        {
+            long dx = (long)ax.Raw - bx.Raw;
+            long dy = (long)ay.Raw - by.Raw;
+            return dx * dx + dy * dy;
+        }
+
+        private void CollectPickups(ref SimState s)
+        {
+            Fx cx = s.X;
+            Fx cy = s.Y + Cfg.PlayerCenterY;
+            int lo = 0, hi = Pickups.Length;
+            Fx from = cy - maxPickupRadius;
+            while (lo < hi)
+            {
+                int mid = (lo + hi) >> 1;
+                if (Pickups[mid].Y < from) lo = mid + 1; else hi = mid;
+            }
+            Fx to = cy + maxPickupRadius;
+            for (int i = lo; i < Pickups.Length && Pickups[i].Y <= to; i++)
+            {
+                if (s.PickupTaken[i]) continue;
+                long r = Pickups[i].Radius.Raw;
+                if (Dist2(cx, cy, Pickups[i].X, Pickups[i].Y) > r * r) continue;
+                s.PickupTaken[i] = true;
+                switch (Pickups[i].Kind)
+                {
+                    case PickupKind.Coin: s.Coins++; break;
+                    case PickupKind.Gem: s.Gems++; break;
+                    default: s.HiddenGems++; break;
+                }
+            }
+        }
+
+        /// <summary>Largest vertical distance between a hazard anchor and any point the hazard or the player can occupy while overlapping.</summary>
+        private static readonly Fx HazardQueryMargin = Fx.FromInt(4);
+
+        private void HitHazards(ref SimState s, int tick)
+        {
+            if (s.Invuln > 0) return;
+            Fx cx = s.X;
+            Fx cy = s.Y + Cfg.PlayerCenterY;
+            int lo = 0, hi = Hazards.Length;
+            Fx from = cy - HazardQueryMargin;
+            while (lo < hi)
+            {
+                int mid = (lo + hi) >> 1;
+                if (Hazards[mid].Y < from) lo = mid + 1; else hi = mid;
+            }
+            Fx to = cy + HazardQueryMargin;
+            for (int i = lo; i < Hazards.Length && Hazards[i].Y <= to; i++)
+            {
+                Fx gx, gy;
+                HazardPosition(i, tick, out gx, out gy);
+                long r = (long)Hazards[i].Radius.Raw + Cfg.PlayerHitRadius.Raw;
+                if (Dist2(cx, cy, gx, gy) > r * r) continue;
+                s.Vx = cx >= gx ? Cfg.GongKnockbackVx : -Cfg.GongKnockbackVx;
+                if (!s.Grounded) s.Vy = cy >= gy ? Cfg.GongKnockbackVy : -Cfg.GongKnockbackVy;
+                s.Invuln = Cfg.GongInvulnTicks;
+                s.Hits++;
+                return;
+            }
         }
 
         private void Land(ref SimState s, int id, int tick)
@@ -254,12 +420,19 @@ namespace BoingTower.Simulation
             s.GroundId = id;
             s.Coyote = Cfg.CoyoteTicks;
 
-            if (p.Row > s.Row)
+            int oldRow = s.Row;
+            int gained = p.Row - s.JumpStartRow;
+            bool newRow = p.Row > oldRow;
+            bool qualifies = gained >= Cfg.ComboMinFloors;
+            bool continuesCombo = qualifies && s.Combo > 0;
+
+            if (newRow)
             {
-                s.Score += (p.Row - s.Row) * Cfg.FloorPoints;
+                s.Score += (p.Row - oldRow) * Cfg.FloorPoints;
                 s.Row = p.Row;
+                s.BestGroundId = id;
             }
-            if (p.Row - s.JumpStartRow >= Cfg.ComboMinFloors)
+            if (qualifies)
             {
                 s.Combo++;
                 if (s.Combo > s.BestCombo) s.BestCombo = s.Combo;
@@ -270,10 +443,28 @@ namespace BoingTower.Simulation
                 s.Combo = 0;
             }
 
-            if (p.Kind == PlatformKind.Crumble && s.CrumbleTick[id] < 0) s.CrumbleTick[id] = tick;
-            if (p.Kind == PlatformKind.Bounce)
+            // Doc 08 section 7 coin rules (campaign only; endless has its own rule, D3).
+            if (newRow && !Endless)
             {
-                s.Vy = Cfg.JumpSpeed(Fx.Abs(s.Vx)) * Cfg.BounceMultiplier;
+                s.Coins += continuesCombo ? Cfg.ComboLandingCoins : Cfg.LandingCoins;
+                int newFloors = p.Row - oldRow;
+                int extra = (gained < newFloors ? gained : newFloors) - 1;
+                if (extra > 0) s.Coins += extra * Cfg.ExtraFloorCoins;
+            }
+
+            s.LastJumpFloors = gained;
+            if (gained > s.BestJumpFloors) s.BestJumpFloors = gained;
+            if (gained >= 1)
+            {
+                int shift = (gained > 8 ? 7 : gained - 1) * 8;
+                if (((s.JumpHist >> shift) & 0xFFUL) < 255UL) s.JumpHist += 1UL << shift;
+            }
+
+            if (p.Kind == PlatformKind.Crumble && s.CrumbleTick[id] < 0) s.CrumbleTick[id] = tick;
+            if (p.Kind == PlatformKind.Bounce || p.Kind == PlatformKind.BounceCap)
+            {
+                Fx mul = p.Kind == PlatformKind.Bounce ? Cfg.BounceMultiplier : Cfg.BounceCapMultiplier;
+                s.Vy = Cfg.JumpSpeed(Fx.Abs(s.Vx)) * mul;
                 s.Grounded = false;
                 s.Coyote = 0;
                 s.JumpStartRow = p.Row;

@@ -1,0 +1,536 @@
+using System.Collections.Generic;
+
+namespace BoingTower.Simulation
+{
+    /// <summary>
+    /// Builds a complete campaign level (platforms, hazards, pickups) from a LevelSpec. Deterministic: the
+    /// same spec and SimConfig give identical LevelData on every device. Three independent Rng streams
+    /// (platforms, pickups, hazards) are derived from spec.Seed so changing coin density never moves a platform.
+    /// Same row geometry as LevelGenerator (doc 08 section 4); see NOTES.md for the rules added on top.
+    /// </summary>
+    public static class LevelBuilder
+    {
+        private sealed class Ctx
+        {
+            public List<Platform> Plats;
+            public Fx[] X, Y, W;
+            public PlatformKind[] K;
+
+            public void Add(int row, PlatformKind kind, Fx x, Fx y, Fx w, Fx amp, int period, int phase)
+            {
+                Platform p = new Platform();
+                p.Id = Plats.Count;
+                p.Row = row;
+                p.Kind = kind;
+                p.X = x;
+                p.Y = y;
+                p.Width = w;
+                p.Amplitude = amp;
+                p.Period = period;
+                p.Phase = phase;
+                Plats.Add(p);
+                X[row] = x; Y[row] = y; W[row] = w; K[row] = kind;
+            }
+        }
+
+        /// <summary>Rows kept free at the top for the final chunk when chunks are spliced at intervals.</summary>
+        private const int ChunkEndReserve = 12;
+
+        private static int PercentLerp(int easy, int hard, Fx d)
+        {
+            return Fx.Lerp(Fx.FromInt(easy), Fx.FromInt(hard), d).FloorToInt();
+        }
+
+        private static bool Overlaps(bool[] locked, int from, int to)
+        {
+            for (int r = from; r <= to; r++) if (r >= 0 && r < locked.Length && locked[r]) return true;
+            return false;
+        }
+
+        public static LevelData Build(SimConfig cfg, LevelSpec spec)
+        {
+            int rows = spec.RowsFor();
+            Fx d = spec.Difficulty;
+            Fx screen = cfg.ScreenWidth;
+            Fx half = cfg.PlayerHalfWidth;
+            Fx maxGap = cfg.MaxJumpHeight() * 9 / 10;
+            int idx = spec.LevelIndex;
+            Rng rng = new Rng(spec.Seed);
+
+            // ---- template: signature platform share by level (doc 08 section 6) ----
+            PlatformKind sigKind = idx >= 3 ? SignatureKinds.PlatformFor(spec.Signature) : PlatformKind.Normal;
+            int sigShare = 0;
+            if (sigKind != PlatformKind.Normal)
+            {
+                if (idx == 3) sigShare = cfg.SignatureIntroPercent;
+                else sigShare = PercentLerp(cfg.SignatureBasePercent, cfg.SignatureMaxPercent, d);
+                if (sigShare > cfg.SignatureMaxPercent) sigShare = cfg.SignatureMaxPercent;
+            }
+            bool speedrun = spec.Goal.Type == GoalType.Speedrun;
+
+            // ---- plan fixed-position elements: combo ladder, chunks, hidden gem, wave ----
+            bool[] locked = new bool[rows + 3];
+            LevelData data = new LevelData();
+            data.Rows = rows;
+
+            int ladderStart = -1, ladderLen = 0, ladderV = 0;
+            if (spec.Goal.Type == GoalType.ComboChain)
+            {
+                ladderV = spec.Goal.Value < 2 ? 2 : spec.Goal.Value;
+                int cnt = spec.Goal.Count < 1 ? 1 : spec.Goal.Count;
+                ladderLen = ladderV * cnt + 2;
+                ladderStart = rows * 30 / 100;
+                if (ladderStart < 5) ladderStart = 5;
+                if (ladderStart + ladderLen > rows - 2) ladderStart = rows - 2 - ladderLen;
+                for (int r = ladderStart; r < ladderStart + ladderLen; r++) locked[r] = true;
+                data.LadderStartRow = ladderStart;
+                data.LadderEndRow = ladderStart + ladderLen - 1;
+            }
+
+            int[] chunkAt = new int[rows + 3];
+            for (int i = 0; i < chunkAt.Length; i++) chunkAt[i] = -1;
+            List<Chunk> chunkList = new List<Chunk>();
+            if (spec.FixedChunks != null && spec.FixedChunks.Length > 0)
+            {
+                int n = spec.FixedChunks.Length;
+                int row = cfg.ChunkStartRow;
+                int ci = 0;
+                int lastEnd = 0;
+                int guard = 0;
+                while (guard++ < 64)
+                {
+                    Chunk ch = ChunkLibrary.Get(spec.FixedChunks[ci % n]);
+                    ci++;
+                    if (ch == null) { if (ci >= n && chunkList.Count == 0) break; continue; }
+                    int len = ch.Rows.Length;
+                    if (row + len > rows - ChunkEndReserve) break;
+                    if (Overlaps(locked, row - 1, row + len))
+                    {
+                        row++;
+                        ci--;
+                        continue;
+                    }
+                    chunkAt[row] = chunkList.Count;
+                    chunkList.Add(ch);
+                    for (int r = row; r < row + len; r++) locked[r] = true;
+                    lastEnd = row + len - 1;
+                    row += len + cfg.ChunkInterval;
+                }
+                // plus one chunk at the end of the level ("final rows")
+                Chunk fin = ChunkLibrary.Get(spec.FixedChunks[(ci > 0 ? ci - 1 : 0) % n]);
+                if (fin != null)
+                {
+                    int start = rows - fin.Rows.Length + 1;
+                    if (start > lastEnd + 3 && !Overlaps(locked, start - 1, rows + 1))
+                    {
+                        chunkAt[start] = chunkList.Count;
+                        chunkList.Add(fin);
+                        for (int r = start; r <= rows; r++) locked[r] = true;
+                    }
+                }
+            }
+
+            int gemRow = -1;
+            if (spec.Goal.Type == GoalType.FindHiddenGem)
+            {
+                gemRow = rows / 2;
+                while (gemRow < rows - 3 && locked[gemRow]) gemRow++;
+                if (locked[gemRow]) { gemRow = rows / 2; while (gemRow > 3 && locked[gemRow]) gemRow--; }
+            }
+
+            bool wave = spec.Goal.Type == GoalType.SurviveWave;
+            int waveStart = rows * cfg.WaveStartPercent / 100;
+            int waveEnd = rows * cfg.WaveEndPercent / 100;
+            if (wave) { data.WaveStartRow = waveStart; data.WaveEndRow = waveEnd; }
+
+            // ---- platforms ----
+            Ctx ctx = new Ctx();
+            ctx.Plats = new List<Platform>(rows * 2 + 8);
+            ctx.X = new Fx[rows + 1];
+            ctx.Y = new Fx[rows + 1];
+            ctx.W = new Fx[rows + 1];
+            ctx.K = new PlatformKind[rows + 1];
+            ctx.Add(0, PlatformKind.Normal, screen / 2, Fx.Zero, screen, Fx.Zero, 0, 0);
+
+            Fx prevX = screen / 2, prevW = screen, y = Fx.Zero;
+            PlatformKind prevKind = PlatformKind.Normal;
+
+            Fx widthEasyLo = Fx.FromInt(6), widthEasyHi = Fx.FromInt(8);
+            Fx widthHardLo = Fx.FromRatio(16, 10), widthHardHi = Fx.FromRatio(24, 10);
+            Fx gapEasyLo = Fx.FromInt(2), gapEasyHi = Fx.FromInt(3);
+            Fx gapHardLo = Fx.FromRatio(38, 10), gapHardHi = Fx.FromRatio(52, 10);
+            Fx offEasyLo = Fx.Zero, offEasyHi = Fx.FromRatio(2, 5);
+            Fx offHardLo = Fx.FromRatio(1, 5), offHardHi = Fx.FromRatio(9, 10);
+            Fx jitterLo = Fx.FromRatio(85, 100), jitterHi = Fx.FromRatio(115, 100);
+            Fx minWidth = Fx.FromRatio(14, 10);
+            Fx maxWidth = Fx.FromRatio(95, 10);
+            Fx hiddenGemX = Fx.Zero, hiddenGemY = Fx.Zero;
+            bool hiddenGemPlaced = false;
+
+            int rowNo = 1;
+            while (rowNo <= rows)
+            {
+                // ---------- combo ladder ----------
+                if (rowNo == ladderStart)
+                {
+                    Fx gap0 = rng.Range(Fx.Lerp(gapEasyLo, gapHardLo, d), Fx.Lerp(gapEasyHi, gapHardHi, d));
+                    if (speedrun) gap0 = gap0 * cfg.SpeedrunGapPercent / 100;
+                    gap0 = Fx.Min(gap0, maxGap);
+                    if (prevKind == PlatformKind.Sticky) gap0 = Fx.Min(gap0, cfg.StickyNextGapMax);
+                    bool lAfterBounce = prevKind == PlatformKind.Bounce || prevKind == PlatformKind.BounceCap;
+                    if (lAfterBounce) gap0 = Fx.Min(gap0, cfg.BounceNextGapMax);
+                    Fx jm0 = prevKind == PlatformKind.Sticky ? cfg.StickyJumpMultiplier : Fx.One;
+                    Fx lw = cfg.ComboLadderWidth;
+                    Fx lim0 = cfg.MaxReachDx(gap0, jm0) * 6 / 10 + (prevW + lw) / 2 + half;
+                    if (lAfterBounce) lim0 = Fx.Min(lim0, cfg.BounceNextDxMax + (prevW + lw) / 2);
+                    Fx xl = prevX + Fx.Clamp(screen / 2 - prevX, -lim0, lim0);
+                    xl = Fx.Clamp(xl, lw / 2, screen - lw / 2);
+                    Fx rung = cfg.ComboLadderSpan / ladderV;
+                    for (int i = 0; i < ladderLen; i++)
+                    {
+                        y = y + (i == 0 ? gap0 : rung);
+                        ctx.Add(rowNo + i, PlatformKind.Normal, xl, y, lw, Fx.Zero, 0, 0);
+                    }
+                    prevX = xl; prevW = lw; prevKind = PlatformKind.Normal;
+                    rowNo += ladderLen;
+                    continue;
+                }
+
+                // ---------- authored chunk ----------
+                if (chunkAt[rowNo] >= 0)
+                {
+                    Chunk ch = chunkList[chunkAt[rowNo]];
+                    bool flip = rng.Next(2) == 1;
+                    Fx delta = Fx.Zero;
+                    for (int i = 0; i < ch.Rows.Length; i++)
+                    {
+                        ChunkRow cr = ch.Rows[i];
+                        Fx cgap = Fx.Min(Fx.FromRatio(cr.GapHundredths, 100), maxGap);
+                        if (i == 0 && prevKind == PlatformKind.Sticky) cgap = Fx.Min(cgap, cfg.StickyNextGapMax);
+                        bool cAfterBounce = i == 0 && (prevKind == PlatformKind.Bounce || prevKind == PlatformKind.BounceCap);
+                        if (cAfterBounce) cgap = Fx.Min(cgap, cfg.BounceNextGapMax);
+                        Fx cw = Fx.FromRatio(cr.WidthTenths, 10);
+                        Fx ax = Fx.FromRatio(cr.XPermille, 1000) * screen;
+                        if (flip) ax = screen - ax;
+                        Fx cx;
+                        if (i == 0)
+                        {
+                            Fx jm1 = prevKind == PlatformKind.Sticky ? cfg.StickyJumpMultiplier : Fx.One;
+                            Fx lim1 = cfg.MaxReachDx(cgap, jm1) * 6 / 10 + (prevW + cw) / 2 + half;
+                            if (cAfterBounce) lim1 = Fx.Min(lim1, cfg.BounceNextDxMax + (prevW + cw) / 2);
+                            cx = prevX + Fx.Clamp(ax - prevX, -lim1, lim1);
+                            cx = Fx.Clamp(cx, cw / 2, screen - cw / 2);
+                            delta = cx - ax;
+                        }
+                        else
+                        {
+                            cx = Fx.Clamp(ax + delta, cw / 2, screen - cw / 2);
+                        }
+                        y = y + cgap;
+                        Fx camp = Fx.Zero;
+                        int cper = 0, cph = 0;
+                        if (cr.Kind == PlatformKind.Moving)
+                        {
+                            camp = Fx.Min(cfg.ChunkMovingAmplitude, Fx.Min(cx - cw / 2, screen - cw / 2 - cx));
+                            if (camp < Fx.Zero) camp = Fx.Zero;
+                            cper = cfg.ChunkMovingPeriod;
+                            cph = (i * 47) % cper;
+                        }
+                        else if (cr.Kind == PlatformKind.Vanishing)
+                        {
+                            cph = (i * 53) % (cfg.VanishVisibleTicks + cfg.VanishHiddenTicks);
+                        }
+                        ctx.Add(rowNo + i, cr.Kind, cx, y, cw, camp, cper, cph);
+                        prevX = cx; prevW = cw; prevKind = cr.Kind;
+                    }
+                    rowNo += ch.Rows.Length;
+                    continue;
+                }
+
+                // ---------- generated row ----------
+                int row = rowNo;
+                Fx gap = rng.Range(Fx.Lerp(gapEasyLo, gapHardLo, d), Fx.Lerp(gapEasyHi, gapHardHi, d));
+                if (speedrun) gap = gap * cfg.SpeedrunGapPercent / 100;
+                gap = Fx.Min(gap, maxGap);
+                if (prevKind == PlatformKind.Sticky) gap = Fx.Min(gap, cfg.StickyNextGapMax);
+                bool afterBounce = prevKind == PlatformKind.Bounce || prevKind == PlatformKind.BounceCap;
+                if (afterBounce) gap = Fx.Min(gap, cfg.BounceNextGapMax);
+                y = y + gap;
+
+                PlatformKind kind = PlatformKind.Normal;
+                if (sigShare > 0 && row != gemRow && rng.Next(100) < sigShare) kind = sigKind;
+                // Bounce platforms are never chained: the landing speed on a bounce pad is set by the previous flight,
+                // so two pads in a row would make the second one pure luck.
+                if (afterBounce && (kind == PlatformKind.Bounce || kind == PlatformKind.BounceCap)) kind = PlatformKind.Normal;
+
+                Fx w = rng.Range(Fx.Lerp(widthEasyLo, widthHardLo, d), Fx.Lerp(widthEasyHi, widthHardHi, d));
+                w = w * rng.Range(jitterLo, jitterHi);
+                w = Fx.Clamp(w, minWidth, maxWidth);
+                if (kind == PlatformKind.Moving && w > cfg.DriftMaxWidth) w = cfg.DriftMaxWidth;
+                if (row == gemRow && w > Fx.FromRatio(35, 10)) w = Fx.FromRatio(35, 10);
+
+                Fx jm = prevKind == PlatformKind.Sticky ? cfg.StickyJumpMultiplier : Fx.One;
+                Fx offFrac = rng.Range(Fx.Lerp(offEasyLo, offHardLo, d), Fx.Lerp(offEasyHi, offHardHi, d));
+                Fx dx = offFrac * screen;
+                Fx dxLimit = cfg.MaxReachDx(gap, jm) * 6 / 10 + (prevW + w) / 2 + half;
+                if (afterBounce) dxLimit = Fx.Min(dxLimit, cfg.BounceNextDxMax + (prevW + w) / 2);
+                dx = Fx.Min(dx, dxLimit);
+
+                int dir = rng.Next(2) == 0 ? -1 : 1;
+                Fx lo = w / 2, hi = screen - w / 2;
+                Fx x = prevX + dx * dir;
+                if (x < lo || x > hi) x = prevX - dx * dir;
+                x = Fx.Clamp(x, lo, hi);
+
+                Fx amp = Fx.Zero;
+                int period = 0, phase = 0;
+                if (kind == PlatformKind.Moving)
+                {
+                    Fx room = Fx.Min(x - lo, hi - x);
+                    Fx want = spec.Signature == SignatureKind.DriftingPlatforms
+                        ? rng.Range(cfg.DriftAmplitudeMin, cfg.DriftAmplitudeMax)
+                        : rng.Range(Fx.Half, Fx.One);
+                    amp = Fx.Min(want, room);
+                    period = 2 * rng.Range(90, 150);
+                    phase = rng.Next(period);
+                }
+                ctx.Add(row, kind, x, y, w, amp, period, phase);
+
+                if (row == gemRow)
+                {
+                    // Side platform for the hidden gem: same row, reachable from the previous spine platform by the same rule.
+                    Fx ws = cfg.HiddenGemPlatformWidth;
+                    Fx sep = (w + ws) / 2 + Fx.FromRatio(5, 10);
+                    Fx limS = cfg.MaxReachDx(gap, jm) * 6 / 10 + (prevW + ws) / 2 + half;
+                    Fx xs = Fx.Zero;
+                    bool found = false;
+                    for (int t = 0; t < 4 && !found; t++)
+                    {
+                        Fx off = t < 2 ? sep : sep + Fx.One;
+                        Fx cand = (t & 1) == 0 ? x + off : x - off;
+                        cand = Fx.Clamp(cand, ws / 2, screen - ws / 2);
+                        if (Fx.Abs(cand - x) >= sep - Fx.FromRatio(5, 100) && Fx.Abs(cand - prevX) <= limS)
+                        {
+                            xs = cand; found = true;
+                        }
+                    }
+                    if (found)
+                    {
+                        ctx.Add(row, PlatformKind.Normal, xs, y, ws, Fx.Zero, 0, 0);
+                        hiddenGemX = xs;
+                        hiddenGemY = y + cfg.HiddenGemHeight;
+                        data.HiddenGemOnSidePlatform = true;
+                    }
+                    else
+                    {
+                        hiddenGemX = x;
+                        hiddenGemY = y + cfg.HiddenGemHeight;
+                    }
+                    hiddenGemPlaced = true;
+                    data.HiddenGemRow = row;
+                    data.HiddenGemX = hiddenGemX;
+                }
+                else
+                {
+                    // Optional second platform on the same row (easy levels give more choices), as in LevelGenerator.
+                    int secondChance = (Fx.FromInt(50) * (Fx.One - d)).FloorToInt();
+                    if (kind == PlatformKind.Normal && rng.Next(100) < secondChance)
+                    {
+                        Fx x2 = screen - x;
+                        if (Fx.Abs(x2 - x) >= (w + w) / 2 + Fx.One)
+                        {
+                            Platform extra = new Platform();
+                            extra.Id = ctx.Plats.Count;
+                            extra.Row = row;
+                            extra.Kind = PlatformKind.Normal;
+                            extra.X = Fx.Clamp(x2, lo, hi);
+                            extra.Y = y;
+                            extra.Width = w;
+                            ctx.Plats.Add(extra);
+                        }
+                    }
+                }
+
+                prevX = x; prevW = w; prevKind = kind;
+                rowNo++;
+            }
+
+            data.Platforms = ctx.Plats.ToArray();
+
+            // ---- pickups ----
+            data.Pickups = BuildPickups(cfg, spec, ctx, rows, d, hiddenGemPlaced, hiddenGemX, hiddenGemY);
+
+            // ---- hazards ----
+            data.Hazards = BuildHazards(cfg, spec, ctx, rows, d, wave, waveStart, waveEnd, ladderStart, ladderLen);
+            return data;
+        }
+
+        // ------------------------------------------------------------------------------------------
+        // Pickups. Per row: path coins between the previous and this spine platform (probability
+        // PathCoinPercent, 100 = exactly one per row), then a risky coin (edge side-route or high
+        // overshoot route) with probability RiskyCoinPercent, half the time as a pair. Both
+        // percentages blend easy to hard by d and scale with the level class. Roughly:
+        //   coins per row = path(d) + 1.5 * risky(d)  ->  about 70 at d = 0.05 and 115 at d = 1 on 60 rows (class 0 to 2),
+        //   x1.6 for complex levels, x1.2 for highly complex (which also have 150 rows).
+        // A rare 1-gem pickup (GemChancePercent per level) sits on a risky edge route.
+        // ------------------------------------------------------------------------------------------
+        private static Pickup[] BuildPickups(SimConfig cfg, LevelSpec spec, Ctx ctx, int rows, Fx d,
+            bool hiddenGem, Fx hgx, Fx hgy)
+        {
+            Rng r = new Rng(spec.Seed ^ 0x2F1A7C35);
+            Fx screen = cfg.ScreenWidth;
+            int cls = spec.Class < 0 ? 0 : (spec.Class > 4 ? 4 : spec.Class);
+            int classPct = cfg.ClassCoinPercent[cls];
+            int pathPct = PercentLerp(cfg.PathCoinPercentEasy, cfg.PathCoinPercentHard, d) * classPct / 100;
+            int riskyPct = PercentLerp(cfg.RiskyCoinPercentEasy, cfg.RiskyCoinPercentHard, d) * classPct / 100;
+            if (riskyPct > 100) riskyPct = 100;
+            Fx wallMin = Fx.FromRatio(7, 10), wallMax = screen - Fx.FromRatio(7, 10);
+            List<Pickup> list = new List<Pickup>(rows * 2);
+
+            int gemRow = -1;
+            if (r.Next(100) < cfg.GemChancePercent)
+            {
+                int lo = 4, hi = rows - 3 < 5 ? 5 : rows - 3;
+                gemRow = r.Range(lo, hi);
+            }
+
+            for (int row = 1; row <= rows; row++)
+            {
+                int n = pathPct / 100 + (r.Next(100) < pathPct % 100 ? 1 : 0);
+                for (int k = 0; k < n; k++)
+                {
+                    Fx t = Fx.FromRatio(k + 1, n + 1);
+                    Fx px = Fx.Lerp(ctx.X[row - 1], ctx.X[row], t);
+                    Fx py = Fx.Lerp(ctx.Y[row - 1], ctx.Y[row], t) + Fx.FromRatio(12, 10);
+                    list.Add(MakeCoin(cfg, PickupKind.Coin, px, py));
+                }
+                if (r.Next(100) < riskyPct)
+                {
+                    int type = r.Next(2);
+                    bool pair = r.Next(2) == 0;
+                    if (type == 0) AddEdgeCoins(cfg, list, ctx, row, screen, wallMin, wallMax, pair, PickupKind.Coin);
+                    else
+                    {
+                        Fx hx = Fx.Lerp(ctx.X[row - 1], ctx.X[row], Fx.FromRatio(6, 10));
+                        Fx hy = ctx.Y[row] + Fx.FromRatio(18, 10);
+                        list.Add(MakeCoin(cfg, PickupKind.Coin, Fx.Clamp(hx, wallMin, wallMax), hy));
+                        if (pair) list.Add(MakeCoin(cfg, PickupKind.Coin, Fx.Clamp(hx, wallMin, wallMax), hy + Fx.FromRatio(9, 10)));
+                    }
+                }
+                if (row == gemRow) AddEdgeCoins(cfg, list, ctx, row, screen, wallMin, wallMax, false, PickupKind.Gem);
+            }
+
+            if (hiddenGem)
+            {
+                Pickup g = new Pickup();
+                g.Kind = PickupKind.HiddenGem;
+                g.X = hgx; g.Y = hgy; g.Radius = cfg.HiddenGemRadius;
+                list.Add(g);
+            }
+
+            list.Sort(ComparePickup);
+            Pickup[] arr = list.ToArray();
+            for (int i = 0; i < arr.Length; i++) arr[i].Id = i;
+            return arr;
+        }
+
+        private static Pickup MakeCoin(SimConfig cfg, PickupKind kind, Fx x, Fx y)
+        {
+            Pickup p = new Pickup();
+            p.Kind = kind;
+            p.X = x; p.Y = y;
+            p.Radius = kind == PickupKind.Gem ? cfg.GemRadius : cfg.CoinRadius;
+            return p;
+        }
+
+        private static void AddEdgeCoins(SimConfig cfg, List<Pickup> list, Ctx ctx, int row, Fx screen, Fx wallMin, Fx wallMax,
+            bool pair, PickupKind kind)
+        {
+            bool left = ctx.X[row] < screen / 2;
+            Fx ex = left ? ctx.X[row] - ctx.W[row] / 2 - Fx.FromRatio(7, 10) : ctx.X[row] + ctx.W[row] / 2 + Fx.FromRatio(7, 10);
+            ex = Fx.Clamp(ex, wallMin, wallMax);
+            Fx ey = ctx.Y[row] + Fx.FromRatio(12, 10);
+            list.Add(MakeCoin(cfg, kind, ex, ey));
+            if (pair)
+            {
+                Fx inward = left ? ex + Fx.FromRatio(5, 10) : ex - Fx.FromRatio(5, 10);
+                list.Add(MakeCoin(cfg, kind, Fx.Clamp(inward, wallMin, wallMax), ey + Fx.FromRatio(9, 10)));
+            }
+        }
+
+        private static int ComparePickup(Pickup a, Pickup b)
+        {
+            if (a.Y.Raw != b.Y.Raw) return a.Y.Raw < b.Y.Raw ? -1 : 1;
+            if (a.X.Raw != b.X.Raw) return a.X.Raw < b.X.Raw ? -1 : 1;
+            if (a.Kind != b.Kind) return (int)a.Kind < (int)b.Kind ? -1 : 1;
+            return 0;
+        }
+
+        // ------------------------------------------------------------------------------------------
+        // Hazards. Gongs hang in the jump corridor between two consecutive spine platforms, swing
+        // sideways by GongAmplitude and rise a little at the swing extremes (pendulum).
+        // ------------------------------------------------------------------------------------------
+        private static Hazard[] BuildHazards(SimConfig cfg, LevelSpec spec, Ctx ctx, int rows, Fx d,
+            bool wave, int waveStart, int waveEnd, int ladderStart, int ladderLen)
+        {
+            bool gongRegion = spec.LevelIndex >= 3 && spec.Signature == SignatureKind.SwingingGongs;
+            if (!gongRegion && !wave) return new Hazard[0];
+            Rng r = new Rng(spec.Seed ^ 0x5A3C9E17);
+            Fx screen = cfg.ScreenWidth;
+            List<Hazard> list = new List<Hazard>();
+            for (int row = 2; row <= rows; row++)
+            {
+                if (ladderStart >= 0 && row >= ladderStart && row < ladderStart + ladderLen) continue;
+                bool inWave = wave && row >= waveStart && row <= waveEnd;
+                int chance = 0;
+                if (inWave) chance = cfg.WaveDensityPercent;
+                else if (gongRegion)
+                {
+                    chance = PercentLerp(cfg.GongDensityEasyPercent, cfg.GongDensityHardPercent, d);
+                    if (spec.LevelIndex == 3) chance /= 2;
+                }
+                if (chance <= 0) continue;
+                int count = 0;
+                if (r.Next(100) < chance)
+                {
+                    count = 1;
+                    if (inWave && r.Next(100) < chance / 2) count = 2;
+                }
+                int side = r.Next(2) == 0 ? -1 : 1;
+                for (int k = 0; k < count; k++)
+                {
+                    Fx mx = (ctx.X[row - 1] + ctx.X[row]) / 2;
+                    Fx my = (ctx.Y[row - 1] + ctx.Y[row]) / 2;
+                    Hazard h = new Hazard();
+                    h.Kind = HazardKind.Gong;
+                    h.Radius = Fx.Lerp(cfg.GongRadiusEasy, cfg.GongRadiusHard, d);
+                    h.Amplitude = r.Range(cfg.GongAmplitudeMin, cfg.GongAmplitudeMax);
+                    Fx offset = r.Range(Fx.One, Fx.FromRatio(25, 10));
+                    Fx ax = mx + offset * (k == 0 ? side : -side);
+                    Fx edge = h.Amplitude + h.Radius;
+                    if (edge * 2 < screen) ax = Fx.Clamp(ax, edge, screen - edge);
+                    h.X = ax;
+                    h.Y = my + Fx.Half;
+                    h.Period = 2 * (inWave ? r.Range(55, 90) : r.Range(70, 120));
+                    h.Phase = r.Next(h.Period);
+                    list.Add(h);
+                }
+            }
+            list.Sort(CompareHazard);
+            Hazard[] arr = list.ToArray();
+            for (int i = 0; i < arr.Length; i++) arr[i].Id = i;
+            return arr;
+        }
+
+        private static int CompareHazard(Hazard a, Hazard b)
+        {
+            if (a.Y.Raw != b.Y.Raw) return a.Y.Raw < b.Y.Raw ? -1 : 1;
+            if (a.X.Raw != b.X.Raw) return a.X.Raw < b.X.Raw ? -1 : 1;
+            if (a.Period != b.Period) return a.Period < b.Period ? -1 : 1;
+            if (a.Phase != b.Phase) return a.Phase < b.Phase ? -1 : 1;
+            if (a.Amplitude.Raw != b.Amplitude.Raw) return a.Amplitude.Raw < b.Amplitude.Raw ? -1 : 1;
+            if (a.Radius.Raw != b.Radius.Raw) return a.Radius.Raw < b.Radius.Raw ? -1 : 1;
+            return 0;
+        }
+    }
+}

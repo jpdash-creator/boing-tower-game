@@ -8,7 +8,9 @@ namespace BoingTower.Simulation
         Bounce = 3,
         Vanishing = 4,
         Sticky = 5,
-        Slippery = 6
+        Slippery = 6,
+        /// <summary>Region 2 signature: launches higher than Bounce (SimConfig.BounceCapMultiplier).</summary>
+        BounceCap = 7
     }
 
     /// <summary>A one-way platform. Y is the top surface; X is the centre (base centre for moving platforms).</summary>

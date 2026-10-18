@@ -54,6 +54,105 @@ namespace BoingTower.Simulation
         public int ComboPointsMultiplier = 5;
         public int ComboMinFloors = 2;
 
+        // ---------------------------------------------------------------------------------------
+        // T3 additions. Units: world units (u), ticks (60 per second), percent where named so.
+        // ---------------------------------------------------------------------------------------
+
+        // Player body
+        /// <summary>Height of the player centre above the feet (s.Y), u. Pickups and hazards test against the centre.</summary>
+        public Fx PlayerCenterY = Fx.Half;
+        /// <summary>Player collision radius against hazards, u.</summary>
+        public Fx PlayerHitRadius = Fx.FromRatio(45, 100);
+
+        // Signature platforms
+        /// <summary>BounceCap launch multiplier on the jump speed (Bounce is BounceMultiplier = 1.4; caps are higher).</summary>
+        public Fx BounceCapMultiplier = Fx.FromRatio(18, 10);
+        /// <summary>Drifting platform (region 3 Moving) swing half-amplitude range, u (plain Moving uses 0.5 to 1.0).</summary>
+        public Fx DriftAmplitudeMin = Fx.FromRatio(3, 2);
+        public Fx DriftAmplitudeMax = Fx.FromInt(3);
+        /// <summary>Drifting platforms are narrowed to at most this width so the sway has room, u.</summary>
+        public Fx DriftMaxWidth = Fx.FromInt(4);
+        /// <summary>Largest gap generated right above a Sticky platform, u (sticky jumps reach only about 0.49 of the normal height).</summary>
+        public Fx StickyNextGapMax = Fx.FromRatio(22, 10);
+        /// <summary>
+        /// After a Bounce or BounceCap platform the landing speed is not chosen by the player, so the generator keeps the next
+        /// row close: gap at most BounceNextGapMax and edge-to-edge horizontal distance at most BounceNextDxMax (u).
+        /// </summary>
+        public Fx BounceNextGapMax = Fx.FromRatio(42, 10);
+        public Fx BounceNextDxMax = Fx.FromInt(3);
+
+        // Level template (doc 08 section 6): share of signature platforms among spine platforms, percent.
+        /// <summary>Level 3 (signature introduced gently).</summary>
+        public int SignatureIntroPercent = 10;
+        /// <summary>Level 4 and up at d = 0; grows linearly to SignatureMaxPercent at d = 1.</summary>
+        public int SignatureBasePercent = 15;
+        public int SignatureMaxPercent = 40;
+
+        // Coins (doc 08 section 7)
+        public int LandingCoins = 1;
+        /// <summary>Total coins for a landing that continues a combo (replaces, does not add to, LandingCoins).</summary>
+        public int ComboLandingCoins = 2;
+        /// <summary>Per extra floor of a multi-floor jump (floors gained beyond 1).</summary>
+        public int ExtraFloorCoins = 1;
+        public Fx CoinRadius = Fx.FromRatio(9, 10);
+        public Fx GemRadius = Fx.FromRatio(9, 10);
+        public Fx HiddenGemRadius = Fx.FromRatio(8, 10);
+        /// <summary>Path-coin chance per row (percent, 100 = one coin per row) at d = 0 and d = 1.</summary>
+        public int PathCoinPercentEasy = 100;
+        public int PathCoinPercentHard = 60;
+        /// <summary>Chance per row of a risky side-route coin (percent) at d = 0 and d = 1. Half of the hits place a pair.</summary>
+        public int RiskyCoinPercentEasy = 10;
+        public int RiskyCoinPercentHard = 90;
+        /// <summary>Coin density multiplier per level class (simple, medium, hard, complex, highly complex), percent.</summary>
+        public int[] ClassCoinPercent = new int[] { 100, 100, 100, 160, 120 };
+        /// <summary>Chance per level of one rare 1-gem pickup, percent (doc 08: 3).</summary>
+        public int GemChancePercent = 3;
+
+        // Hazards: swinging gongs (region 5; also the SurviveWave section on any region)
+        /// <summary>Horizontal impulse away from the gong, u/tick (0.12 = 7.2 u/s; MaxSpeed is 0.15).</summary>
+        public Fx GongKnockbackVx = Fx.FromRatio(12, 100);
+        /// <summary>Vertical impulse, u/tick, up when the player centre is above the gong centre, down otherwise (airborne only).</summary>
+        public Fx GongKnockbackVy = Fx.FromRatio(5, 100);
+        /// <summary>Invulnerability after a gong hit, ticks (1.5 s), so a gong cannot chain-hit.</summary>
+        public int GongInvulnTicks = 90;
+        /// <summary>The arc rises by this share of the swing amplitude at the extremes (pendulum), percent.</summary>
+        public int GongArcRisePercent = 25;
+        public Fx GongRadiusEasy = Fx.FromRatio(6, 10);
+        public Fx GongRadiusHard = Fx.FromRatio(9, 10);
+        public Fx GongAmplitudeMin = Fx.FromRatio(3, 2);
+        public Fx GongAmplitudeMax = Fx.FromInt(3);
+        /// <summary>Chance per row of a gong in a gong region (level 4 and up; level 3 uses half), percent, at d = 0 and d = 1.</summary>
+        public int GongDensityEasyPercent = 6;
+        public int GongDensityHardPercent = 30;
+        /// <summary>Chance per row inside the SurviveWave section, percent (a second gong is added at the same chance / 2).</summary>
+        public int WaveDensityPercent = 85;
+        /// <summary>SurviveWave section: first and last row as percent of the level height.</summary>
+        public int WaveStartPercent = 35;
+        public int WaveEndPercent = 65;
+
+        // Campaign scroll ramp (BossChase, LevelSpec.Ramp): same step formula as the endless ramp, clamped.
+        public int CampaignRampCapPercent = 60;
+
+        // Builder shaping
+        /// <summary>Speedrun levels use this share of the normal vertical gap so multi-floor jumps are possible, percent.</summary>
+        public int SpeedrunGapPercent = 50;
+        /// <summary>Combo ladder (ComboChain goals): height of one goal-sized jump, u. Rung gap = span / Goal.Value.</summary>
+        public Fx ComboLadderSpan = Fx.FromRatio(36, 10);
+        public Fx ComboLadderWidth = Fx.FromInt(6);
+        /// <summary>First authored chunk row and spacing (rows between chunks) when LevelSpec.FixedChunks is set.</summary>
+        public int ChunkStartRow = 10;
+        public int ChunkInterval = 14;
+        /// <summary>Authored moving platforms: half-amplitude (u) and period (ticks).</summary>
+        public Fx ChunkMovingAmplitude = Fx.FromInt(1);
+        public int ChunkMovingPeriod = 240;
+        /// <summary>FindHiddenGem side platform width, u, and gem height above its surface, u.</summary>
+        public Fx HiddenGemPlatformWidth = Fx.FromRatio(24, 10);
+        public Fx HiddenGemHeight = Fx.One;
+
+        // Revive (minimal): see Sim.Revive
+        public Fx ReviveKillDistance = Fx.FromInt(10);
+        public int ReviveInvulnTicks = 120;
+
         /// <summary>Jump launch speed (per tick) for a given horizontal speed magnitude.</summary>
         public Fx JumpSpeed(Fx absVx)
         {
@@ -74,7 +173,13 @@ namespace BoingTower.Simulation
         /// </summary>
         public Fx MaxReachDx(Fx gap)
         {
-            Fx v0 = JumpSpeed(MaxSpeed);
+            return MaxReachDx(gap, Fx.One);
+        }
+
+        /// <summary>As MaxReachDx(gap) but for a jump whose launch speed is scaled (for example StickyJumpMultiplier).</summary>
+        public Fx MaxReachDx(Fx gap, Fx jumpMultiplier)
+        {
+            Fx v0 = JumpSpeed(MaxSpeed) * jumpMultiplier;
             Fx disc = v0 * v0 - Gravity * 2 * gap;
             if (disc.Raw < 0) return Fx.Zero;
             Fx t = (v0 + Fx.Sqrt(disc)) / Gravity;

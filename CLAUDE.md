@@ -50,11 +50,13 @@ Open items waiting on the owner are logged in `.claude/pendingdecisions/` (asset
 - Score = floors x 10 + combo^2 x 5 + coins. Floor = platform row index. Screen about 10 units wide. These are prototype values.
 
 ## Open / next
-- Simulation core exists in `Assets/_Game/Simulation` (Fx, Rng, SimConfig, Sim, LevelGenerator, LevelBot; plain C# 9, shared with Unity through `Tests/Simulation/*.csproj`). Physics constants in `SimConfig` are unplayed baselines (doc 09 D4): tune by playing, then freeze.
-- Shipped levels are tested with Normal platforms only. Region signature platforms (moving, crumble, etc.) and coins/hazards are not yet generated or bot-verified.
-- Authored chunks (L5/L10/L15) and the campaign goal types are not implemented yet; the bot only checks reaching a target row.
-- Unity project files (ProjectSettings, manifest) are not created yet: open the folder in Unity 6 LTS Hub to generate them.
-- Signature modules (`Content/config/modules.json`) are all `planned`; track `buildStatus` there.
+- Status and task list: `.claude/roadmap-5-regions.json` (`python Tools/status_ticker.py`). Done: T0 Unity setup, T2 runtime content, T3 gameplay completeness, T4 bot solvability (75 of 75 star-1 goals for regions 1-5).
+- Simulation (`Assets/_Game/Simulation`, plain C# 9, no floats): Fx, Rng, SimConfig, Sim, LevelGenerator, LevelBuilder/LevelSpec/LevelData, Chunks, Goals (GoalEvaluator, StarEvaluator), LevelBot. API summary: `Assets/_Game/Simulation/NOTES.md`. Content side: `Assets/_Game/Content/NOTES.md` (ContentRepository, LevelSpecFactory).
+- Determinism contract: `Content/golden/level_hashes_r1-5.txt` (dotnet writes it; the Unity test `LevelSpecFactoryTests` must match). Regenerate only for an intended generator change: set `UPDATE_GOLDEN=1` and run `dotnet test Tests/Simulation`.
+- Test counts to keep green: dotnet 80 (`dotnet test Tests/Simulation`, ~2 min), Unity EditMode 20 (headless, ~25 s).
+- Physics constants in `SimConfig` are unplayed baselines (doc 09 D4): tune by playing, then freeze; builder caps may need retuning afterwards.
+- Open owner questions from T3/T4 (coin-star targets too easy, speedrun content infeasible at doc 08 gaps, level-end semantics, hidden-gem reward): `.claude/pendingdecisions/open-items.md`.
+- Signature modules (`Content/config/modules.json`) are all `planned`; regions 1-5 now have working signatures (bounce flowers, bounce caps, drifting, sticky gum, gongs); track `buildStatus` there.
 
 ## Conventions
 C# 9+, assembly definitions per module, DI via VContainer or a small service locator plus an event bus, no scattered singletons. Tests: EditMode for pure logic, a Simulation suite with golden replays. Art follows `Art/<Class>/<id>_<layer>.png`, lowercase snake_case, prompts and seeds logged in `assets_log.csv`.
