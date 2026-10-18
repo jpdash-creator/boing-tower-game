@@ -5,6 +5,7 @@
 **Design docs** (source of truth, read before changing rules or numbers): `E:\Source\Game Ideas\boing-tower-docs\docs\`. Doc 08 (rules addendum) wins over docs 01, 02, 05. Doc 09 records the accepted review decisions.
 
 ## Hard rules
+- **OpenArt credits (MANDATORY GUARDRAIL):** never call a credit-consuming OpenArt tool (`openart_generate_image`, `openart_generate_video`, edits/upscales) without the owner's explicit chat approval for that exact batch. Ask first with full details: purpose, MCP and tool, model and settings, the full prompts, credits per job and total, balance before and after, alternatives. Full rule: `.claude/rules/openart-credit-guardrail.md`. Read-only OpenArt tools (account, model list/cost/form, creation list) are free to use.
 - **Originality:** never mention, name or imitate any existing jumper game in code, art, prompts, store text or comments. Generic genre mechanics only.
 - **Determinism:** the simulation and the level generator use fixed-point/integer math and the seeded RNG (xoshiro). No `float`, `UnityEngine.Random`, `Time.deltaTime` or `Physics` in `Simulation/` or generator code. Same seed gives the same level on every device and on the server.
 - **Server authority:** currencies, purchases, chests and leaderboard scores are decided server-side. No secrets in the client.
