@@ -33,6 +33,9 @@ python Tools/content_cli/gen_content.py              # regenerate baseline conte
 ```
 `gen_content.py` regenerates generated files; if you hand-edit content, change the generator or stop using it for that file.
 
+## Unity headless (Editor 6000.3.26f1 on E:)
+Run: `E:\Unity\Hub\Editor\6000.3.26f1\Editor\Unity.exe -batchmode -nographics -projectPath E:\Code\boing-tower-game -executeMethod <Class.Method> -logFile E:\Unity\logs\<name>.log` (add `-quit` unless the method exits itself). Tests: add `-runTests -testPlatform EditMode -testResults <xml>`. Needs an active Unity Personal license (Unity Hub signed in); exit code 198 means no license. Setup scripts are in `Assets/Editor/ProjectBootstrap/` (PackageInstaller, ProjectSetup, ArtImportPostprocessor). Final art lives under `Assets/Art/`; the 195-image candidate archive stays in `Art/_candidates/` (outside Unity, so it is not imported). Roadmap and status: `.claude/roadmap-5-regions.json`, `python Tools/status_ticker.py`.
+
 ## Assets
 Full asset request catalog (367 requests, prompts, batches, credit estimates): `Content/assets/CATALOG.md`; workflow and roles: `Content/assets/README.md`. Regenerate with `python Tools/asset_cli/gen_asset_manifest.py`. All generation is gated by the OpenArt credit guardrail above.
 

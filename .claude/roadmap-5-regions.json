@@ -3,7 +3,7 @@
   "updated": "2026-10-19",
   "note": "Minutes are Claude work estimates (+-40%); owner/hardware blockers are separate. Statuses: done | active | pending | blocked.",
   "tasks": [
-    {"id": "T0", "task": "Unity project setup: packages, URP 2D, Linear, app id, Boot/Meta/Run scenes, art import rules, Unity-side Simulation tests", "status": "active", "minutes": 10, "blocker": "none (headless run finishing)", "depends": []},
+    {"id": "T0", "task": "Unity project setup: packages, URP 2D, Linear, app id, Boot/Meta/Run scenes, art import rules, Unity-side Simulation tests", "status": "done", "minutes": 0, "blocker": "none", "depends": []},
     {"id": "T1", "task": "Art pipeline: key out #808080, slice tilesets/pickups/UI sheets, make Momo sprite, parallax layers, Unity import", "status": "pending", "minutes": 120, "blocker": "Owner must verify picks (default image 1 may need swaps; AI sheets may copy layout)", "depends": ["T0"]},
     {"id": "T2", "task": "Runtime content: ContentRepository (Newtonsoft JSON), StreamingAssets copy, region/level/config models", "status": "pending", "minutes": 60, "blocker": "none", "depends": ["T0"]},
     {"id": "T3", "task": "Gameplay completeness in Sim: coin/gem pickups, hazards (swinging gongs), region special platforms (bounce flowers, caps, drifting, sticky), L5/L10/L15 chunks, goals evaluator, boss chase", "status": "pending", "minutes": 240, "blocker": "none", "depends": []},
