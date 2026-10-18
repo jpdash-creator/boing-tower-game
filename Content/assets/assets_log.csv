@@ -2,3 +2,4 @@ date,batch,asset_id,model,mode,settings,seed,creation_id,resource_id,credits,pro
 2026-10-18,B00,fnd_model_gate,kling-3-omni,text2image,2k 1:1 x1,none (no seed field),Itz7p1Cq7atsBSNoQQLq,OaWsTpOMmbD5ER6U6qie,10,manifest fnd_model_gate,not selected
 2026-10-18,B00,fnd_model_gate,byte-plus-seedream-5-lite,text2image,2K 1:1 x1,none (no seed field),JSJcbfsZQsoank92X5Lq,JXcAM1vuW99E8S4E8AO8,15,manifest fnd_model_gate,SELECTED by owner - locked model
 2026-10-18,B00,fnd_model_gate,nano-banana-2-lite,text2image,1:1 x1 (fixed ~1K),none (no seed field),KbQhhx1vTPT6ob3BLvWD,qvdlV1slvGUvFghKSut5,15,manifest fnd_model_gate,not selected
+2026-10-18,B01a,fnd_style_bible,byte-plus-seedream-5-lite,image2image,2K 4:3 x4 reference=JXcAM1vuW99E8S4E8AO8,none (no seed field),lY5zfWGMT0zVY1Tq4p8h,WlXw1huUDSf0qQgrnlqi|kgjDndPc86JmmLKez5Zy|nxFEwZju74VlfbFm6aFv|vVnbzqvg1L5uSFCKydUE,60,approvals/B01a.md,pending owner pick (4 candidates)
