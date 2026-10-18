@@ -27,6 +27,7 @@ Tests/{content,EditMode,PlayMode,Simulation}
 ```
 python Tools/content_cli/content.py validate         # schemas + doc 08 rule checks; run before every commit
 python -m unittest discover -s Tests/content -v      # CLI and shipped-content tests
+dotnet test Tests/Simulation                         # .NET 10 SDK; sim, generator and bot (plays all 450 shipped levels, about 20 s)
 python Tools/content_cli/gen_content.py              # regenerate baseline content from doc 08 (overwrites Content/regions, levels, economy, items, config)
 ```
 `gen_content.py` regenerates generated files; if you hand-edit content, change the generator or stop using it for that file.
@@ -39,7 +40,9 @@ python Tools/content_cli/gen_content.py              # regenerate baseline conte
 - Score = floors x 10 + combo^2 x 5 + coins. Floor = platform row index. Screen about 10 units wide. These are prototype values.
 
 ## Open / next
-- Physics constants are undefined until the prototype (doc 09 D4). Freeze them before building the generator and solvability bot.
+- Simulation core exists in `Assets/_Game/Simulation` (Fx, Rng, SimConfig, Sim, LevelGenerator, LevelBot; plain C# 9, shared with Unity through `Tests/Simulation/*.csproj`). Physics constants in `SimConfig` are unplayed baselines (doc 09 D4): tune by playing, then freeze.
+- Shipped levels are tested with Normal platforms only. Region signature platforms (moving, crumble, etc.) and coins/hazards are not yet generated or bot-verified.
+- Authored chunks (L5/L10/L15) and the campaign goal types are not implemented yet; the bot only checks reaching a target row.
 - Unity project files (ProjectSettings, manifest) are not created yet: open the folder in Unity 6 LTS Hub to generate them.
 - Signature modules (`Content/config/modules.json`) are all `planned`; track `buildStatus` there.
 

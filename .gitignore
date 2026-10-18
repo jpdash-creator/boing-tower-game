@@ -10,6 +10,9 @@
 /[Rr]ecordings/
 *.csproj
 *.sln
+!Tests/**/*.csproj
+**/bin/
+**/obj/
 *.suo
 *.user
 *.pidb
