@@ -19,6 +19,7 @@ namespace ProjectBootstrap
             "com.unity.addressables",               // per-region content bundles (doc 03)
             "com.unity.test-framework",             // EditMode/PlayMode tests
             "com.unity.ugui",                       // uGUI + TextMeshPro for menus
+            "com.unity.nuget.newtonsoft-json",      // content JSON models (T2)
         };
 
         static readonly string[] PackagesToRemove = { };

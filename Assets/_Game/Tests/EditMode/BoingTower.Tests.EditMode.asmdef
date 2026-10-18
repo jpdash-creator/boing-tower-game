@@ -3,6 +3,7 @@
   "rootNamespace": "BoingTower.Tests",
   "references": [
     "BoingTower.Simulation",
+    "BoingTower.Content",
     "UnityEngine.TestRunner",
     "UnityEditor.TestRunner"
   ],

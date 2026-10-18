@@ -1,0 +1,17 @@
+{
+  "name": "BoingTower.Content",
+  "rootNamespace": "BoingTower.Content",
+  "references": [
+    "BoingTower.Simulation",
+    "Unity.Nuget.Newtonsoft-Json"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

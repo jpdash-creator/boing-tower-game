@@ -24,9 +24,9 @@
     {
       "id": "T2",
       "task": "Runtime content: ContentRepository (Newtonsoft JSON), StreamingAssets copy, region/level/config models",
-      "status": "pending",
-      "minutes": 60,
-      "blocker": "none",
+      "status": "done",
+      "minutes": 0,
+      "blocker": "none (done; mapping LevelDef -> LevelSpec waits on T3 types)",
       "depends": [
         "T0"
       ]
@@ -34,9 +34,9 @@
     {
       "id": "T3",
       "task": "Gameplay completeness in Sim: coin/gem pickups, hazards (swinging gongs), region special platforms (bounce flowers, caps, drifting, sticky), L5/L10/L15 chunks, goals evaluator, boss chase",
-      "status": "pending",
+      "status": "active",
       "minutes": 240,
-      "blocker": "none",
+      "blocker": "none (background agent working, dotnet only)",
       "depends": []
     },
     {
@@ -44,7 +44,7 @@
       "task": "Bot solvability for all 75 levels with specials and goals; tune generator",
       "status": "pending",
       "minutes": 60,
-      "blocker": "needs T3",
+      "blocker": "same agent as T3, starts after T3",
       "depends": [
         "T3"
       ]
