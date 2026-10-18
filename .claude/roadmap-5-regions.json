@@ -1,0 +1,21 @@
+{
+  "goal": "5 regions x 15 levels playable end to end (Boot -> menu -> map -> level select -> play -> results/stars/rewards -> next level/region), offline, on Android",
+  "updated": "2026-10-19",
+  "note": "Minutes are Claude work estimates (+-40%); owner/hardware blockers are separate. Statuses: done | active | pending | blocked.",
+  "tasks": [
+    {"id": "T0", "task": "Unity project setup: packages, URP 2D, Linear, app id, Boot/Meta/Run scenes, art import rules, Unity-side Simulation tests", "status": "active", "minutes": 10, "blocker": "none (headless run finishing)", "depends": []},
+    {"id": "T1", "task": "Art pipeline: key out #808080, slice tilesets/pickups/UI sheets, make Momo sprite, parallax layers, Unity import", "status": "pending", "minutes": 120, "blocker": "Owner must verify picks (default image 1 may need swaps; AI sheets may copy layout)", "depends": ["T0"]},
+    {"id": "T2", "task": "Runtime content: ContentRepository (Newtonsoft JSON), StreamingAssets copy, region/level/config models", "status": "pending", "minutes": 60, "blocker": "none", "depends": ["T0"]},
+    {"id": "T3", "task": "Gameplay completeness in Sim: coin/gem pickups, hazards (swinging gongs), region special platforms (bounce flowers, caps, drifting, sticky), L5/L10/L15 chunks, goals evaluator, boss chase", "status": "pending", "minutes": 240, "blocker": "none", "depends": []},
+    {"id": "T4", "task": "Bot solvability for all 75 levels with specials and goals; tune generator", "status": "pending", "minutes": 60, "blocker": "needs T3", "depends": ["T3"]},
+    {"id": "T5", "task": "Run scene: sim-to-sprite renderer, camera follow, parallax, HUD, level start/finish flow", "status": "pending", "minutes": 150, "blocker": "needs T1 (sprites) and T2", "depends": ["T1", "T2"]},
+    {"id": "T6", "task": "Input: touch zones (left/right + tap jump), keyboard for editor testing, haptics hooks", "status": "pending", "minutes": 45, "blocker": "needs T5", "depends": ["T5"]},
+    {"id": "T7", "task": "Meta flow: Boot, main menu, world map (5 live + locked), 15-level select, results with stars, pause, settings", "status": "pending", "minutes": 210, "blocker": "needs T1 (UI sheets) and T2", "depends": ["T1", "T2"]},
+    {"id": "T8", "task": "Local save, wallet (coins/gems), rewards payout, sequential unlock and gem skip", "status": "pending", "minutes": 75, "blocker": "needs T2 and T3", "depends": ["T2", "T3"]},
+    {"id": "T9", "task": "Physics feel tuning (doc 09 D4 constants) with hands-on playtest", "status": "blocked", "minutes": 60, "blocker": "Owner playtest time (needs a playable build)", "depends": ["T5", "T6"]},
+    {"id": "T10", "task": "Audio placeholders: SFX and music loops", "status": "blocked", "minutes": 45, "blocker": "Owner decision: audio source (OpenArt has no audio models; licensing)", "depends": []},
+    {"id": "T11", "task": "Android build, install and device smoke test", "status": "blocked", "minutes": 60, "blocker": "Owner: Android phone with USB debugging (or emulator) and signing choice", "depends": ["T5", "T6", "T7", "T8"]},
+    {"id": "T12", "task": "End-to-end test: all 75 levels via bot in Unity plus progression/unlock test; fix list", "status": "pending", "minutes": 45, "blocker": "needs T3 to T8", "depends": ["T4", "T8"]},
+    {"id": "T13", "task": "Endless mode per region with speed ramp (optional for this milestone)", "status": "pending", "minutes": 60, "blocker": "optional; needs T5", "depends": ["T5"]}
+  ]
+}

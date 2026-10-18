@@ -17,6 +17,8 @@ namespace ProjectBootstrap
             "com.unity.feature.2d",                 // 2D sprite, tilemap, animation, PSD importer
             "com.unity.inputsystem",                // touch zones, haptics (doc 03)
             "com.unity.addressables",               // per-region content bundles (doc 03)
+            "com.unity.test-framework",             // EditMode/PlayMode tests
+            "com.unity.ugui",                       // uGUI + TextMeshPro for menus
         };
 
         static readonly string[] PackagesToRemove = { };
