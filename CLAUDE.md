@@ -33,6 +33,9 @@ python Tools/content_cli/gen_content.py              # regenerate baseline conte
 ```
 `gen_content.py` regenerates generated files; if you hand-edit content, change the generator or stop using it for that file.
 
+## Assets
+Full asset request catalog (367 requests, prompts, batches, credit estimates): `Content/assets/CATALOG.md`; workflow and roles: `Content/assets/README.md`. Regenerate with `python Tools/asset_cli/gen_asset_manifest.py`. All generation is gated by the OpenArt credit guardrail above.
+
 ## Key numbers (doc 08)
 - 30 regions x 15 levels; regions 1-20 `live`, 21-30 `teaser`. Level classes: L5/L10 complex, L15 highly complex.
 - Region offset `d_eff = d + offset * (1 - d)`, offset 0.0 to 0.25 across regions 1-30.
