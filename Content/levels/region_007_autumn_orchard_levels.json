@@ -1,0 +1,519 @@
+[
+  {
+    "id": "lvl_007_01",
+    "region": "region_007_autumn_orchard",
+    "index": 1,
+    "seed": 172507,
+    "class": "simple",
+    "difficulty": 0.05,
+    "goal": {
+      "type": "reachFloor",
+      "value": 30
+    },
+    "stars": [
+      {
+        "type": "clear"
+      },
+      {
+        "type": "coins",
+        "value": 25
+      },
+      {
+        "type": "noRevive"
+      }
+    ],
+    "rewards": {
+      "coinPayout": 60,
+      "replayCoinPercent": 40,
+      "gems": {
+        "chance": 0.03,
+        "min": 1,
+        "max": 1
+      }
+    }
+  },
+  {
+    "id": "lvl_007_02",
+    "region": "region_007_autumn_orchard",
+    "index": 2,
+    "seed": 277236,
+    "class": "simple",
+    "difficulty": 0.1,
+    "goal": {
+      "type": "reachFloor",
+      "value": 45
+    },
+    "stars": [
+      {
+        "type": "clear"
+      },
+      {
+        "type": "coins",
+        "value": 30
+      },
+      {
+        "type": "noRevive"
+      }
+    ],
+    "rewards": {
+      "coinPayout": 65,
+      "replayCoinPercent": 40,
+      "gems": {
+        "chance": 0.03,
+        "min": 1,
+        "max": 1
+      }
+    }
+  },
+  {
+    "id": "lvl_007_03",
+    "region": "region_007_autumn_orchard",
+    "index": 3,
+    "seed": 381965,
+    "class": "simple",
+    "difficulty": 0.15,
+    "goal": {
+      "type": "reachFloor",
+      "value": 60
+    },
+    "stars": [
+      {
+        "type": "clear"
+      },
+      {
+        "type": "coins",
+        "value": 35
+      },
+      {
+        "type": "noRevive"
+      }
+    ],
+    "rewards": {
+      "coinPayout": 75,
+      "replayCoinPercent": 40,
+      "gems": {
+        "chance": 0.03,
+        "min": 1,
+        "max": 1
+      }
+    }
+  },
+  {
+    "id": "lvl_007_04",
+    "region": "region_007_autumn_orchard",
+    "index": 4,
+    "seed": 486694,
+    "class": "simple",
+    "difficulty": 0.22,
+    "goal": {
+      "type": "collectCoins",
+      "count": 15
+    },
+    "stars": [
+      {
+        "type": "clear"
+      },
+      {
+        "type": "coins",
+        "value": 40
+      },
+      {
+        "type": "noRevive"
+      }
+    ],
+    "rewards": {
+      "coinPayout": 80,
+      "replayCoinPercent": 40,
+      "gems": {
+        "chance": 0.03,
+        "min": 1,
+        "max": 1
+      }
+    }
+  },
+  {
+    "id": "lvl_007_05",
+    "region": "region_007_autumn_orchard",
+    "index": 5,
+    "seed": 591423,
+    "class": "complex",
+    "difficulty": 0.4,
+    "goal": {
+      "type": "comboChain",
+      "value": 3,
+      "count": 2
+    },
+    "stars": [
+      {
+        "type": "clear"
+      },
+      {
+        "type": "coins",
+        "value": 45
+      },
+      {
+        "type": "noRevive"
+      }
+    ],
+    "rewards": {
+      "coinPayout": 300,
+      "replayCoinPercent": 40,
+      "gems": {
+        "chance": 0.25,
+        "min": 1,
+        "max": 3
+      }
+    },
+    "overrides": {
+      "fixedChunks": [
+        "chunk_complex_a"
+      ]
+    }
+  },
+  {
+    "id": "lvl_007_06",
+    "region": "region_007_autumn_orchard",
+    "index": 6,
+    "seed": 696152,
+    "class": "medium",
+    "difficulty": 0.35,
+    "goal": {
+      "type": "reachFloor",
+      "value": 80
+    },
+    "stars": [
+      {
+        "type": "clear"
+      },
+      {
+        "type": "coins",
+        "value": 50
+      },
+      {
+        "type": "noRevive"
+      }
+    ],
+    "rewards": {
+      "coinPayout": 90,
+      "replayCoinPercent": 40,
+      "gems": {
+        "chance": 0.03,
+        "min": 1,
+        "max": 1
+      }
+    }
+  },
+  {
+    "id": "lvl_007_07",
+    "region": "region_007_autumn_orchard",
+    "index": 7,
+    "seed": 800881,
+    "class": "medium",
+    "difficulty": 0.42,
+    "goal": {
+      "type": "noWallBounce",
+      "value": 60
+    },
+    "stars": [
+      {
+        "type": "clear"
+      },
+      {
+        "type": "coins",
+        "value": 55
+      },
+      {
+        "type": "noRevive"
+      }
+    ],
+    "rewards": {
+      "coinPayout": 95,
+      "replayCoinPercent": 40,
+      "gems": {
+        "chance": 0.03,
+        "min": 1,
+        "max": 1
+      }
+    }
+  },
+  {
+    "id": "lvl_007_08",
+    "region": "region_007_autumn_orchard",
+    "index": 8,
+    "seed": 905610,
+    "class": "medium",
+    "difficulty": 0.5,
+    "goal": {
+      "type": "findHiddenGem"
+    },
+    "stars": [
+      {
+        "type": "clear"
+      },
+      {
+        "type": "coins",
+        "value": 60
+      },
+      {
+        "type": "noRevive"
+      }
+    ],
+    "rewards": {
+      "coinPayout": 105,
+      "replayCoinPercent": 40,
+      "gems": {
+        "chance": 0.03,
+        "min": 1,
+        "max": 1
+      }
+    }
+  },
+  {
+    "id": "lvl_007_09",
+    "region": "region_007_autumn_orchard",
+    "index": 9,
+    "seed": 1010339,
+    "class": "medium",
+    "difficulty": 0.58,
+    "goal": {
+      "type": "speedrun",
+      "value": 90,
+      "timeSec": 45
+    },
+    "stars": [
+      {
+        "type": "clear"
+      },
+      {
+        "type": "coins",
+        "value": 65
+      },
+      {
+        "type": "noRevive"
+      }
+    ],
+    "rewards": {
+      "coinPayout": 110,
+      "replayCoinPercent": 40,
+      "gems": {
+        "chance": 0.03,
+        "min": 1,
+        "max": 1
+      }
+    }
+  },
+  {
+    "id": "lvl_007_10",
+    "region": "region_007_autumn_orchard",
+    "index": 10,
+    "seed": 1115068,
+    "class": "complex",
+    "difficulty": 0.7,
+    "goal": {
+      "type": "surviveWave"
+    },
+    "stars": [
+      {
+        "type": "clear"
+      },
+      {
+        "type": "coins",
+        "value": 70
+      },
+      {
+        "type": "noRevive"
+      }
+    ],
+    "rewards": {
+      "coinPayout": 300,
+      "replayCoinPercent": 40,
+      "gems": {
+        "chance": 0.25,
+        "min": 1,
+        "max": 3,
+        "firstClearGuaranteed": 1
+      }
+    },
+    "overrides": {
+      "fixedChunks": [
+        "chunk_complex_a"
+      ]
+    }
+  },
+  {
+    "id": "lvl_007_11",
+    "region": "region_007_autumn_orchard",
+    "index": 11,
+    "seed": 1219797,
+    "class": "hard",
+    "difficulty": 0.62,
+    "goal": {
+      "type": "comboChain",
+      "value": 6,
+      "count": 1
+    },
+    "stars": [
+      {
+        "type": "clear"
+      },
+      {
+        "type": "coins",
+        "value": 75
+      },
+      {
+        "type": "noRevive"
+      }
+    ],
+    "rewards": {
+      "coinPayout": 120,
+      "replayCoinPercent": 40,
+      "gems": {
+        "chance": 0.03,
+        "min": 1,
+        "max": 1
+      }
+    }
+  },
+  {
+    "id": "lvl_007_12",
+    "region": "region_007_autumn_orchard",
+    "index": 12,
+    "seed": 1324526,
+    "class": "hard",
+    "difficulty": 0.7,
+    "goal": {
+      "type": "reachFloor",
+      "value": 100
+    },
+    "stars": [
+      {
+        "type": "clear"
+      },
+      {
+        "type": "coins",
+        "value": 80
+      },
+      {
+        "type": "noRevive"
+      }
+    ],
+    "rewards": {
+      "coinPayout": 125,
+      "replayCoinPercent": 40,
+      "gems": {
+        "chance": 0.03,
+        "min": 1,
+        "max": 1
+      }
+    }
+  },
+  {
+    "id": "lvl_007_13",
+    "region": "region_007_autumn_orchard",
+    "index": 13,
+    "seed": 1429255,
+    "class": "hard",
+    "difficulty": 0.78,
+    "goal": {
+      "type": "reachFloor",
+      "value": 120
+    },
+    "stars": [
+      {
+        "type": "clear"
+      },
+      {
+        "type": "coins",
+        "value": 85
+      },
+      {
+        "type": "noRevive"
+      }
+    ],
+    "rewards": {
+      "coinPayout": 135,
+      "replayCoinPercent": 40,
+      "gems": {
+        "chance": 0.03,
+        "min": 1,
+        "max": 1
+      }
+    }
+  },
+  {
+    "id": "lvl_007_14",
+    "region": "region_007_autumn_orchard",
+    "index": 14,
+    "seed": 1533984,
+    "class": "hard",
+    "difficulty": 0.86,
+    "goal": {
+      "type": "reachFloor",
+      "value": 140
+    },
+    "stars": [
+      {
+        "type": "clear"
+      },
+      {
+        "type": "coins",
+        "value": 90
+      },
+      {
+        "type": "noRevive"
+      }
+    ],
+    "rewards": {
+      "coinPayout": 140,
+      "replayCoinPercent": 40,
+      "gems": {
+        "chance": 0.03,
+        "min": 1,
+        "max": 1
+      }
+    }
+  },
+  {
+    "id": "lvl_007_15",
+    "region": "region_007_autumn_orchard",
+    "index": 15,
+    "seed": 1638713,
+    "class": "highly_complex",
+    "difficulty": 1.0,
+    "goal": {
+      "type": "bossChase",
+      "value": 150
+    },
+    "stars": [
+      {
+        "type": "clear"
+      },
+      {
+        "type": "coins",
+        "value": 95
+      },
+      {
+        "type": "noRevive"
+      }
+    ],
+    "rewards": {
+      "coinPayout": 900,
+      "replayCoinPercent": 40,
+      "gems": {
+        "chance": 1.0,
+        "min": 5,
+        "max": 5,
+        "firstClearGuaranteed": 5,
+        "starBonusMax": 5,
+        "replayChance": 0.5,
+        "replayAmount": 2
+      }
+    },
+    "overrides": {
+      "fixedChunks": [
+        "chunk_gauntlet_a"
+      ],
+      "ramp": true
+    }
+  }
+]

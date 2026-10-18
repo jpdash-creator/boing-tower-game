@@ -1,0 +1,44 @@
+[
+  {
+    "id": "gempack_handful",
+    "nameKey": "pack.handful",
+    "usd": 0.99,
+    "gems": 80,
+    "sku": "boingtower.gems.handful"
+  },
+  {
+    "id": "gempack_pouch",
+    "nameKey": "pack.pouch",
+    "usd": 4.99,
+    "gems": 440,
+    "sku": "boingtower.gems.pouch"
+  },
+  {
+    "id": "gempack_sack",
+    "nameKey": "pack.sack",
+    "usd": 9.99,
+    "gems": 920,
+    "sku": "boingtower.gems.sack"
+  },
+  {
+    "id": "gempack_chest",
+    "nameKey": "pack.chest",
+    "usd": 19.99,
+    "gems": 1900,
+    "sku": "boingtower.gems.chest"
+  },
+  {
+    "id": "gempack_vault",
+    "nameKey": "pack.vault",
+    "usd": 49.99,
+    "gems": 5000,
+    "sku": "boingtower.gems.vault"
+  },
+  {
+    "id": "gempack_treasury",
+    "nameKey": "pack.treasury",
+    "usd": 99.99,
+    "gems": 10500,
+    "sku": "boingtower.gems.treasury"
+  }
+]

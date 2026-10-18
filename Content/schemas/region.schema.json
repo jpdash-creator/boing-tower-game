@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RegionDef",
+  "type": "object",
+  "required": ["id", "index", "nameKey", "name", "status", "unlock", "theme", "rules", "coinFactor", "levels"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {"type": "string", "pattern": "^region_[0-9]{3}_[a-z0-9_]+$"},
+    "index": {"type": "integer", "minimum": 1},
+    "nameKey": {"type": "string", "pattern": "^region\\.[a-z0-9_]+$"},
+    "name": {"type": "string", "minLength": 1},
+    "status": {"type": "string", "enum": ["live", "teaser", "hidden"]},
+    "unlock": {
+      "type": "object",
+      "required": ["requires", "gemSkip"],
+      "additionalProperties": false,
+      "properties": {
+        "requires": {"type": ["string", "null"]},
+        "gemSkip": {"type": ["integer", "null"], "minimum": 0}
+      }
+    },
+    "theme": {
+      "type": "object",
+      "required": ["bundle", "palette"],
+      "additionalProperties": false,
+      "properties": {
+        "bundle": {"type": "string", "pattern": "^region_[0-9]{3}$"},
+        "palette": {"type": "array", "items": {"type": "string"}, "minItems": 2},
+        "music": {"type": ["string", "null"]}
+      }
+    },
+    "rules": {
+      "type": "object",
+      "required": ["signatureModule", "difficultyOffset", "platformWeights"],
+      "additionalProperties": false,
+      "properties": {
+        "signatureModule": {"type": "string", "pattern": "^mod_[a-z0-9_]+$"},
+        "difficultyOffset": {"type": "number", "minimum": 0, "maximum": 0.25},
+        "platformWeights": {"type": "object"},
+        "hazards": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "coinFactor": {"type": "number", "minimum": 1},
+    "levels": {"type": "array", "items": {"type": "string", "pattern": "^lvl_[0-9]{3}_[0-9]{2}$"}, "minItems": 15, "maxItems": 15},
+    "availableFrom": {"type": ["string", "null"]}
+  }
+}

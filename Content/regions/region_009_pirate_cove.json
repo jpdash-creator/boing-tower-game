@@ -1,0 +1,47 @@
+{
+  "id": "region_009_pirate_cove",
+  "index": 9,
+  "nameKey": "region.pirate_cove",
+  "name": "Pirate Cove",
+  "status": "live",
+  "unlock": {
+    "requires": "region_008_desert_oasis",
+    "gemSkip": 216
+  },
+  "theme": {
+    "bundle": "region_009",
+    "palette": [
+      "navy",
+      "gold"
+    ],
+    "music": null
+  },
+  "rules": {
+    "signatureModule": "mod_cannonballs",
+    "difficultyOffset": 0.069,
+    "platformWeights": {
+      "normal": 1.0,
+      "signature": 0.3
+    },
+    "hazards": []
+  },
+  "coinFactor": 1.24,
+  "levels": [
+    "lvl_009_01",
+    "lvl_009_02",
+    "lvl_009_03",
+    "lvl_009_04",
+    "lvl_009_05",
+    "lvl_009_06",
+    "lvl_009_07",
+    "lvl_009_08",
+    "lvl_009_09",
+    "lvl_009_10",
+    "lvl_009_11",
+    "lvl_009_12",
+    "lvl_009_13",
+    "lvl_009_14",
+    "lvl_009_15"
+  ],
+  "availableFrom": null
+}

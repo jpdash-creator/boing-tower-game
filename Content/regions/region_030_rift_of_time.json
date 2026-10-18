@@ -1,0 +1,47 @@
+{
+  "id": "region_030_rift_of_time",
+  "index": 30,
+  "nameKey": "region.rift_of_time",
+  "name": "Rift Of Time",
+  "status": "teaser",
+  "unlock": {
+    "requires": "region_029_alien_jungle",
+    "gemSkip": 566
+  },
+  "theme": {
+    "bundle": "region_030",
+    "palette": [
+      "chrono violet",
+      "white"
+    ],
+    "music": null
+  },
+  "rules": {
+    "signatureModule": "mod_rewind_zones",
+    "difficultyOffset": 0.25,
+    "platformWeights": {
+      "normal": 1.0,
+      "signature": 0.3
+    },
+    "hazards": []
+  },
+  "coinFactor": 1.87,
+  "levels": [
+    "lvl_030_01",
+    "lvl_030_02",
+    "lvl_030_03",
+    "lvl_030_04",
+    "lvl_030_05",
+    "lvl_030_06",
+    "lvl_030_07",
+    "lvl_030_08",
+    "lvl_030_09",
+    "lvl_030_10",
+    "lvl_030_11",
+    "lvl_030_12",
+    "lvl_030_13",
+    "lvl_030_14",
+    "lvl_030_15"
+  ],
+  "availableFrom": null
+}

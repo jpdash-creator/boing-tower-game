@@ -1,0 +1,47 @@
+{
+  "id": "region_015_neon_city",
+  "index": 15,
+  "nameKey": "region.neon_city",
+  "name": "Neon City",
+  "status": "live",
+  "unlock": {
+    "requires": "region_014_jungle_ruins",
+    "gemSkip": 316
+  },
+  "theme": {
+    "bundle": "region_015",
+    "palette": [
+      "electric blue",
+      "pink"
+    ],
+    "music": null
+  },
+  "rules": {
+    "signatureModule": "mod_laser_gates",
+    "difficultyOffset": 0.1207,
+    "platformWeights": {
+      "normal": 1.0,
+      "signature": 0.3
+    },
+    "hazards": []
+  },
+  "coinFactor": 1.42,
+  "levels": [
+    "lvl_015_01",
+    "lvl_015_02",
+    "lvl_015_03",
+    "lvl_015_04",
+    "lvl_015_05",
+    "lvl_015_06",
+    "lvl_015_07",
+    "lvl_015_08",
+    "lvl_015_09",
+    "lvl_015_10",
+    "lvl_015_11",
+    "lvl_015_12",
+    "lvl_015_13",
+    "lvl_015_14",
+    "lvl_015_15"
+  ],
+  "availableFrom": null
+}

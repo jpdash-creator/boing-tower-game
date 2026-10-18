@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "GemPackDef",
+  "type": "object",
+  "required": ["id", "nameKey", "usd", "gems", "sku"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {"type": "string", "pattern": "^gempack_[a-z0-9_]+$"},
+    "nameKey": {"type": "string"},
+    "usd": {"type": "number", "minimum": 0.99},
+    "gems": {"type": "integer", "minimum": 1},
+    "sku": {"type": "string", "pattern": "^[a-z0-9_.]+$"}
+  }
+}

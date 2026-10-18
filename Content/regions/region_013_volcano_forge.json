@@ -1,0 +1,47 @@
+{
+  "id": "region_013_volcano_forge",
+  "index": 13,
+  "nameKey": "region.volcano_forge",
+  "name": "Volcano Forge",
+  "status": "live",
+  "unlock": {
+    "requires": "region_012_crystal_caverns",
+    "gemSkip": 283
+  },
+  "theme": {
+    "bundle": "region_013",
+    "palette": [
+      "red",
+      "charcoal"
+    ],
+    "music": null
+  },
+  "rules": {
+    "signatureModule": "mod_rising_lava",
+    "difficultyOffset": 0.1034,
+    "platformWeights": {
+      "normal": 1.0,
+      "signature": 0.3
+    },
+    "hazards": []
+  },
+  "coinFactor": 1.36,
+  "levels": [
+    "lvl_013_01",
+    "lvl_013_02",
+    "lvl_013_03",
+    "lvl_013_04",
+    "lvl_013_05",
+    "lvl_013_06",
+    "lvl_013_07",
+    "lvl_013_08",
+    "lvl_013_09",
+    "lvl_013_10",
+    "lvl_013_11",
+    "lvl_013_12",
+    "lvl_013_13",
+    "lvl_013_14",
+    "lvl_013_15"
+  ],
+  "availableFrom": null
+}

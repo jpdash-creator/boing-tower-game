@@ -1,0 +1,47 @@
+{
+  "id": "region_008_desert_oasis",
+  "index": 8,
+  "nameKey": "region.desert_oasis",
+  "name": "Desert Oasis",
+  "status": "live",
+  "unlock": {
+    "requires": "region_007_autumn_orchard",
+    "gemSkip": 200
+  },
+  "theme": {
+    "bundle": "region_008",
+    "palette": [
+      "sand",
+      "turquoise"
+    ],
+    "music": null
+  },
+  "rules": {
+    "signatureModule": "mod_crumbling_sand",
+    "difficultyOffset": 0.0603,
+    "platformWeights": {
+      "normal": 1.0,
+      "signature": 0.3
+    },
+    "hazards": []
+  },
+  "coinFactor": 1.21,
+  "levels": [
+    "lvl_008_01",
+    "lvl_008_02",
+    "lvl_008_03",
+    "lvl_008_04",
+    "lvl_008_05",
+    "lvl_008_06",
+    "lvl_008_07",
+    "lvl_008_08",
+    "lvl_008_09",
+    "lvl_008_10",
+    "lvl_008_11",
+    "lvl_008_12",
+    "lvl_008_13",
+    "lvl_008_14",
+    "lvl_008_15"
+  ],
+  "availableFrom": null
+}

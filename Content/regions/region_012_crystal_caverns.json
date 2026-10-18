@@ -1,0 +1,47 @@
+{
+  "id": "region_012_crystal_caverns",
+  "index": 12,
+  "nameKey": "region.crystal_caverns",
+  "name": "Crystal Caverns",
+  "status": "live",
+  "unlock": {
+    "requires": "region_011_haunted_manor",
+    "gemSkip": 266
+  },
+  "theme": {
+    "bundle": "region_012",
+    "palette": [
+      "cyan",
+      "magenta"
+    ],
+    "music": null
+  },
+  "rules": {
+    "signatureModule": "mod_crystal_bounce",
+    "difficultyOffset": 0.0948,
+    "platformWeights": {
+      "normal": 1.0,
+      "signature": 0.3
+    },
+    "hazards": []
+  },
+  "coinFactor": 1.33,
+  "levels": [
+    "lvl_012_01",
+    "lvl_012_02",
+    "lvl_012_03",
+    "lvl_012_04",
+    "lvl_012_05",
+    "lvl_012_06",
+    "lvl_012_07",
+    "lvl_012_08",
+    "lvl_012_09",
+    "lvl_012_10",
+    "lvl_012_11",
+    "lvl_012_12",
+    "lvl_012_13",
+    "lvl_012_14",
+    "lvl_012_15"
+  ],
+  "availableFrom": null
+}

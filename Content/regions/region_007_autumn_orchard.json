@@ -1,0 +1,47 @@
+{
+  "id": "region_007_autumn_orchard",
+  "index": 7,
+  "nameKey": "region.autumn_orchard",
+  "name": "Autumn Orchard",
+  "status": "live",
+  "unlock": {
+    "requires": "region_006_frosty_peaks",
+    "gemSkip": 183
+  },
+  "theme": {
+    "bundle": "region_007",
+    "palette": [
+      "orange",
+      "brown"
+    ],
+    "music": null
+  },
+  "rules": {
+    "signatureModule": "mod_wind_gusts",
+    "difficultyOffset": 0.0517,
+    "platformWeights": {
+      "normal": 1.0,
+      "signature": 0.3
+    },
+    "hazards": []
+  },
+  "coinFactor": 1.18,
+  "levels": [
+    "lvl_007_01",
+    "lvl_007_02",
+    "lvl_007_03",
+    "lvl_007_04",
+    "lvl_007_05",
+    "lvl_007_06",
+    "lvl_007_07",
+    "lvl_007_08",
+    "lvl_007_09",
+    "lvl_007_10",
+    "lvl_007_11",
+    "lvl_007_12",
+    "lvl_007_13",
+    "lvl_007_14",
+    "lvl_007_15"
+  ],
+  "availableFrom": null
+}

@@ -1,0 +1,47 @@
+{
+  "id": "region_006_frosty_peaks",
+  "index": 6,
+  "nameKey": "region.frosty_peaks",
+  "name": "Frosty Peaks",
+  "status": "live",
+  "unlock": {
+    "requires": "region_005_bamboo_temple",
+    "gemSkip": 166
+  },
+  "theme": {
+    "bundle": "region_006",
+    "palette": [
+      "ice blue",
+      "white"
+    ],
+    "music": null
+  },
+  "rules": {
+    "signatureModule": "mod_slippery_platforms",
+    "difficultyOffset": 0.0431,
+    "platformWeights": {
+      "normal": 1.0,
+      "signature": 0.3
+    },
+    "hazards": []
+  },
+  "coinFactor": 1.15,
+  "levels": [
+    "lvl_006_01",
+    "lvl_006_02",
+    "lvl_006_03",
+    "lvl_006_04",
+    "lvl_006_05",
+    "lvl_006_06",
+    "lvl_006_07",
+    "lvl_006_08",
+    "lvl_006_09",
+    "lvl_006_10",
+    "lvl_006_11",
+    "lvl_006_12",
+    "lvl_006_13",
+    "lvl_006_14",
+    "lvl_006_15"
+  ],
+  "availableFrom": null
+}

@@ -1,0 +1,272 @@
+[
+  {
+    "id": "mod_bounce_flowers",
+    "name": "Bounce Flowers",
+    "description": "Tutorial region; bouncy flower platforms, no hazards",
+    "regions": [
+      1
+    ],
+    "buildStatus": "planned"
+  },
+  {
+    "id": "mod_bounce_caps",
+    "name": "Bounce Caps",
+    "description": "Bounce-cap platforms with a high launch",
+    "regions": [
+      2
+    ],
+    "buildStatus": "planned"
+  },
+  {
+    "id": "mod_drifting_platforms",
+    "name": "Drifting Platforms",
+    "description": "Platforms sway horizontally",
+    "regions": [
+      3
+    ],
+    "buildStatus": "planned"
+  },
+  {
+    "id": "mod_sticky_gum",
+    "name": "Sticky Gum",
+    "description": "Sticky platforms reduce jump height",
+    "regions": [
+      4
+    ],
+    "buildStatus": "planned"
+  },
+  {
+    "id": "mod_swinging_gongs",
+    "name": "Swinging Gongs",
+    "description": "Swinging gongs knock the player back",
+    "regions": [
+      5
+    ],
+    "buildStatus": "planned"
+  },
+  {
+    "id": "mod_slippery_platforms",
+    "name": "Slippery Platforms",
+    "description": "Low-friction platforms",
+    "regions": [
+      6
+    ],
+    "buildStatus": "planned"
+  },
+  {
+    "id": "mod_wind_gusts",
+    "name": "Wind Gusts",
+    "description": "Gusts push the player left or right",
+    "regions": [
+      7
+    ],
+    "buildStatus": "planned"
+  },
+  {
+    "id": "mod_crumbling_sand",
+    "name": "Crumbling Sand",
+    "description": "Sand platforms crumble after landing",
+    "regions": [
+      8
+    ],
+    "buildStatus": "planned"
+  },
+  {
+    "id": "mod_cannonballs",
+    "name": "Cannonballs",
+    "description": "Cannonballs fly in from the sides",
+    "regions": [
+      9
+    ],
+    "buildStatus": "planned"
+  },
+  {
+    "id": "mod_conveyor_platforms",
+    "name": "Conveyor Platforms",
+    "description": "Conveyor platforms move the player",
+    "regions": [
+      10
+    ],
+    "buildStatus": "planned"
+  },
+  {
+    "id": "mod_ghost_platforms",
+    "name": "Ghost Platforms",
+    "description": "Vanishing / ghost platforms",
+    "regions": [
+      11
+    ],
+    "buildStatus": "planned"
+  },
+  {
+    "id": "mod_crystal_bounce",
+    "name": "Crystal Bounce",
+    "description": "Reflective crystals give an angled rebound",
+    "regions": [
+      12
+    ],
+    "buildStatus": "planned"
+  },
+  {
+    "id": "mod_rising_lava",
+    "name": "Rising Lava",
+    "description": "Rising lava plus timed fire jets",
+    "regions": [
+      13
+    ],
+    "buildStatus": "planned"
+  },
+  {
+    "id": "mod_vine_swing",
+    "name": "Vine Swing",
+    "description": "Grab and release vines",
+    "regions": [
+      14
+    ],
+    "buildStatus": "planned"
+  },
+  {
+    "id": "mod_laser_gates",
+    "name": "Laser Gates",
+    "description": "Timed laser gates",
+    "regions": [
+      15
+    ],
+    "buildStatus": "planned"
+  },
+  {
+    "id": "mod_dissolving_clouds",
+    "name": "Dissolving Clouds",
+    "description": "Dissolving clouds plus lightning flashes",
+    "regions": [
+      16
+    ],
+    "buildStatus": "planned"
+  },
+  {
+    "id": "mod_steam_vents",
+    "name": "Steam Vents",
+    "description": "Steam vents give upward lift",
+    "regions": [
+      17
+    ],
+    "buildStatus": "planned"
+  },
+  {
+    "id": "mod_water_currents",
+    "name": "Water Currents",
+    "description": "Low-gravity water currents",
+    "regions": [
+      18
+    ],
+    "buildStatus": "planned"
+  },
+  {
+    "id": "mod_zero_g_zones",
+    "name": "Zero-G Zones",
+    "description": "Zero-g zones with floaty jumps",
+    "regions": [
+      19
+    ],
+    "buildStatus": "planned"
+  },
+  {
+    "id": "mod_carnival_mix",
+    "name": "Carnival Mix",
+    "description": "Trampolines plus rotating wheels",
+    "regions": [
+      20
+    ],
+    "buildStatus": "planned"
+  },
+  {
+    "id": "mod_fire_breath_sweeps",
+    "name": "Fire-Breath Sweeps",
+    "description": "Fire-breath sweeps across the tower",
+    "regions": [
+      21
+    ],
+    "buildStatus": "planned"
+  },
+  {
+    "id": "mod_sliding_stone_doors",
+    "name": "Sliding Stone Doors",
+    "description": "Sliding stone doors open and close",
+    "regions": [
+      22
+    ],
+    "buildStatus": "planned"
+  },
+  {
+    "id": "mod_ice_floes",
+    "name": "Ice Floes",
+    "description": "Drifting ice floes plus gusts (reuses Wind Gusts)",
+    "regions": [
+      23
+    ],
+    "buildStatus": "planned"
+  },
+  {
+    "id": "mod_tumbleweeds_and_barrels",
+    "name": "Tumbleweeds And Barrels",
+    "description": "Tumbleweeds and rolling barrels",
+    "regions": [
+      24
+    ],
+    "buildStatus": "planned"
+  },
+  {
+    "id": "mod_stomp_quakes",
+    "name": "Stomp Quakes",
+    "description": "Stomp quakes shake the platforms",
+    "regions": [
+      25
+    ],
+    "buildStatus": "planned"
+  },
+  {
+    "id": "mod_drawbridge_platforms",
+    "name": "Drawbridge Platforms",
+    "description": "Tilting drawbridge platforms",
+    "regions": [
+      26
+    ],
+    "buildStatus": "planned"
+  },
+  {
+    "id": "mod_pixel_snap",
+    "name": "Pixel Snap",
+    "description": "Pixel-grid snap platforms that blink",
+    "regions": [
+      27
+    ],
+    "buildStatus": "planned"
+  },
+  {
+    "id": "mod_falling_blades",
+    "name": "Falling Blades",
+    "description": "Falling blades with warning marks",
+    "regions": [
+      28
+    ],
+    "buildStatus": "planned"
+  },
+  {
+    "id": "mod_gravity_pods",
+    "name": "Gravity Pods",
+    "description": "Gravity pods with a flip pull",
+    "regions": [
+      29
+    ],
+    "buildStatus": "planned"
+  },
+  {
+    "id": "mod_rewind_zones",
+    "name": "Rewind Zones",
+    "description": "Rewind zones leave a position echo",
+    "regions": [
+      30
+    ],
+    "buildStatus": "planned"
+  }
+]

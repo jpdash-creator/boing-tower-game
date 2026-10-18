@@ -1,0 +1,47 @@
+{
+  "id": "region_001_meadow_springs",
+  "index": 1,
+  "nameKey": "region.meadow_springs",
+  "name": "Meadow Springs",
+  "status": "live",
+  "unlock": {
+    "requires": null,
+    "gemSkip": null
+  },
+  "theme": {
+    "bundle": "region_001",
+    "palette": [
+      "green",
+      "pink",
+      "sky blue"
+    ],
+    "music": null
+  },
+  "rules": {
+    "signatureModule": "mod_bounce_flowers",
+    "difficultyOffset": 0.0,
+    "platformWeights": {
+      "normal": 1.0
+    },
+    "hazards": []
+  },
+  "coinFactor": 1.0,
+  "levels": [
+    "lvl_001_01",
+    "lvl_001_02",
+    "lvl_001_03",
+    "lvl_001_04",
+    "lvl_001_05",
+    "lvl_001_06",
+    "lvl_001_07",
+    "lvl_001_08",
+    "lvl_001_09",
+    "lvl_001_10",
+    "lvl_001_11",
+    "lvl_001_12",
+    "lvl_001_13",
+    "lvl_001_14",
+    "lvl_001_15"
+  ],
+  "availableFrom": null
+}

@@ -1,0 +1,47 @@
+{
+  "id": "region_004_candy_canyon",
+  "index": 4,
+  "nameKey": "region.candy_canyon",
+  "name": "Candy Canyon",
+  "status": "live",
+  "unlock": {
+    "requires": "region_003_sunny_beach",
+    "gemSkip": 133
+  },
+  "theme": {
+    "bundle": "region_004",
+    "palette": [
+      "pink",
+      "mint"
+    ],
+    "music": null
+  },
+  "rules": {
+    "signatureModule": "mod_sticky_gum",
+    "difficultyOffset": 0.0259,
+    "platformWeights": {
+      "normal": 1.0,
+      "signature": 0.3
+    },
+    "hazards": []
+  },
+  "coinFactor": 1.09,
+  "levels": [
+    "lvl_004_01",
+    "lvl_004_02",
+    "lvl_004_03",
+    "lvl_004_04",
+    "lvl_004_05",
+    "lvl_004_06",
+    "lvl_004_07",
+    "lvl_004_08",
+    "lvl_004_09",
+    "lvl_004_10",
+    "lvl_004_11",
+    "lvl_004_12",
+    "lvl_004_13",
+    "lvl_004_14",
+    "lvl_004_15"
+  ],
+  "availableFrom": null
+}

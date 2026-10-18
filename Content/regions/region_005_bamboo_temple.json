@@ -1,0 +1,47 @@
+{
+  "id": "region_005_bamboo_temple",
+  "index": 5,
+  "nameKey": "region.bamboo_temple",
+  "name": "Bamboo Temple",
+  "status": "live",
+  "unlock": {
+    "requires": "region_004_candy_canyon",
+    "gemSkip": 150
+  },
+  "theme": {
+    "bundle": "region_005",
+    "palette": [
+      "jade",
+      "red"
+    ],
+    "music": null
+  },
+  "rules": {
+    "signatureModule": "mod_swinging_gongs",
+    "difficultyOffset": 0.0345,
+    "platformWeights": {
+      "normal": 1.0,
+      "signature": 0.3
+    },
+    "hazards": []
+  },
+  "coinFactor": 1.12,
+  "levels": [
+    "lvl_005_01",
+    "lvl_005_02",
+    "lvl_005_03",
+    "lvl_005_04",
+    "lvl_005_05",
+    "lvl_005_06",
+    "lvl_005_07",
+    "lvl_005_08",
+    "lvl_005_09",
+    "lvl_005_10",
+    "lvl_005_11",
+    "lvl_005_12",
+    "lvl_005_13",
+    "lvl_005_14",
+    "lvl_005_15"
+  ],
+  "availableFrom": null
+}

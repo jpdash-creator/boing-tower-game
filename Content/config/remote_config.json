@@ -1,0 +1,25 @@
+{
+  "ramp": {
+    "rampFloors": 25,
+    "rampPercent": 4,
+    "rampCap": 150,
+    "playerSpeedShare": 0.5
+  },
+  "generator": {
+    "endlessDifficultyFloors": 400,
+    "screenWidthUnits": 10
+  },
+  "score": {
+    "floorPoints": 10,
+    "comboPointsMultiplier": 5,
+    "coinPoints": 1
+  },
+  "economy": {
+    "coinsPerGem": 100,
+    "replayCoinPercent": 40,
+    "regionCoinScalePercent": 3,
+    "vipGemsPerDay": 25,
+    "endlessCoinDailyFullRateRuns": 3,
+    "endlessCoinOverCapMultiplier": 0.5
+  }
+}

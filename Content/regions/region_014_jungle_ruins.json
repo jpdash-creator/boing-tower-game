@@ -1,0 +1,47 @@
+{
+  "id": "region_014_jungle_ruins",
+  "index": 14,
+  "nameKey": "region.jungle_ruins",
+  "name": "Jungle Ruins",
+  "status": "live",
+  "unlock": {
+    "requires": "region_013_volcano_forge",
+    "gemSkip": 300
+  },
+  "theme": {
+    "bundle": "region_014",
+    "palette": [
+      "emerald",
+      "amber"
+    ],
+    "music": null
+  },
+  "rules": {
+    "signatureModule": "mod_vine_swing",
+    "difficultyOffset": 0.1121,
+    "platformWeights": {
+      "normal": 1.0,
+      "signature": 0.3
+    },
+    "hazards": []
+  },
+  "coinFactor": 1.39,
+  "levels": [
+    "lvl_014_01",
+    "lvl_014_02",
+    "lvl_014_03",
+    "lvl_014_04",
+    "lvl_014_05",
+    "lvl_014_06",
+    "lvl_014_07",
+    "lvl_014_08",
+    "lvl_014_09",
+    "lvl_014_10",
+    "lvl_014_11",
+    "lvl_014_12",
+    "lvl_014_13",
+    "lvl_014_14",
+    "lvl_014_15"
+  ],
+  "availableFrom": null
+}

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ItemDef",
+  "type": "object",
+  "required": ["id", "slot", "rarity", "bundle", "price"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {"type": "string", "pattern": "^[a-z]+_[a-z0-9_]+$"},
+    "slot": {"type": "string", "enum": ["character", "outfit", "boots", "hat", "accessory", "trail", "powerup"]},
+    "rarity": {"type": "string", "enum": ["common", "rare", "epic", "legendary", "event"]},
+    "bundle": {"type": "string"},
+    "sprites": {"type": "object"},
+    "price": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "coins": {"type": "integer", "minimum": 0},
+        "gems": {"type": "integer", "minimum": 0}
+      }
+    },
+    "tags": {"type": "array", "items": {"type": "string"}},
+    "availableFrom": {"type": ["string", "null"]},
+    "availableTo": {"type": ["string", "null"]}
+  }
+}

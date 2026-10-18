@@ -1,0 +1,47 @@
+{
+  "id": "region_020_moon_carnival",
+  "index": 20,
+  "nameKey": "region.moon_carnival",
+  "name": "Moon Carnival",
+  "status": "live",
+  "unlock": {
+    "requires": "region_019_space_station",
+    "gemSkip": 400
+  },
+  "theme": {
+    "bundle": "region_020",
+    "palette": [
+      "rainbow",
+      "neon"
+    ],
+    "music": null
+  },
+  "rules": {
+    "signatureModule": "mod_carnival_mix",
+    "difficultyOffset": 0.1638,
+    "platformWeights": {
+      "normal": 1.0,
+      "signature": 0.3
+    },
+    "hazards": []
+  },
+  "coinFactor": 1.57,
+  "levels": [
+    "lvl_020_01",
+    "lvl_020_02",
+    "lvl_020_03",
+    "lvl_020_04",
+    "lvl_020_05",
+    "lvl_020_06",
+    "lvl_020_07",
+    "lvl_020_08",
+    "lvl_020_09",
+    "lvl_020_10",
+    "lvl_020_11",
+    "lvl_020_12",
+    "lvl_020_13",
+    "lvl_020_14",
+    "lvl_020_15"
+  ],
+  "availableFrom": null
+}

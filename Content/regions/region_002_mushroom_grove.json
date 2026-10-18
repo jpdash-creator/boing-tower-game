@@ -1,0 +1,47 @@
+{
+  "id": "region_002_mushroom_grove",
+  "index": 2,
+  "nameKey": "region.mushroom_grove",
+  "name": "Mushroom Grove",
+  "status": "live",
+  "unlock": {
+    "requires": "region_001_meadow_springs",
+    "gemSkip": 100
+  },
+  "theme": {
+    "bundle": "region_002",
+    "palette": [
+      "purple",
+      "teal"
+    ],
+    "music": null
+  },
+  "rules": {
+    "signatureModule": "mod_bounce_caps",
+    "difficultyOffset": 0.0086,
+    "platformWeights": {
+      "normal": 1.0,
+      "signature": 0.3
+    },
+    "hazards": []
+  },
+  "coinFactor": 1.03,
+  "levels": [
+    "lvl_002_01",
+    "lvl_002_02",
+    "lvl_002_03",
+    "lvl_002_04",
+    "lvl_002_05",
+    "lvl_002_06",
+    "lvl_002_07",
+    "lvl_002_08",
+    "lvl_002_09",
+    "lvl_002_10",
+    "lvl_002_11",
+    "lvl_002_12",
+    "lvl_002_13",
+    "lvl_002_14",
+    "lvl_002_15"
+  ],
+  "availableFrom": null
+}

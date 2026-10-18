@@ -1,0 +1,48 @@
+{
+  "id": "region_010_toy_factory",
+  "index": 10,
+  "nameKey": "region.toy_factory",
+  "name": "Toy Factory",
+  "status": "live",
+  "unlock": {
+    "requires": "region_009_pirate_cove",
+    "gemSkip": 233
+  },
+  "theme": {
+    "bundle": "region_010",
+    "palette": [
+      "red",
+      "blue",
+      "yellow"
+    ],
+    "music": null
+  },
+  "rules": {
+    "signatureModule": "mod_conveyor_platforms",
+    "difficultyOffset": 0.0776,
+    "platformWeights": {
+      "normal": 1.0,
+      "signature": 0.3
+    },
+    "hazards": []
+  },
+  "coinFactor": 1.27,
+  "levels": [
+    "lvl_010_01",
+    "lvl_010_02",
+    "lvl_010_03",
+    "lvl_010_04",
+    "lvl_010_05",
+    "lvl_010_06",
+    "lvl_010_07",
+    "lvl_010_08",
+    "lvl_010_09",
+    "lvl_010_10",
+    "lvl_010_11",
+    "lvl_010_12",
+    "lvl_010_13",
+    "lvl_010_14",
+    "lvl_010_15"
+  ],
+  "availableFrom": null
+}
