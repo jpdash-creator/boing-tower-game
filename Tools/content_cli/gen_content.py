@@ -60,7 +60,7 @@ LEVELS = {
     6: ("medium", 0.35, {"type": "reachFloor", "value": 80}),
     7: ("medium", 0.42, {"type": "noWallBounce", "value": 60}),
     8: ("medium", 0.50, {"type": "findHiddenGem"}),
-    9: ("medium", 0.58, {"type": "speedrun", "value": 90, "timeSec": SPEEDRUN_TIME_SEC}),
+    9: ("medium", 0.58, {"type": "reachFloor", "value": 90}),
     10: ("complex", 0.70, {"type": "surviveWave"}),
     11: ("hard", 0.62, {"type": "comboChain", "value": 6, "count": 1}),
     12: ("hard", 0.70, {"type": "reachFloor", "value": 100}),

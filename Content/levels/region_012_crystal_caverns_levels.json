@@ -276,9 +276,8 @@
     "class": "medium",
     "difficulty": 0.58,
     "goal": {
-      "type": "speedrun",
-      "value": 90,
-      "timeSec": 75
+      "type": "reachFloor",
+      "value": 90
     },
     "stars": [
       {

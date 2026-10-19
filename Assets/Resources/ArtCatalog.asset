@@ -18,13 +18,46 @@ MonoBehaviour:
     BgFar: {fileID: 21300000, guid: e6cd46a543fee0c4ab8cd2c9549e048c, type: 3}
     BgMid: {fileID: 21300000, guid: 02a547ef8e2070241a0ad1799ed2b50b, type: 3}
     BgNear: {fileID: 21300000, guid: 8004f34327bd05e4aacf0f94f8898f05, type: 3}
-    Normal: {fileID: 21300000, guid: 92ebc2e8e2f20574187710558397ed5b, type: 3}
-    Narrow: {fileID: 21300000, guid: ead87bf1f933a0b4c94c587824ec8876, type: 3}
-    Moving: {fileID: 21300000, guid: 6680b13046fcada4e80af259ffa67bc9, type: 3}
-    Crumble: {fileID: 21300000, guid: ea2fd427cb95ef4419dba671e4758fcf, type: 3}
-    Bounce: {fileID: 21300000, guid: 11a76e5882ab1804ca9740219bcbf5c6, type: 3}
+    Normal: {fileID: 21300000, guid: 157865318c7983a40ab884d582b6b746, type: 3}
+    Narrow: {fileID: 21300000, guid: 0a03a9050a3b5394bad6bf9acfb07364, type: 3}
+    Moving: {fileID: 21300000, guid: fb44a29acfc38e0439650b5d0ab363b4, type: 3}
+    Crumble: {fileID: 21300000, guid: 01c155347067a04419740fcf93470dd1, type: 3}
+    Bounce: {fileID: 21300000, guid: 36bce2f08a31ac24f84d1fa7b9b5a066, type: 3}
     WallL: {fileID: 21300000, guid: 999ec4f3f10e13c47b8981bced281b57, type: 3}
     WallR: {fileID: 21300000, guid: 67c8b414deb4f3f49901854dbe04c1e3, type: 3}
+    Metrics:
+    - W: 623
+      H: 231
+      BodyLeft: 6
+      BodyRight: 617
+      SurfaceY: 70
+      BodyBottom: 231
+    - W: 542
+      H: 128
+      BodyLeft: 6
+      BodyRight: 536
+      SurfaceY: 39
+      BodyBottom: 128
+    - W: 625
+      H: 212
+      BodyLeft: 6
+      BodyRight: 619
+      SurfaceY: 64
+      BodyBottom: 212
+    - W: 647
+      H: 179
+      BodyLeft: 6
+      BodyRight: 641
+      SurfaceY: 54
+      BodyBottom: 179
+    - W: 589
+      H: 171
+      BodyLeft: 6
+      BodyRight: 583
+      SurfaceY: 52
+      BodyBottom: 171
+    PlatTop: {r: 0.4, g: 0.78, b: 0.22, a: 1}
+    PlatSide: {r: 0.55, g: 0.34, b: 0.18, a: 1}
     Props:
     - {fileID: 21300000, guid: 6c509539581dbd54496d0aa1e6ec44ad, type: 3}
     - {fileID: 21300000, guid: 82728a8704def6044bb3b148c407176a, type: 3}
@@ -43,13 +76,46 @@ MonoBehaviour:
     BgFar: {fileID: 21300000, guid: fb3605c00bbd0c94f8b642dff7f7691c, type: 3}
     BgMid: {fileID: 21300000, guid: d069e794b36908e48985088388306b04, type: 3}
     BgNear: {fileID: 21300000, guid: ec5a2f0f87359e241a8bbcabc49a583e, type: 3}
-    Normal: {fileID: 21300000, guid: 18abd4c2e556f214591e5237396f038d, type: 3}
-    Narrow: {fileID: 21300000, guid: 2ce7a75a3172e4749ac2b6fa5e7bad54, type: 3}
-    Moving: {fileID: 21300000, guid: a2e5c565031359849834588a853e5157, type: 3}
-    Crumble: {fileID: 21300000, guid: 27fc692ce2233084d91ff1a6edab86a5, type: 3}
-    Bounce: {fileID: 21300000, guid: 88e3b7cf8aebedb4bbd188eb9b283db8, type: 3}
+    Normal: {fileID: 21300000, guid: 41898c9799bcd654eb25b10341e55ec9, type: 3}
+    Narrow: {fileID: 21300000, guid: 5c35c6a1198e2b2478797f1819a63e74, type: 3}
+    Moving: {fileID: 21300000, guid: 581c921441f977945a994e88460d925a, type: 3}
+    Crumble: {fileID: 21300000, guid: b9c32ef3f0e868b46b844e5dff6dd78b, type: 3}
+    Bounce: {fileID: 21300000, guid: 09ceff3e435e86e4ba2f70ca638c4891, type: 3}
     WallL: {fileID: 21300000, guid: da742c6a074bfcc4b909f02597ae1cb8, type: 3}
     WallR: {fileID: 21300000, guid: ad5028cc10632684fb22291f3572a88a, type: 3}
+    Metrics:
+    - W: 1210
+      H: 159
+      BodyLeft: 6
+      BodyRight: 1204
+      SurfaceY: 46
+      BodyBottom: 159
+    - W: 563
+      H: 147
+      BodyLeft: 6
+      BodyRight: 557
+      SurfaceY: 43
+      BodyBottom: 147
+    - W: 974
+      H: 145
+      BodyLeft: 6
+      BodyRight: 968
+      SurfaceY: 44
+      BodyBottom: 145
+    - W: 775
+      H: 175
+      BodyLeft: 6
+      BodyRight: 769
+      SurfaceY: 53
+      BodyBottom: 175
+    - W: 514
+      H: 278
+      BodyLeft: 6
+      BodyRight: 508
+      SurfaceY: 84
+      BodyBottom: 278
+    PlatTop: {r: 0.78, g: 0.36, b: 0.92, a: 1}
+    PlatSide: {r: 0.48, g: 0.18, b: 0.6, a: 1}
     Props:
     - {fileID: 21300000, guid: ae7b37a89fa95f7478dbb329c99c755d, type: 3}
     - {fileID: 21300000, guid: 91cf42895b65b4a41a7086383b500cf7, type: 3}
@@ -70,13 +136,46 @@ MonoBehaviour:
     BgFar: {fileID: 21300000, guid: c137bf1f32f4cb04f99e132397e341cd, type: 3}
     BgMid: {fileID: 21300000, guid: a2b99c995e431414084528d2b2f7a60d, type: 3}
     BgNear: {fileID: 21300000, guid: f5c8b1c8cd15ad347a5ce18bc7d39e64, type: 3}
-    Normal: {fileID: 21300000, guid: 8cf2d01506ca41c4b8f9207f0c291808, type: 3}
-    Narrow: {fileID: 21300000, guid: 8cf2d01506ca41c4b8f9207f0c291808, type: 3}
-    Moving: {fileID: 21300000, guid: 78d468458c8f31e49ab9a80af21657aa, type: 3}
-    Crumble: {fileID: 21300000, guid: d0bb4aa61ecc90d42a91fd3864f30636, type: 3}
-    Bounce: {fileID: 21300000, guid: b1e621b7d439f4c4ea05a3ef81cf8a40, type: 3}
+    Normal: {fileID: 21300000, guid: 6b456cdbcca5b55449a9d96ec97ba393, type: 3}
+    Narrow: {fileID: 21300000, guid: 02d92111a1f77e841a73ef576e36397c, type: 3}
+    Moving: {fileID: 21300000, guid: e869178cdb4b87f47b91f07b72ee527d, type: 3}
+    Crumble: {fileID: 21300000, guid: a31b011e1bc8e214498409362fb8efeb, type: 3}
+    Bounce: {fileID: 21300000, guid: 4c32f6e92a1479444b93b3f624a407d7, type: 3}
     WallL: {fileID: 21300000, guid: a4e6c881415985140bf32e3462d8a72a, type: 3}
     WallR: {fileID: 21300000, guid: 818a382e3cb00054a8a16e274ecd5865, type: 3}
+    Metrics:
+    - W: 562
+      H: 167
+      BodyLeft: 6
+      BodyRight: 556
+      SurfaceY: 48
+      BodyBottom: 167
+    - W: 562
+      H: 167
+      BodyLeft: 6
+      BodyRight: 556
+      SurfaceY: 48
+      BodyBottom: 167
+    - W: 708
+      H: 171
+      BodyLeft: 6
+      BodyRight: 702
+      SurfaceY: 48
+      BodyBottom: 171
+    - W: 718
+      H: 168
+      BodyLeft: 6
+      BodyRight: 712
+      SurfaceY: 47
+      BodyBottom: 168
+    - W: 596
+      H: 249
+      BodyLeft: 6
+      BodyRight: 590
+      SurfaceY: 64
+      BodyBottom: 249
+    PlatTop: {r: 1, g: 0.84, b: 0.55, a: 1}
+    PlatSide: {r: 0.78, g: 0.5, b: 0.28, a: 1}
     Props:
     - {fileID: 21300000, guid: 52a56f2c3d7804142acef63fd0651fe3, type: 3}
     - {fileID: 21300000, guid: 6a48b8facd94a574da262b5be4d73664, type: 3}
@@ -96,13 +195,46 @@ MonoBehaviour:
     BgFar: {fileID: 21300000, guid: b8e44d25a5b3f06429a01f66cc57340e, type: 3}
     BgMid: {fileID: 21300000, guid: c5577db9a99e4ee418912b73150bdc0f, type: 3}
     BgNear: {fileID: 21300000, guid: de6536c9cb6d6d44784b38a2b8de9a9a, type: 3}
-    Normal: {fileID: 21300000, guid: f79bc7728a984a5428e0d1b76cb997bd, type: 3}
-    Narrow: {fileID: 21300000, guid: 7a313cff1415dbf4fa0b6de4cb2b92d6, type: 3}
-    Moving: {fileID: 21300000, guid: 7fffbdd2d8c9e9f4babb9bdf3f79b8e7, type: 3}
-    Crumble: {fileID: 21300000, guid: 9602ccc040f8ed74fa2e8aea5aa056a2, type: 3}
-    Bounce: {fileID: 21300000, guid: 8a174eac776a5b644a512c46912e056e, type: 3}
+    Normal: {fileID: 21300000, guid: d5540df347a447048848d7e8449716f5, type: 3}
+    Narrow: {fileID: 21300000, guid: 3092b17ad34263e438493bf6de44f38a, type: 3}
+    Moving: {fileID: 21300000, guid: 072a8375a8f5ead41b5f4333d3e7be85, type: 3}
+    Crumble: {fileID: 21300000, guid: 294632c0e3b2d45438ab186ec81cb0d2, type: 3}
+    Bounce: {fileID: 21300000, guid: 158c6b92974499d46b4f21665456a859, type: 3}
     WallL: {fileID: 21300000, guid: e85f96a09999b2148a727b8489267921, type: 3}
     WallR: {fileID: 21300000, guid: e608a68b7ce327c4782353b0cf23d8fe, type: 3}
+    Metrics:
+    - W: 926
+      H: 214
+      BodyLeft: 6
+      BodyRight: 920
+      SurfaceY: 65
+      BodyBottom: 214
+    - W: 714
+      H: 157
+      BodyLeft: 6
+      BodyRight: 708
+      SurfaceY: 48
+      BodyBottom: 157
+    - W: 923
+      H: 167
+      BodyLeft: 6
+      BodyRight: 917
+      SurfaceY: 48
+      BodyBottom: 167
+    - W: 788
+      H: 175
+      BodyLeft: 6
+      BodyRight: 782
+      SurfaceY: 53
+      BodyBottom: 175
+    - W: 543
+      H: 168
+      BodyLeft: 6
+      BodyRight: 537
+      SurfaceY: 51
+      BodyBottom: 168
+    PlatTop: {r: 0.62, g: 0.96, b: 0.86, a: 1}
+    PlatSide: {r: 0.95, g: 0.42, b: 0.66, a: 1}
     Props:
     - {fileID: 21300000, guid: 75d6858e82ccc354eb2a549df9e0ee77, type: 3}
     - {fileID: 21300000, guid: 5bca2c9ea1bba7f44af66e1cc06b3aa4, type: 3}
@@ -122,13 +254,46 @@ MonoBehaviour:
     BgFar: {fileID: 21300000, guid: fdf7e7325c7ba0f4e86335a0bcf792f5, type: 3}
     BgMid: {fileID: 21300000, guid: d1629dea62b11994c939c0af384f788a, type: 3}
     BgNear: {fileID: 21300000, guid: ecb9b23867967d3498c8c987faa14589, type: 3}
-    Normal: {fileID: 21300000, guid: 8c92f7c7a7ad43244a1e01887b4560a6, type: 3}
-    Narrow: {fileID: 21300000, guid: 38d1330ab70672e49a58c79a0bbc25a3, type: 3}
-    Moving: {fileID: 21300000, guid: 396cb89a80f223c42b8e7a8a00a477d2, type: 3}
-    Crumble: {fileID: 21300000, guid: 2f08650687cab1e45a1fe4e4bcc5a794, type: 3}
-    Bounce: {fileID: 21300000, guid: 12fc8b179c09eb240abf4034c34a1c39, type: 3}
+    Normal: {fileID: 21300000, guid: a06b01afb83bd3f4eafe9451ed008b75, type: 3}
+    Narrow: {fileID: 21300000, guid: 2eb8c01365738904baec763e79b3377d, type: 3}
+    Moving: {fileID: 21300000, guid: ef850a2d50fe21e49a67bb7be608fa8c, type: 3}
+    Crumble: {fileID: 21300000, guid: 84be674da44495241a8b3262a0883c32, type: 3}
+    Bounce: {fileID: 21300000, guid: 9671a7f0527abc9479fde5f0cd931712, type: 3}
     WallL: {fileID: 21300000, guid: 2aa44ed0b8867de4c8fa27db206d6fa9, type: 3}
     WallR: {fileID: 21300000, guid: 8a9c932ce50e75f4095b2c4a5f4d54a8, type: 3}
+    Metrics:
+    - W: 905
+      H: 128
+      BodyLeft: 6
+      BodyRight: 899
+      SurfaceY: 39
+      BodyBottom: 128
+    - W: 332
+      H: 148
+      BodyLeft: 6
+      BodyRight: 326
+      SurfaceY: 45
+      BodyBottom: 148
+    - W: 665
+      H: 180
+      BodyLeft: 6
+      BodyRight: 659
+      SurfaceY: 55
+      BodyBottom: 180
+    - W: 1106
+      H: 180
+      BodyLeft: 6
+      BodyRight: 1100
+      SurfaceY: 50
+      BodyBottom: 180
+    - W: 625
+      H: 164
+      BodyLeft: 6
+      BodyRight: 619
+      SurfaceY: 50
+      BodyBottom: 164
+    PlatTop: {r: 0.28, g: 0.76, b: 0.5, a: 1}
+    PlatSide: {r: 0.66, g: 0.2, b: 0.2, a: 1}
     Props:
     - {fileID: 21300000, guid: 7728a97de189ba447acfeb204804277b, type: 3}
     - {fileID: 21300000, guid: 2b5255dabb9bbce4da4a5ae24f695034, type: 3}

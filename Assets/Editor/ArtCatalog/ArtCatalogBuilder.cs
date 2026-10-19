@@ -100,7 +100,49 @@ namespace BoingTower.Editor
             ra.Crumble = Idx(t, (int)map["crumble"]);
             ra.Bounce = Idx(t, (int)map["bounce"]);
             ra.WallL = Idx(t, (int)map["wallL"]);
+            string surfacePath = tiles + "/surface.json";
+            if (File.Exists(surfacePath))
+            {
+                // Platforms are drawn from thin cropped strips (Tools/art_pipeline/platform_metrics.py) at their real aspect ratio.
+                JObject root = JObject.Parse(File.ReadAllText(surfacePath));
+                JObject sj = (JObject)root["platforms"];
+                JToken pal = root["palette"];
+                if (pal != null)
+                {
+                    ra.PlatTop = new Color((int)pal["top"][0] / 255f, (int)pal["top"][1] / 255f, (int)pal["top"][2] / 255f, 1f);
+                    ra.PlatSide = new Color((int)pal["side"][0] / 255f, (int)pal["side"][1] / 255f, (int)pal["side"][2] / 255f, 1f);
+                }
+                string[] kinds = { "normal", "narrow", "moving", "crumble", "bounce" };
+                ra.Metrics = new PlatformMetric[kinds.Length];
+                Sprite[] strips = new Sprite[kinds.Length];
+                for (int k = 0; k < kinds.Length; k++)
+                {
+                    JToken m = sj[kinds[k]];
+                    if (m == null) continue;
+                    strips[k] = AssetDatabase.LoadAssetAtPath<Sprite>(tiles + "/" + (string)m["file"]);
+                    ra.Metrics[k] = new PlatformMetric
+                    {
+                        W = (float)m["w"], H = (float)m["h"], BodyLeft = (float)m["bodyLeft"], BodyRight = (float)m["bodyRight"],
+                        SurfaceY = (float)m["surfaceY"], BodyBottom = (float)m["bodyBottom"]
+                    };
+                }
+                if (strips[0] != null) ra.Normal = strips[0];
+                if (strips[1] != null) ra.Narrow = strips[1];
+                if (strips[2] != null) ra.Moving = strips[2];
+                if (strips[3] != null) ra.Crumble = strips[3];
+                if (strips[4] != null) ra.Bounce = strips[4];
+            }
             ra.WallR = Idx(t, (int)map["wallR"]);
+            // Curated slab colours (art direction): sampled colours were too pale or blended into the backgrounds.
+            Color[][] slab =
+            {
+                new[] { new Color(0.40f, 0.78f, 0.22f), new Color(0.55f, 0.34f, 0.18f) },
+                new[] { new Color(0.78f, 0.36f, 0.92f), new Color(0.48f, 0.18f, 0.60f) },
+                new[] { new Color(1.00f, 0.84f, 0.55f), new Color(0.78f, 0.50f, 0.28f) },
+                new[] { new Color(0.62f, 0.96f, 0.86f), new Color(0.95f, 0.42f, 0.66f) },
+                new[] { new Color(0.28f, 0.76f, 0.50f), new Color(0.66f, 0.20f, 0.20f) },
+            };
+            if (r >= 1 && r <= slab.Length) { ra.PlatTop = slab[r - 1][0]; ra.PlatSide = slab[r - 1][1]; }
             ra.Props = Folder(regionDir + "/props/reg00" + r + "_props");
             ra.Signature = Folder(regionDir + "/hazards/reg00" + r + "_signature");
             return ra;

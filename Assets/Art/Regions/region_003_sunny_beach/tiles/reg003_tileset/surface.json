@@ -1,0 +1,67 @@
+{
+  "asset": "reg003_tileset",
+  "platforms": {
+    "normal": {
+      "w": 562,
+      "h": 167,
+      "bodyLeft": 6,
+      "bodyRight": 556,
+      "surfaceY": 48,
+      "bodyBottom": 167,
+      "index": 2,
+      "file": "plat/reg003_tileset_normal.png"
+    },
+    "narrow": {
+      "w": 562,
+      "h": 167,
+      "bodyLeft": 6,
+      "bodyRight": 556,
+      "surfaceY": 48,
+      "bodyBottom": 167,
+      "index": 2,
+      "file": "plat/reg003_tileset_narrow.png"
+    },
+    "moving": {
+      "w": 708,
+      "h": 171,
+      "bodyLeft": 6,
+      "bodyRight": 702,
+      "surfaceY": 48,
+      "bodyBottom": 171,
+      "index": 3,
+      "file": "plat/reg003_tileset_moving.png"
+    },
+    "crumble": {
+      "w": 718,
+      "h": 168,
+      "bodyLeft": 6,
+      "bodyRight": 712,
+      "surfaceY": 47,
+      "bodyBottom": 168,
+      "index": 4,
+      "file": "plat/reg003_tileset_crumble.png"
+    },
+    "bounce": {
+      "w": 596,
+      "h": 249,
+      "bodyLeft": 6,
+      "bodyRight": 590,
+      "surfaceY": 64,
+      "bodyBottom": 249,
+      "index": 6,
+      "file": "plat/reg003_tileset_bounce.png"
+    }
+  },
+  "palette": {
+    "top": [
+      254,
+      216,
+      154
+    ],
+    "side": [
+      176,
+      100,
+      65
+    ]
+  }
+}

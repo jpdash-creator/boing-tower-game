@@ -40,7 +40,7 @@ namespace BoingTower.Simulation
         public Fx ScrollSpeedHard = Fx.FromRatio(2, 1);
         public int ScrollStartRow = 3;
         /// <summary>Kill zone never trails further than this below the highest point reached.</summary>
-        public Fx KillDistance = Fx.FromInt(14);
+        public Fx KillDistance = Fx.FromInt(10);
 
         // Endless speed ramp (doc 08 section 2)
         public int RampFloors = 25;

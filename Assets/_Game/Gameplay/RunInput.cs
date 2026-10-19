@@ -91,6 +91,9 @@ namespace BoingTower.Gameplay
         public System.Func<int> ScriptedMove;
         public System.Func<bool> ScriptedJump;
 
+        /// <summary>The on-screen controls (set by the HUD once built).</summary>
+        public ControlPad Pad;
+
         public void Update()
         {
             if (ScriptedMove != null || ScriptedJump != null)
@@ -100,35 +103,21 @@ namespace BoingTower.Gameplay
                 return;
             }
 
-            samples.Clear();
-            Touchscreen ts = Touchscreen.current;
-            float time = Time.unscaledTime;
-            if (ts != null)
-            {
-                foreach (var t in ts.touches)
-                {
-                    var press = t.press;
-                    if (press.wasPressedThisFrame) samples.Add(new TouchSample { Id = t.touchId.ReadValue(), Phase = TouchPhaseKind.Began, X = t.position.ReadValue().x, Time = time });
-                    else if (press.wasReleasedThisFrame) samples.Add(new TouchSample { Id = t.touchId.ReadValue(), Phase = TouchPhaseKind.Ended, X = t.position.ReadValue().x, Time = time });
-                    else if (press.isPressed) samples.Add(new TouchSample { Id = t.touchId.ReadValue(), Phase = TouchPhaseKind.Held, X = t.position.ReadValue().x, Time = time });
-                }
-            }
-            if (touch.Update(samples, Screen.width)) jumpLatched = true;
-
+            // On-screen pad (touch and mouse both arrive through the UI event system).
             keyboardMove = 0;
+            if (Pad != null)
+            {
+                if (Pad.Left != null && Pad.Left.Held) keyboardMove |= SimInput.Left;
+                if (Pad.Right != null && Pad.Right.Held) keyboardMove |= SimInput.Right;
+                if (Pad.Jump != null && Pad.Jump.PressedEdge) { jumpLatched = true; Pad.Jump.PressedEdge = false; }
+            }
+
             Keyboard kb = Keyboard.current;
             if (kb != null)
             {
                 if (kb.aKey.isPressed || kb.leftArrowKey.isPressed) keyboardMove |= SimInput.Left;
                 if (kb.dKey.isPressed || kb.rightArrowKey.isPressed) keyboardMove |= SimInput.Right;
                 if (kb.spaceKey.wasPressedThisFrame || kb.upArrowKey.wasPressedThisFrame || kb.wKey.wasPressedThisFrame) jumpLatched = true;
-            }
-
-            Mouse mouse = Mouse.current;
-            if (mouse != null && ts == null)
-            {
-                if (mouse.leftButton.isPressed) keyboardMove |= mouse.position.ReadValue().x < Screen.width * 0.5f ? SimInput.Left : SimInput.Right;
-                if (mouse.rightButton.wasPressedThisFrame) jumpLatched = true;
             }
         }
 

@@ -36,10 +36,11 @@ namespace BoingTower.Gameplay
         Transform worldRoot;
         Transform player;
         SpriteRenderer playerSr;
-        float playerHeight = 1.15f;
+        float playerHeight = 1.5f;
         SpriteRenderer[] platformSr;
         Transform[] platformTf;
         float[] platformBaseScaleX;
+        float[] platformOffX, platformOffY;   // sprite offset that puts the island's walking surface on the platform line
         SpriteRenderer[] pickupSr;
         Transform[] hazardTf;
         SpriteRenderer[] hazardSr;
@@ -192,6 +193,64 @@ namespace BoingTower.Gameplay
             return sr;
         }
 
+        static readonly System.Collections.Generic.Dictionary<int, Sprite> slabs = new System.Collections.Generic.Dictionary<int, Sprite>();
+
+        /// <summary>A clean rounded slab: dark outline, light top band, darker body. 9-sliced, so it is never stretched out of shape.</summary>
+        static Sprite MakeSlab(Color top, Color side)
+        {
+            int key = ((Color32)top).GetHashCode() * 31 + ((Color32)side).GetHashCode();
+            Sprite cached;
+            if (slabs.TryGetValue(key, out cached) && cached != null) return cached;
+            const int w = 64, h = 32, r = 10;
+            var tex = new Texture2D(w, h, TextureFormat.RGBA32, false);
+            tex.filterMode = FilterMode.Bilinear;
+            tex.wrapMode = TextureWrapMode.Clamp;
+            var px = new Color32[w * h];
+            Color outline = new Color(0.08f, 0.07f, 0.14f, 1f);
+            Color hi = Color.Lerp(top, Color.white, 0.45f);
+            for (int y = 0; y < h; y++)
+            {
+                for (int x = 0; x < w; x++)
+                {
+                    // distance to the rounded rectangle edge (0 at the border, growing inwards)
+                    float dx = Mathf.Min(x + 0.5f, w - x - 0.5f), dy = Mathf.Min(y + 0.5f, h - y - 0.5f);
+                    float inset;
+                    if (dx < r && dy < r) inset = r - Mathf.Sqrt((r - dx) * (r - dx) + (r - dy) * (r - dy));
+                    else inset = Mathf.Min(dx, dy);
+                    if (inset < 0f) { px[y * w + x] = new Color32(0, 0, 0, 0); continue; }
+                    Color c;
+                    float fromTop = h - 1 - y;     // y grows upwards in texture space
+                    if (inset < 2.2f) c = outline;
+                    else if (fromTop < 3.5f) c = outline;
+                    else if (fromTop < 6f) c = hi;
+                    else if (fromTop < 13f) c = top;
+                    else c = Color.Lerp(side, side * 0.78f, Mathf.Clamp01((fromTop - 13f) / 16f));
+                    c.a = 1f;
+                    px[y * w + x] = c;
+                }
+            }
+            tex.SetPixels32(px);
+            tex.Apply();
+            Sprite sp = Sprite.Create(tex, new Rect(0, 0, w, h), new Vector2(0.5f, 0.5f), 64f, 0, SpriteMeshType.FullRect, new Vector4(14, 10, 14, 10));
+            slabs[key] = sp;
+            return sp;
+        }
+
+        PlatformMetric PlatformMetricFor(Platform p)
+        {
+            if (region == null || region.Metrics == null) return default(PlatformMetric);
+            int k;
+            switch (p.Kind)
+            {
+                case PlatformKind.Moving: k = region.Moving != null ? 2 : 0; break;
+                case PlatformKind.Crumble: k = region.Crumble != null ? 3 : 0; break;
+                case PlatformKind.Bounce:
+                case PlatformKind.BounceCap: k = region.Bounce != null ? 4 : 0; break;
+                default: k = (p.Width.F() < 3.2f && region.Narrow != null) ? 1 : 0; break;
+            }
+            return k < region.Metrics.Length ? region.Metrics[k] : default(PlatformMetric);
+        }
+
         Sprite PlatformSprite(Platform p)
         {
             if (region == null) return null;
@@ -223,6 +282,7 @@ namespace BoingTower.Gameplay
                         case 0: on = ((x % 16) - 8) * ((x % 16) - 8) + (y - 4) * (y - 4) <= 6; break;           // dots
                         case 1: on = ((x + y) % 8) < 3; break;                                                    // diagonal stripes
                         case 2: on = (x % 16) < 9 && y >= 2 && y <= 5; break;                                     // dashes
+                        case 4: on = Mathf.Abs((x % 16) - 8) == 7 - y || Mathf.Abs((x % 16) - 8) == 6 - y; break;   // up chevrons (bounce)
                         default: on = ((x + y) % 16) < 8; break;                                                  // hazard stripes
                     }
                     px[y * w + x] = on ? new Color32(20, 16, 40, 230) : new Color32(0, 0, 0, 0);
@@ -250,37 +310,44 @@ namespace BoingTower.Gameplay
             platformSr = new SpriteRenderer[plats.Length];
             platformTf = new Transform[plats.Length];
             platformBaseScaleX = new float[plats.Length];
+            platformOffX = new float[plats.Length];
+            platformOffY = new float[plats.Length];
             cueSr = new SpriteRenderer[plats.Length];
             for (int i = 0; i < plats.Length; i++)
             {
                 Platform p = plats[i];
                 Sprite sprite = PlatformSprite(p);
                 var sr = NewSprite("plat" + p.Id + "_" + p.Kind, sprite, 0);
-                sr.color = PlatformTint(p.Kind);
                 float width = p.Width.F();
-                if (sprite != null)
+                platformOffX[i] = 0f;
+                if (region != null && region.PlatSide.a > 0f)
                 {
-                    Vector2 size = sprite.bounds.size;
-                    // Art has clouds/arrows painted around the platform, so the usable width is about 82 percent of the sprite.
-                    float sx = width / (size.x * 0.82f);
-                    float thickness = p.Kind == PlatformKind.Bounce || p.Kind == PlatformKind.BounceCap ? 1.9f : 1.15f;
-                    float sy = thickness / size.y;
-                    sr.transform.localScale = new Vector3(sx, sy, 1f);
-                    platformBaseScaleX[i] = sx;
+                    // Clean code-drawn slab in the region's colours, 0.5 units thick; the top edge is exactly the walking surface.
+                    Color top = region.PlatTop, side = region.PlatSide;
+                    if (p.Kind == PlatformKind.Bounce || p.Kind == PlatformKind.BounceCap) { top = new Color(1f, 0.55f, 0.75f); side = new Color(0.8f, 0.2f, 0.45f); }
+                    else if (p.Kind == PlatformKind.Crumble) { side = Color.Lerp(side, Color.gray, 0.45f); top = Color.Lerp(top, Color.gray, 0.35f); }
+                    sr.sprite = MakeSlab(top, side);
+                    sr.drawMode = SpriteDrawMode.Sliced;
+                    sr.size = new Vector2(width + 0.3f, 0.6f);
+                    sr.transform.localScale = Vector3.one;
+                    platformBaseScaleX[i] = 1f;
+                    platformOffY[i] = -0.3f;
                 }
                 else
                 {
                     sr.transform.localScale = new Vector3(width, 0.4f, 1f);   // fallback bar
                     platformBaseScaleX[i] = width;
+                    platformOffY[i] = -0.2f;
                 }
+                sr.color = PlatformTint(p.Kind);
                 platformSr[i] = sr;
                 platformTf[i] = sr.transform;
 
                 // Non-colour cue (CUX-6): a pattern strip on the walking surface.
-                int cue = p.Kind == PlatformKind.Sticky ? 0 : p.Kind == PlatformKind.Slippery ? 1 : p.Kind == PlatformKind.Vanishing ? 2 : -1;
+                int cue = p.Kind == PlatformKind.Sticky ? 0 : p.Kind == PlatformKind.Slippery ? 1 : p.Kind == PlatformKind.Vanishing ? 2 : (p.Kind == PlatformKind.Bounce || p.Kind == PlatformKind.BounceCap) ? 4 : -1;
                 if (cue >= 0)
                 {
-                    if (patterns == null) patterns = new Sprite[4];
+                    if (patterns == null) patterns = new Sprite[5];
                     if (patterns[cue] == null) patterns[cue] = MakePattern(cue);
                     var c = NewSprite("cue" + p.Id, patterns[cue], 1);
                     c.drawMode = SpriteDrawMode.Tiled;
@@ -375,7 +442,7 @@ namespace BoingTower.Gameplay
             killLine = NewSprite("DangerLine", white, 31);
             killLine.color = new Color(1f, 0.3f, 0.35f, 0.9f);
             // Hazard stripes along the line: the danger zone is not signalled by red alone (CUX-6).
-            if (patterns == null) patterns = new Sprite[4];
+            if (patterns == null) patterns = new Sprite[5];
             patterns[3] = MakePattern(3);
             dangerBand = NewSprite("DangerBand", patterns[3], 32);
             dangerBand.drawMode = SpriteDrawMode.Tiled;
@@ -465,8 +532,7 @@ namespace BoingTower.Gameplay
                 float x = p.Kind == PlatformKind.Moving ? session.Sim.PlatformX(p.Id, tick).F() : p.X.F();
                 float y = p.Y.F();
                 var sr = platformSr[i];
-                float height = sr.sprite != null ? sr.sprite.bounds.size.y * platformTf[i].localScale.y : 0.4f;
-                platformTf[i].position = new Vector3(x, y + 0.2f - height * 0.5f, 0f);
+                platformTf[i].position = new Vector3(x + platformOffX[i], y + platformOffY[i], 0f);
                 if (p.Kind == PlatformKind.Vanishing || p.Kind == PlatformKind.Crumble)
                 {
                     bool solid = session.Sim.IsSolid(p.Id, tick, s.CrumbleTick);
@@ -476,7 +542,7 @@ namespace BoingTower.Gameplay
                     sr.color = c;
                     if (cueSr[i] != null) cueSr[i].color = new Color(1f, 1f, 1f, c.a);
                 }
-                if (cueSr[i] != null) cueSr[i].transform.position = new Vector3(x, y + 0.14f, 0f);
+                if (cueSr[i] != null) cueSr[i].transform.position = new Vector3(x, y - 0.14f, 0f);
             }
 
             // Pickups (taken ones hide; coins spin through their frames).
@@ -541,7 +607,7 @@ namespace BoingTower.Gameplay
         void UpdateCamera(float playerY, float killY)
         {
             FitCamera();
-            float target = playerY + camHalfH * 0.35f;
+            float target = playerY + camHalfH * 0.2f;   // the player sits in the lower-middle, above the control pad
             // Time-based smoothing so the follow feels the same at 30, 60 and 120 fps (CUX-1).
             if (target > camY) camY += (target - camY) * (1f - Mathf.Exp(-camSmoothing * frameDt));
             float minCam = killY - 1f + camHalfH;      // the danger line never leaves the bottom of the screen

@@ -276,9 +276,8 @@
     "class": "medium",
     "difficulty": 0.58,
     "goal": {
-      "type": "speedrun",
-      "value": 90,
-      "timeSec": 75
+      "type": "reachFloor",
+      "value": 90
     },
     "stars": [
       {
@@ -286,7 +285,7 @@
       },
       {
         "type": "coins",
-        "value": 125
+        "value": 190
       },
       {
         "type": "noRevive"
@@ -358,7 +357,7 @@
       },
       {
         "type": "coins",
-        "value": 65
+        "value": 60
       },
       {
         "type": "noRevive"
@@ -391,7 +390,7 @@
       },
       {
         "type": "coins",
-        "value": 180
+        "value": 170
       },
       {
         "type": "noRevive"
@@ -424,7 +423,7 @@
       },
       {
         "type": "coins",
-        "value": 230
+        "value": 225
       },
       {
         "type": "noRevive"
@@ -457,7 +456,7 @@
       },
       {
         "type": "coins",
-        "value": 265
+        "value": 255
       },
       {
         "type": "noRevive"
@@ -490,7 +489,7 @@
       },
       {
         "type": "coins",
-        "value": 315
+        "value": 310
       },
       {
         "type": "noRevive"

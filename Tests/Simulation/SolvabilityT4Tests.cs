@@ -305,9 +305,8 @@ namespace BoingTower.Simulation.Tests
             Assert.Equal(StarSpec.KindCoins, l15.Spec.Stars[1].Kind);
             Assert.True(l15.Spec.Stars[1].Value >= 95); // raised targets (coin_star_targets.json)
             LoadedLevel l9 = all.Find(x => x.Id == "lvl_001_09");
-            Assert.Equal(GoalType.Speedrun, l9.Spec.Goal.Type);
+            Assert.Equal(GoalType.ReachFloor, l9.Spec.Goal.Type); // the timed goal was removed (owner, 2026-10-19)
             Assert.Equal(90, l9.Spec.Goal.Value);
-            Assert.True(l9.Spec.Goal.TimeSec > 45); // relaxed by the owner decision of 2026-10-19
             Assert.Equal(SignatureKind.BounceFlowers, l9.Spec.Signature);
             // effective difficulty applies the region offset: d + offset (1 - d)
             LoadedLevel l1 = all.Find(x => x.Id == "lvl_005_01");

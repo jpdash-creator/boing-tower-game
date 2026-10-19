@@ -62,6 +62,7 @@ namespace BoingTower.Gameplay
             var hudGo = new GameObject("RunHudRoot");
             Hud = hudGo.AddComponent<RunHud>();
             Hud.Build(Session, GameSession.Art);
+            Input.Pad = Hud.Pad;
             Hud.OnPause = Pause;
             Hud.OnResume = Resume;
             Hud.OnRetry = () => StartRun(GameSession.CurrentLevelId);

@@ -276,9 +276,8 @@
     "class": "medium",
     "difficulty": 0.58,
     "goal": {
-      "type": "speedrun",
-      "value": 90,
-      "timeSec": 75
+      "type": "reachFloor",
+      "value": 90
     },
     "stars": [
       {
@@ -286,7 +285,7 @@
       },
       {
         "type": "coins",
-        "value": 130
+        "value": 185
       },
       {
         "type": "noRevive"
@@ -490,7 +489,7 @@
       },
       {
         "type": "coins",
-        "value": 345
+        "value": 330
       },
       {
         "type": "noRevive"

@@ -24,6 +24,7 @@ namespace BoingTower.Gameplay
         public bool OverlayOpen { get { return overlay != null; } }
 
         bool mirror;
+        public ControlPad Pad { get; private set; }
 
         /// <summary>Places an element, mirrored horizontally for the left-handed layout.</summary>
         void P(RectTransform rt, Vector2 anchor, Vector2 pos, Vector2 size)
@@ -85,9 +86,10 @@ namespace BoingTower.Gameplay
             timeText = UiKit.AddText(root, "Time", "", 40, Color.white, Align(TextAnchor.UpperLeft));
             P((RectTransform)timeText.transform, new Vector2(0f, 1f), new Vector2(30f, -200f), new Vector2(500f, 60f));
 
-            introText = UiKit.AddText(root, "Intro", session.Region.Name + "\nLevel " + session.Level.Index + "\n" + RunSession.DescribeGoal(session.Spec), 64, Color.white);
-            P((RectTransform)introText.transform, new Vector2(0.5f, 0.5f), new Vector2(0f, 120f), new Vector2(900f, 360f));
-            introTimer = 2.2f;
+            introText = UiKit.AddText(root, "Intro", session.Region.Name + "\nLevel " + session.Level.Index + "\n" + RunSession.DescribeGoal(session.Spec) + "\n\nHold < > to move, tap JUMP", 64, Color.white);
+            P((RectTransform)introText.transform, new Vector2(0.5f, 0.5f), new Vector2(0f, 120f), new Vector2(820f, 460f));
+            Pad = ControlPad.Build(root, art, mirror);
+            introTimer = 3.2f;
         }
 
         int lastRow = -1, lastCoins = -1, lastGems = -1, lastTimeKey = -1, lastCombo2 = -1;

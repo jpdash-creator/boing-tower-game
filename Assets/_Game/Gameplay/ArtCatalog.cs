@@ -3,6 +3,14 @@ using UnityEngine;
 
 namespace BoingTower.Gameplay
 {
+    /// <summary>Measured walkable island of a platform sprite, in the sprite's pixels (Tools/art_pipeline/platform_metrics.py).</summary>
+    [Serializable]
+    public struct PlatformMetric
+    {
+        public float W, H, BodyLeft, BodyRight, SurfaceY, BodyBottom;
+        public bool Valid { get { return W > 0f && BodyRight > BodyLeft; } }
+    }
+
     /// <summary>Sprites of one region. Filled by the editor tool ArtCatalogBuilder from Assets/Art (see Assets/Art/NOTES.md).</summary>
     [Serializable]
     public sealed class RegionArt
@@ -11,6 +19,10 @@ namespace BoingTower.Gameplay
         public string Id;
         public Sprite BgFar, BgMid, BgNear;
         public Sprite Normal, Narrow, Moving, Crumble, Bounce, WallL, WallR;
+        /// <summary>Order: normal, narrow, moving, crumble, bounce.</summary>
+        public PlatformMetric[] Metrics = new PlatformMetric[5];
+        /// <summary>Colours of the code-drawn platform slab (sampled from the tileset art).</summary>
+        public Color PlatTop, PlatSide;
         public Sprite[] Props = new Sprite[0];
         public Sprite[] Signature = new Sprite[0];
     }

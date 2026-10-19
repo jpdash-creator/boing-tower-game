@@ -127,20 +127,12 @@ namespace BoingTower.Simulation.Tests
         }
 
         [Fact]
-        public void SpeedrunTimeHasAtLeastTwentyPercentMarginOverTheSlowestBot()
+        public void NoShippedLevelHasATimedGoal()
         {
             string root = ContentLoader.FindRoot();
             if (root == null) return;
-            int seen = 0;
             foreach (LevelOutcome o in SolvabilityT4Tests.Outcomes())
-            {
-                if (o.Level.Spec.Goal.Type != GoalType.Speedrun) continue;
-                seen++;
-                Assert.True(o.Solve.Solved, o.Level.Id);
-                long limit = (long)o.Level.Spec.Goal.TimeSec * SimConfig.TicksPerSecond;
-                Assert.True(limit * 100 >= (long)o.Solve.Ticks * 120, o.Level.Id + ": bot " + o.Solve.Ticks + " ticks, limit " + limit);
-            }
-            Assert.Equal(5, seen);
+                Assert.NotEqual(GoalType.Speedrun, o.Level.Spec.Goal.Type);
         }
     }
 }
