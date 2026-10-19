@@ -115,13 +115,13 @@ namespace BoingTower.Gameplay
             rt.anchorMax = new Vector2(1f, 1f);
             rt.pivot = new Vector2(0f, 1f);
             rt.offsetMin = new Vector2(190f, yFromTop - height);
-            rt.offsetMax = new Vector2(-370f, yFromTop);
+            rt.offsetMax = new Vector2(-310f, yFromTop);
         }
 
         /// <summary>Wallet: one dark rounded panel at the top-right with three aligned rows (coins, gems, stars): [icon][number].</summary>
         void AddWallet()
         {
-            const float rowH = 84f, panelW = 330f;
+            const float rowH = 84f, panelW = 270f;
             Image panel = UiKit.AddPanel(screen, "WalletPanel", new Color(0.05f, 0.07f, 0.16f, 0.92f));
             UiKit.Place(panel.rectTransform, new Vector2(1f, 1f), new Vector2(-20f, -20f), new Vector2(panelW, rowH * 3f + 30f));
             coinText = WalletRow(panel.transform, 0, art != null ? art.CoinIcon : null, Color.white);
@@ -136,7 +136,7 @@ namespace BoingTower.Gameplay
             Image ic = UiKit.AddImage(parent, "Icon" + row, icon, Color.white);
             UiKit.Place(ic.rectTransform, new Vector2(0f, 1f), new Vector2(22f, y - 8f), new Vector2(68f, 68f));
             Text t = UiKit.AddText(parent, "Value" + row, "", 48, numberColor, TextAnchor.MiddleRight, true);
-            UiKit.Place((RectTransform)t.transform, new Vector2(1f, 1f), new Vector2(-24f, y), new Vector2(200f, 84f));
+            UiKit.Place((RectTransform)t.transform, new Vector2(1f, 1f), new Vector2(-22f, y), new Vector2(140f, 84f));
             return t;
         }
 
