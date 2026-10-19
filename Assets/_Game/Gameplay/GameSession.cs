@@ -40,6 +40,7 @@ namespace BoingTower.Gameplay
         {
             if (Initialized) return;
             PerformanceSettings.Apply();
+            GameSettings.ApplyTextScale();
             Repo = ContentRepository.LoadFromResources();
             Progress = new ProgressService(Repo, new FileSaveStore(Path.Combine(Application.persistentDataPath, "save.json")), PlayableRegions);
             Art = Resources.Load<ArtCatalog>("ArtCatalog");

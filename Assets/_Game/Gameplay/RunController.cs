@@ -137,6 +137,7 @@ namespace BoingTower.Gameplay
             }
             else
             {
+                Haptics.Pulse();
                 Hud.ShowFailed(Session, GameSession.Progress.Gems >= RunSession.ReviveGemCost);
             }
         }

@@ -160,6 +160,23 @@ namespace BoingTower.Gameplay
             return t;
         }
 
+        /// <summary>Deep ink for labels on the glossy button art (white fails 4.5:1 on the pink and cyan buttons).</summary>
+        public static readonly Color ButtonInk = new Color(0.10f, 0.06f, 0.14f, 1f);
+
+        /// <summary>WCAG contrast ratio between two opaque colours (sRGB inputs).</summary>
+        public static float Contrast(Color a, Color b)
+        {
+            float la = Luminance(a), lb = Luminance(b);
+            return (Mathf.Max(la, lb) + 0.05f) / (Mathf.Min(la, lb) + 0.05f);
+        }
+
+        static float Luminance(Color c)
+        {
+            return 0.2126f * Lin(c.r) + 0.7152f * Lin(c.g) + 0.0722f * Lin(c.b);
+        }
+
+        static float Lin(float v) { return v <= 0.03928f ? v / 12.92f : Mathf.Pow((v + 0.055f) / 1.055f, 2.4f); }
+
         public static readonly Color PanelInk = new Color(0.20f, 0.11f, 0.16f, 1f);
 
         /// <summary>Dark ink for text on the light cream popup panels (white text there fails the 4.5:1 contrast rule).</summary>
@@ -199,7 +216,9 @@ namespace BoingTower.Gameplay
             rt.gameObject.AddComponent<A11yLabel>().Text = string.IsNullOrEmpty(label) ? name : label;
             if (!string.IsNullOrEmpty(label))
             {
-                Text t = AddText(rt, "Label", label, fontSize, Color.white);
+                Text t = AddText(rt, "Label", label, fontSize, ButtonInk);
+                var o = t.GetComponent<Outline>();
+                if (o != null) o.enabled = false;
                 Stretch((RectTransform)t.transform);
             }
             return btn;

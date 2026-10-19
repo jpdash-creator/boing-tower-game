@@ -53,6 +53,8 @@ namespace BoingTower.Tests
             foreach (var mc in Object.FindObjectsByType<MetaController>(FindObjectsSortMode.None)) mc.enabled = false;
             UiKit.SafeAreaNormalized = () => new Rect(0f, 0f, 1f, 1f);
             RunView.AspectOverride = 0f;
+            PlayerPrefs.DeleteAll();
+            GameSettings.ApplyTextScale();
             GameSession.Reset();
         }
 
@@ -231,8 +233,15 @@ namespace BoingTower.Tests
         }
 
         [UnityTest]
-        public IEnumerator MetaScreensHaveNoOverlapAndFitEveryAspect()
+        public IEnumerator MetaScreensHaveNoOverlapAndFitEveryAspect() { return MetaAudit(100); }
+
+        /// <summary>CUX-5: every screen must survive the 130 percent text size.</summary>
+        [UnityTest]
+        public IEnumerator MetaScreensSurvive130PercentText() { return MetaAudit(130); }
+
+        IEnumerator MetaAudit(int textPercent)
         {
+            GameSettings.TextPercent = textPercent;
             yield return Load("Meta");
             var meta = Object.FindFirstObjectByType<MetaController>();
             var problems = new List<string>();
@@ -254,8 +263,16 @@ namespace BoingTower.Tests
         }
 
         [UnityTest]
-        public IEnumerator RunScreensHaveNoOverlapAndFitEveryAspect()
+        public IEnumerator RunScreensHaveNoOverlapAndFitEveryAspect() { return RunAudit(100, false); }
+
+        [UnityTest]
+        public IEnumerator RunScreensSurvive130PercentTextAndLeftHandedLayout() { return RunAudit(130, true); }
+
+        IEnumerator RunAudit(int textPercent, bool leftHanded)
         {
+            GameSettings.TextPercent = textPercent;
+            GameSettings.LeftHanded = leftHanded;
+            GameSettings.ReducedMotion = leftHanded;   // the second scenario also exercises reduced motion
             for (int i = 1; i <= 2; i++)
                 GameSession.Progress.ApplyRun("lvl_001_0" + i, new RunOutcome { Completed = true, StarMask = 1, Score = 100, CoinsCollected = 10 });
             GameSession.CurrentLevelId = "lvl_001_03";

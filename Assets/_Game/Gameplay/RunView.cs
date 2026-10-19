@@ -56,6 +56,10 @@ namespace BoingTower.Gameplay
         float prevX, prevY, curX, curY;
         bool wasGrounded = true;
         float squash;   // 0..1 landing squash timer
+        bool reduced;   // reduced-motion setting, read once per run
+        Sprite[] patterns;
+        SpriteRenderer[] cueSr;
+        SpriteRenderer dangerBand;
 
         /// <summary>Tallest supported aspect (9:21 and a margin). Backgrounds and walls are sized for it so any phone is covered.</summary>
         public const float TallestAspect = 0.4f;
@@ -90,6 +94,7 @@ namespace BoingTower.Gameplay
         public void Build(RunSession s, ArtCatalog catalog, Camera camera)
         {
             session = s;
+            reduced = GameSettings.ReducedMotion;
             art = catalog;
             cam = camera;
             region = art != null ? art.ForRegion(s.Region.Index) : null;
@@ -200,6 +205,34 @@ namespace BoingTower.Gameplay
             }
         }
 
+        /// <summary>Procedural 32 x 8 tile used as a non-colour cue: dots (sticky), stripes (slippery), dashes (vanishing), hazard stripes (danger).</summary>
+        static Sprite MakePattern(int kind)
+        {
+            const int w = 32, h = 8;
+            var tex = new Texture2D(w, h, TextureFormat.RGBA32, false);
+            tex.wrapMode = TextureWrapMode.Repeat;
+            tex.filterMode = FilterMode.Point;
+            var px = new Color32[w * h];
+            for (int y = 0; y < h; y++)
+            {
+                for (int x = 0; x < w; x++)
+                {
+                    bool on;
+                    switch (kind)
+                    {
+                        case 0: on = ((x % 16) - 8) * ((x % 16) - 8) + (y - 4) * (y - 4) <= 6; break;           // dots
+                        case 1: on = ((x + y) % 8) < 3; break;                                                    // diagonal stripes
+                        case 2: on = (x % 16) < 9 && y >= 2 && y <= 5; break;                                     // dashes
+                        default: on = ((x + y) % 16) < 8; break;                                                  // hazard stripes
+                    }
+                    px[y * w + x] = on ? new Color32(20, 16, 40, 230) : new Color32(0, 0, 0, 0);
+                }
+            }
+            tex.SetPixels32(px);
+            tex.Apply();
+            return Sprite.Create(tex, new Rect(0, 0, w, h), new Vector2(0.5f, 0.5f), 32f, 0, SpriteMeshType.FullRect);
+        }
+
         static Color PlatformTint(PlatformKind kind)
         {
             switch (kind)
@@ -217,6 +250,7 @@ namespace BoingTower.Gameplay
             platformSr = new SpriteRenderer[plats.Length];
             platformTf = new Transform[plats.Length];
             platformBaseScaleX = new float[plats.Length];
+            cueSr = new SpriteRenderer[plats.Length];
             for (int i = 0; i < plats.Length; i++)
             {
                 Platform p = plats[i];
@@ -241,6 +275,18 @@ namespace BoingTower.Gameplay
                 }
                 platformSr[i] = sr;
                 platformTf[i] = sr.transform;
+
+                // Non-colour cue (CUX-6): a pattern strip on the walking surface.
+                int cue = p.Kind == PlatformKind.Sticky ? 0 : p.Kind == PlatformKind.Slippery ? 1 : p.Kind == PlatformKind.Vanishing ? 2 : -1;
+                if (cue >= 0)
+                {
+                    if (patterns == null) patterns = new Sprite[4];
+                    if (patterns[cue] == null) patterns[cue] = MakePattern(cue);
+                    var c = NewSprite("cue" + p.Id, patterns[cue], 1);
+                    c.drawMode = SpriteDrawMode.Tiled;
+                    c.size = new Vector2(width * 0.8f, 0.25f);
+                    cueSr[i] = c;
+                }
             }
         }
 
@@ -328,6 +374,13 @@ namespace BoingTower.Gameplay
             killZone.color = new Color(1f, 0.1f, 0.2f, 0.28f);
             killLine = NewSprite("DangerLine", white, 31);
             killLine.color = new Color(1f, 0.3f, 0.35f, 0.9f);
+            // Hazard stripes along the line: the danger zone is not signalled by red alone (CUX-6).
+            if (patterns == null) patterns = new Sprite[4];
+            patterns[3] = MakePattern(3);
+            dangerBand = NewSprite("DangerBand", patterns[3], 32);
+            dangerBand.drawMode = SpriteDrawMode.Tiled;
+            dangerBand.size = new Vector2(camHalfW * 2f + 2f, 0.3f);
+            dangerBand.color = new Color(1f, 1f, 1f, 0.8f);
         }
 
         Pop MakePop()
@@ -354,6 +407,7 @@ namespace BoingTower.Gameplay
 
         void Spawn(float x, float y, float size, Color color, float life, float rise, Sprite sprite)
         {
+            if (reduced) return;
             Pop p = pops[nextPop];
             nextPop = (nextPop + 1) % pops.Length;
             p.Age = 0f;
@@ -388,7 +442,7 @@ namespace BoingTower.Gameplay
             float py = Mathf.Lerp(prevY, curY, alpha);
             float vy = s.Vy.F();
             squash = Mathf.Max(0f, squash - deltaTime * 6f);
-            float stretch = 1f + Mathf.Clamp(Mathf.Abs(vy) * 1.6f, 0f, 0.25f) - squash * 0.22f;
+            float stretch = reduced ? 1f : 1f + Mathf.Clamp(Mathf.Abs(vy) * 1.6f, 0f, 0.25f) - squash * 0.22f;
             float h = playerHeight * stretch;
             float widthFactor = 1f / Mathf.Max(0.7f, stretch);
             if (art != null && art.Player != null)
@@ -400,8 +454,8 @@ namespace BoingTower.Gameplay
                 player.localScale = new Vector3(sx * (facing < 0 ? -1f : 1f), sy, 1f);
             }
             player.position = new Vector3(px, py + h * 0.5f, 0f);
-            player.rotation = Quaternion.Euler(0f, 0f, Mathf.Clamp(-s.Vx.F() * 40f, -12f, 12f));
-            playerSr.color = s.Invuln > 0 && (tick / 4) % 2 == 0 ? new Color(1f, 1f, 1f, 0.45f) : Color.white;
+            player.rotation = reduced ? Quaternion.identity : Quaternion.Euler(0f, 0f, Mathf.Clamp(-s.Vx.F() * 40f, -12f, 12f));
+            playerSr.color = s.Invuln > 0 && (reduced || (tick / 10) % 2 == 0) ? new Color(1f, 1f, 1f, 0.55f) : Color.white;
 
             // Platforms (moving ones follow the sim, vanishing ones blink, crumbling ones fade).
             Platform[] plats = session.Data.Platforms;
@@ -418,9 +472,11 @@ namespace BoingTower.Gameplay
                     bool solid = session.Sim.IsSolid(p.Id, tick, s.CrumbleTick);
                     Color c = PlatformTint(p.Kind);
                     c.a = solid ? 1f : 0.2f;
-                    if (p.Kind == PlatformKind.Crumble && s.CrumbleTick[i] >= 0 && solid) c.a = 0.6f + 0.4f * Mathf.Abs(Mathf.Sin(tick * 0.6f));
+                    if (p.Kind == PlatformKind.Crumble && s.CrumbleTick[i] >= 0 && solid) c.a = reduced ? 0.7f : 0.6f + 0.4f * Mathf.Abs(Mathf.Sin(tick * 0.3f));
                     sr.color = c;
+                    if (cueSr[i] != null) cueSr[i].color = new Color(1f, 1f, 1f, c.a);
                 }
+                if (cueSr[i] != null) cueSr[i].transform.position = new Vector3(x, y + 0.14f, 0f);
             }
 
             // Pickups (taken ones hide; coins spin through their frames).
@@ -503,7 +559,7 @@ namespace BoingTower.Gameplay
             for (int i = 0; i < layers.Count; i++)
             {
                 Layer l = layers[i];
-                float scrolled = camY * l.Factor;
+                float scrolled = reduced ? 0f : camY * l.Factor;
                 float offset = Mathf.Repeat(scrolled, l.Height);
                 int baseIdx = Mathf.FloorToInt(scrolled / l.Height);
                 for (int k = 0; k < l.Tiles.Length; k++)
@@ -536,6 +592,7 @@ namespace BoingTower.Gameplay
             killZone.transform.localScale = new Vector3(camHalfW * 2f + 2f, 8f, 1f);
             killLine.transform.position = new Vector3(camHalfW, killY, 0f);
             killLine.transform.localScale = new Vector3(camHalfW * 2f + 2f, 0.08f, 1f);
+            dangerBand.transform.position = new Vector3(camHalfW, killY + 0.19f, 0f);
         }
     }
 }

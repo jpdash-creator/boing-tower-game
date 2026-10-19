@@ -23,47 +23,70 @@ namespace BoingTower.Gameplay
 
         public bool OverlayOpen { get { return overlay != null; } }
 
+        bool mirror;
+
+        /// <summary>Places an element, mirrored horizontally for the left-handed layout.</summary>
+        void P(RectTransform rt, Vector2 anchor, Vector2 pos, Vector2 size)
+        {
+            if (mirror && !Mathf.Approximately(anchor.x, 0.5f)) { anchor.x = 1f - anchor.x; pos.x = -pos.x; }
+            UiKit.Place(rt, anchor, pos, size);
+        }
+
+        TextAnchor Align(TextAnchor a)
+        {
+            if (!mirror) return a;
+            switch (a)
+            {
+                case TextAnchor.UpperLeft: return TextAnchor.UpperRight;
+                case TextAnchor.UpperRight: return TextAnchor.UpperLeft;
+                case TextAnchor.MiddleLeft: return TextAnchor.MiddleRight;
+                case TextAnchor.MiddleRight: return TextAnchor.MiddleLeft;
+                default: return a;
+            }
+        }
+
         public void Build(RunSession session, ArtCatalog catalog)
         {
+            mirror = GameSettings.LeftHanded;
             art = catalog;
             canvas = UiKit.CreateCanvas("RunHud", 10);
             canvas.transform.SetParent(transform, false);
 
             // Dark backing strip: text and icons stay readable over any background art (CUX-5).
-            Image strip = UiKit.AddImage(canvas.transform, "TopBacking", null, new Color(0.05f, 0.07f, 0.14f, 0.5f));
-            UiKit.Place(strip.rectTransform, new Vector2(0.5f, 1f), Vector2.zero, new Vector2(0f, 300f));
+            Image strip = UiKit.AddImage(canvas.transform, "TopBacking", null, new Color(0.05f, 0.07f, 0.14f, 0.72f));
+            P(strip.rectTransform, new Vector2(0.5f, 1f), Vector2.zero, new Vector2(0f, 300f));
             strip.rectTransform.anchorMin = new Vector2(0f, 1f);
             strip.rectTransform.anchorMax = new Vector2(1f, 1f);
             strip.rectTransform.sizeDelta = new Vector2(0f, 300f);
 
             RectTransform root = UiKit.SafeArea(canvas.transform);
 
-            floorText = UiKit.AddText(root, "Floor", "", 46, Color.white, TextAnchor.UpperLeft);
-            UiKit.Place((RectTransform)floorText.transform, new Vector2(0f, 1f), new Vector2(30f, -30f), new Vector2(420f, 60f));
+            floorText = UiKit.AddText(root, "Floor", "", 46, Color.white, Align(TextAnchor.UpperLeft));
+            P((RectTransform)floorText.transform, new Vector2(0f, 1f), new Vector2(30f, -30f), new Vector2(420f, 60f));
 
-            goalText = UiKit.AddText(root, "Goal", RunSession.DescribeGoal(session.Spec), 34, new Color(1f, 0.95f, 0.6f), TextAnchor.UpperLeft);
-            UiKit.Place((RectTransform)goalText.transform, new Vector2(0f, 1f), new Vector2(30f, -92f), new Vector2(700f, 90f));
+            goalText = UiKit.AddText(root, "Goal", RunSession.DescribeGoal(session.Spec), 34, new Color(1f, 0.95f, 0.6f), Align(TextAnchor.UpperLeft));
+            P((RectTransform)goalText.transform, new Vector2(0f, 1f), new Vector2(30f, -92f), new Vector2(700f, 90f));
 
             Image coinIcon = UiKit.AddImage(root, "CoinIcon", art != null ? art.CoinIcon : null, Color.white);
-            UiKit.Place(coinIcon.rectTransform, new Vector2(1f, 1f), new Vector2(-190f, -30f), new Vector2(56f, 56f));
-            coinText = UiKit.AddText(root, "Coins", "0", 46, Color.white, TextAnchor.MiddleLeft);
-            UiKit.Place((RectTransform)coinText.transform, new Vector2(1f, 1f), new Vector2(-30f, -30f), new Vector2(150f, 56f));
+            P(coinIcon.rectTransform, new Vector2(1f, 1f), new Vector2(-190f, -30f), new Vector2(56f, 56f));
+            coinText = UiKit.AddText(root, "Coins", "0", 46, Color.white, Align(TextAnchor.MiddleLeft));
+            P((RectTransform)coinText.transform, new Vector2(1f, 1f), new Vector2(-30f, -30f), new Vector2(150f, 56f));
             Image gemIcon = UiKit.AddImage(root, "GemIcon", art != null ? art.GemIcon : null, Color.white);
-            UiKit.Place(gemIcon.rectTransform, new Vector2(1f, 1f), new Vector2(-190f, -96f), new Vector2(56f, 56f));
-            gemText = UiKit.AddText(root, "Gems", "0", 46, new Color(0.7f, 0.9f, 1f), TextAnchor.MiddleLeft);
-            UiKit.Place((RectTransform)gemText.transform, new Vector2(1f, 1f), new Vector2(-30f, -96f), new Vector2(150f, 56f));
+            P(gemIcon.rectTransform, new Vector2(1f, 1f), new Vector2(-190f, -96f), new Vector2(56f, 56f));
+            gemText = UiKit.AddText(root, "Gems", "0", 46, new Color(0.7f, 0.9f, 1f), Align(TextAnchor.MiddleLeft));
+            P((RectTransform)gemText.transform, new Vector2(1f, 1f), new Vector2(-30f, -96f), new Vector2(150f, 56f));
 
             Button pause = UiKit.AddButton(root, "Pause", "II", art != null ? ArtCatalog.Pick(art.RoundButtons, 0) : null, new Color(1f, 1f, 1f, 0.95f), new Vector2(130f, 130f), () => { if (OnPause != null) OnPause(); }, 48);
-            UiKit.Place((RectTransform)pause.transform, new Vector2(1f, 1f), new Vector2(-30f, -165f), new Vector2(130f, 130f));
+            P((RectTransform)pause.transform, new Vector2(1f, 1f), new Vector2(-30f, -165f), new Vector2(130f, 130f));
 
             comboText = UiKit.AddText(root, "Combo", "", 72, new Color(1f, 0.85f, 0.2f));
-            UiKit.Place((RectTransform)comboText.transform, new Vector2(0.5f, 1f), new Vector2(0f, -260f), new Vector2(700f, 100f));
+            P((RectTransform)comboText.transform, new Vector2(0.5f, 1f), new Vector2(0f, -260f), new Vector2(700f, 100f));
 
-            timeText = UiKit.AddText(root, "Time", "", 40, Color.white, TextAnchor.UpperLeft);
-            UiKit.Place((RectTransform)timeText.transform, new Vector2(0f, 1f), new Vector2(30f, -200f), new Vector2(500f, 60f));
+            timeText = UiKit.AddText(root, "Time", "", 40, Color.white, Align(TextAnchor.UpperLeft));
+            P((RectTransform)timeText.transform, new Vector2(0f, 1f), new Vector2(30f, -200f), new Vector2(500f, 60f));
 
             introText = UiKit.AddText(root, "Intro", session.Region.Name + "\nLevel " + session.Level.Index + "\n" + RunSession.DescribeGoal(session.Spec), 64, Color.white);
-            UiKit.Place((RectTransform)introText.transform, new Vector2(0.5f, 0.5f), new Vector2(0f, 120f), new Vector2(900f, 360f));
+            P((RectTransform)introText.transform, new Vector2(0.5f, 0.5f), new Vector2(0f, 120f), new Vector2(900f, 360f));
             introTimer = 2.2f;
         }
 
@@ -94,7 +117,7 @@ namespace BoingTower.Gameplay
             }
             comboPulse = Mathf.Max(0f, comboPulse - deltaTime * 3f);
             if (st.Combo != lastCombo2) { lastCombo2 = st.Combo; UiKit.SetText(comboText, st.Combo > 1 ? "COMBO x" + st.Combo : ""); }
-            comboText.transform.localScale = Vector3.one * (1f + comboPulse * 0.35f);
+            if (!GameSettings.ReducedMotion) comboText.transform.localScale = Vector3.one * (1f + comboPulse * 0.35f);
 
             if (introTimer > 0f)
             {

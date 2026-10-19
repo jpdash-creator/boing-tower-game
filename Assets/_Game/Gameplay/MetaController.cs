@@ -18,8 +18,8 @@ namespace BoingTower.Gameplay
         // Positions of the five live regions on the map (fractions of the screen), bottom to top, then "coming soon".
         static readonly Vector2[] MapSpots =
         {
-            new Vector2(0.28f, 0.16f), new Vector2(0.70f, 0.27f), new Vector2(0.30f, 0.38f), new Vector2(0.70f, 0.49f), new Vector2(0.32f, 0.60f),
-            new Vector2(0.70f, 0.72f)
+            new Vector2(0.28f, 0.19f), new Vector2(0.70f, 0.302f), new Vector2(0.30f, 0.414f), new Vector2(0.70f, 0.526f), new Vector2(0.32f, 0.638f),
+            new Vector2(0.70f, 0.75f)
         };
 
         ContentRepository repo;
@@ -39,6 +39,7 @@ namespace BoingTower.Gameplay
         void Start()
         {
             GameSession.EnsureInit();
+            GameSettings.ApplyTextScale();
             repo = GameSession.Repo;
             progress = GameSession.Progress;
             art = GameSession.Art;
@@ -62,7 +63,7 @@ namespace BoingTower.Gameplay
 
         void Update()
         {
-            if (momo != null) momo.anchoredPosition = momoBase + new Vector2(0f, Mathf.Sin(Time.unscaledTime * 2.2f) * 22f);
+            if (momo != null && !GameSettings.ReducedMotion) momo.anchoredPosition = momoBase + new Vector2(0f, Mathf.Sin(Time.unscaledTime * 2.2f) * 22f);
         }
 
         // ---------------- helpers ----------------
@@ -79,6 +80,12 @@ namespace BoingTower.Gameplay
             screen = UiKit.SafeArea(screenRoot);
             CurrentScreen = name;
             return screen;
+        }
+
+        static void DropOutline(Text t)
+        {
+            var o = t.GetComponent<Outline>();
+            if (o != null) o.enabled = false;
         }
 
         Sprite Btn(int i) { return art != null ? ArtCatalog.Pick(art.Buttons, i) : null; }
@@ -181,7 +188,7 @@ namespace BoingTower.Gameplay
             int sprite = !playable ? 4 : (!unlocked ? 3 : (cleared >= region.Levels.Count ? 2 : (cleared > 0 ? 1 : 0)));
             Sprite nodeSprite = art != null ? ArtCatalog.Pick(art.MapNodes, sprite) : null;
 
-            Button b = UiKit.AddButton(screen, "Region" + region.Index, "", nodeSprite, Color.white, new Vector2(230f, 230f), () => OnRegionTapped(region), 40);
+            Button b = UiKit.AddButton(screen, "Region" + region.Index, "", nodeSprite, Color.white, new Vector2(200f, 200f), () => OnRegionTapped(region), 40);
             RectTransform rt = (RectTransform)b.transform;
             rt.anchorMin = rt.anchorMax = anchor;
             rt.pivot = new Vector2(0.5f, 0.5f);
@@ -189,22 +196,23 @@ namespace BoingTower.Gameplay
             Image img = b.GetComponent<Image>();
             img.preserveAspect = true;
 
-            Text num = UiKit.AddText(rt, "Num", region.Index.ToString(), 90, Color.white);
+            Text num = UiKit.AddText(rt, "Num", region.Index.ToString(), 90, UiKit.ButtonInk);
+            DropOutline(num);
             UiKit.Stretch((RectTransform)num.transform);
 
             string label = playable ? region.Name + "\n" + stars + " / " + region.Levels.Count * 3 + " stars" : "Coming soon";
-            Image backing = UiKit.AddImage(rt, "NameBacking", null, new Color(0f, 0f, 0f, 0.5f));
+            Image backing = UiKit.AddImage(rt, "NameBacking", null, new Color(0f, 0f, 0f, 0.75f));
             RectTransform brt = backing.rectTransform;
             brt.anchorMin = brt.anchorMax = new Vector2(0.5f, 0f);
             brt.pivot = new Vector2(0.5f, 1f);
             brt.anchoredPosition = new Vector2(0f, -2f);
-            brt.sizeDelta = new Vector2(330f, 96f);
+            brt.sizeDelta = new Vector2(440f, 140f);
             Text name = UiKit.AddText(rt, "Name", label, 38, Color.white);
             RectTransform nrt = (RectTransform)name.transform;
             nrt.anchorMin = nrt.anchorMax = new Vector2(0.5f, 0f);
             nrt.pivot = new Vector2(0.5f, 1f);
             nrt.anchoredPosition = new Vector2(0f, -2f);
-            nrt.sizeDelta = new Vector2(330f, 96f);
+            nrt.sizeDelta = new Vector2(440f, 140f);
         }
 
         public void OnRegionTapped(RegionDef region)
@@ -247,7 +255,7 @@ namespace BoingTower.Gameplay
             Text hdr = UiKit.AddText(screen, "Header", region.Name, 70, Color.white);
             UiKit.Place((RectTransform)hdr.transform, new Vector2(0.5f, 1f), new Vector2(0f, -170f), new Vector2(900f, 100f));
             Text sub = UiKit.AddText(screen, "Sub", progress.StarsInRegion(region) + " / " + region.Levels.Count * 3 + " stars", 44, new Color(1f, 0.92f, 0.5f));
-            UiKit.Place((RectTransform)sub.transform, new Vector2(0.5f, 1f), new Vector2(0f, -260f), new Vector2(600f, 60f));
+            UiKit.Place((RectTransform)sub.transform, new Vector2(0.5f, 1f), new Vector2(0f, -290f), new Vector2(600f, 60f));
 
             List<LevelDef> levels = repo.LevelsOf(region.Id);
             string currentId = null;
@@ -258,7 +266,7 @@ namespace BoingTower.Gameplay
             {
                 LevelDef l = levels[i];
                 int row = i / 3, col = i % 3;
-                AddLevelNode(l, new Vector2(0.2f + 0.3f * col, 0.115f + row * 0.154f), l.Id == currentId);
+                AddLevelNode(l, new Vector2(0.2f + 0.3f * col, 0.115f + row * 0.150f), l.Id == currentId);
             }
         }
 
@@ -284,7 +292,8 @@ namespace BoingTower.Gameplay
             if (isCurrent) rt.localScale = Vector3.one * 1.12f;
             if (unlocked && !boss)
             {
-                Text num = UiKit.AddText(rt, "Num", level.Index.ToString(), 72, Color.white);
+                Text num = UiKit.AddText(rt, "Num", level.Index.ToString(), 72, UiKit.ButtonInk);
+                DropOutline(num);
                 UiKit.Stretch((RectTransform)num.transform);
             }
             if (unlocked && complex && art != null && art.GemIcon != null)
@@ -341,12 +350,34 @@ namespace BoingTower.Gameplay
             Text hdr = UiKit.AddText(screen, "Header", "Settings", 80, Color.white);
             UiKit.Place((RectTransform)hdr.transform, new Vector2(0.5f, 1f), new Vector2(0f, -190f), new Vector2(800f, 110f));
 
-            AddToggle("Sound effects", -400f, () => GameSettings.Sound, v => GameSettings.Sound = v);
-            AddToggle("Music", -590f, () => GameSettings.Music, v => GameSettings.Music = v);
-            AddToggle("Haptics", -780f, () => GameSettings.Haptics, v => GameSettings.Haptics = v);
+            // Backing panel: white labels stay readable over the bright background art (CUX-5).
+            Image rows = UiKit.AddImage(screen, "RowsBacking", null, new Color(0.05f, 0.07f, 0.16f, 0.72f));
+            rows.rectTransform.anchorMin = new Vector2(0f, 1f);
+            rows.rectTransform.anchorMax = new Vector2(1f, 1f);
+            rows.rectTransform.pivot = new Vector2(0.5f, 1f);
+            rows.rectTransform.anchoredPosition = new Vector2(0f, -340f);
+            rows.rectTransform.sizeDelta = new Vector2(-30f, 1090f);
+            AddToggle("Sound effects", -380f, () => GameSettings.Sound, v => GameSettings.Sound = v);
+            AddToggle("Music", -545f, () => GameSettings.Music, v => GameSettings.Music = v);
+            AddToggle("Haptics", -710f, () => GameSettings.Haptics, v => GameSettings.Haptics = v);
+            AddToggle("Reduced motion", -875f, () => GameSettings.ReducedMotion, v => GameSettings.ReducedMotion = v);
+            AddToggle("Left-handed", -1040f, () => GameSettings.LeftHanded, v => GameSettings.LeftHanded = v);
+            AddTextSize(-1205f);
 
             Button reset = UiKit.AddButton(screen, "Reset", "Reset progress", Btn(1), new Color(1f, 0.6f, 0.6f), new Vector2(560f, 130f), ConfirmReset, 46);
-            UiKit.Place((RectTransform)reset.transform, new Vector2(0.5f, 0f), new Vector2(0f, 60f), new Vector2(560f, 130f));
+            UiKit.Place((RectTransform)reset.transform, new Vector2(0.5f, 0f), new Vector2(0f, 40f), new Vector2(560f, 130f));
+        }
+
+        void AddTextSize(float yFromTop)
+        {
+            Text t = UiKit.AddText(screen, "Text size", "Text size", 54, Color.white, TextAnchor.MiddleLeft);
+            UiKit.Place((RectTransform)t.transform, new Vector2(0f, 1f), new Vector2(70f, yFromTop), new Vector2(520f, 130f));
+            Button b = UiKit.AddButton(screen, "TextSizeButton", GameSettings.TextPercent + "%", Btn(0), Color.white, new Vector2(240f, 130f), () =>
+            {
+                GameSettings.NextTextPercent();
+                ShowSettings();   // rebuild so the new size applies to every label
+            }, 48);
+            UiKit.Place((RectTransform)b.transform, new Vector2(1f, 1f), new Vector2(-70f, yFromTop), new Vector2(240f, 130f));
         }
 
         void AddToggle(string label, float yFromTop, Func<bool> get, Action<bool> set)
@@ -387,14 +418,14 @@ namespace BoingTower.Gameplay
             Sprite panel = art != null ? ArtCatalog.Pick(art.Popup, 0) ?? ArtCatalog.Pick(art.Panels, 0) : null;
             Image frame = UiKit.AddImage(popup, "Panel", panel, panel != null ? Color.white : new Color(0.1f, 0.12f, 0.2f, 0.96f));
             frame.preserveAspect = false;
-            UiKit.Place(frame.rectTransform, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(860f, 1060f));
+            UiKit.Place(frame.rectTransform, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(860f, 1180f));
             frame.rectTransform.pivot = new Vector2(0.5f, 0.5f);
             Text t = UiKit.AddText(frame.transform, "Title", title, 72, Color.white);
-            UiKit.Place((RectTransform)t.transform, new Vector2(0.5f, 1f), new Vector2(0f, -50f), new Vector2(560f, 170f));
+            UiKit.Place((RectTransform)t.transform, new Vector2(0.5f, 1f), new Vector2(0f, -50f), new Vector2(560f, 230f));
             Text b = UiKit.AddText(frame.transform, "Body", body, 44, Color.white);
             UiKit.OnPanel(b);
             UiKit.AddHitArea(frame.transform, "CloseMark", "Close", new Vector2(1f, 1f), new Vector2(-10f, 10f), new Vector2(140f, 140f), ClosePopup);
-            UiKit.Place((RectTransform)b.transform, new Vector2(0.5f, 1f), new Vector2(0f, -250f), new Vector2(740f, 380f));
+            UiKit.Place((RectTransform)b.transform, new Vector2(0.5f, 1f), new Vector2(0f, -300f), new Vector2(740f, 460f));
         }
 
         Button PopupButton(string label, Sprite sprite, Color tint, float y, Action action)
