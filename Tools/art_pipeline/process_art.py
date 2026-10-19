@@ -75,13 +75,22 @@ def key_image(rgb, global_key=False):
     return rgba, bg
 
 
-def split_sheet(rgba):
+# Hand-measured crop boxes (x0, y0, x1, y1 in the source image) for sheets whose pieces have loose parts (falling chips, springs)
+# that automatic splitting cannot attribute. Order = sprite order.
+MANUAL_BOXES = {
+    "reg001_platforms": [(90, 190, 895, 470), (965, 228, 1570, 423), (1645, 228, 2210, 435),
+                         (85, 775, 920, 1185), (905, 800, 1625, 1090), (1650, 800, 2200, 1210)],
+}
+MERGE_GAP_BY_ASSET = {}
+
+
+def split_sheet(rgba, merge_gap=None):
     """Returns a list of (bbox, sprite RGBA) ordered row-major."""
     alpha = rgba[:, :, 3]
     solid = alpha > 128
     area_min = max(2500, int(solid.size * 0.0007))
     d = ndi.distance_transform_edt(~solid)
-    merged = d <= MERGE_GAP
+    merged = d <= (merge_gap or MERGE_GAP)
     lab, n = ndi.label(merged)
     objs = ndi.find_objects(lab)
     sprites = []
@@ -184,11 +193,21 @@ def process(asset_id, entry):
         Image.fromarray(out).save(os.path.join(outdir, asset_id + ".png"))
         report["sprites"].append({"file": asset_id + ".png", "w": int(out.shape[1]), "h": int(out.shape[0])})
     else:
-        found = split_sheet(rgba)
+        if asset_id in MANUAL_BOXES:
+            found = []
+            for x0, y0, x1, y1 in MANUAL_BOXES[asset_id]:
+                crop = rgba[y0:y1, x0:x1].copy()
+                ys, xs = np.nonzero(crop[:, :, 3] > 8)
+                cy0, cy1, cx0, cx1 = max(0, ys.min() - PAD), min(crop.shape[0], ys.max() + 1 + PAD), max(0, xs.min() - PAD), min(crop.shape[1], xs.max() + 1 + PAD)
+                found.append(((x0 + cx0, y0 + cy0, cx1 - cx0, cy1 - cy0), crop[cy0:cy1, cx0:cx1]))
+        else:
+            found = split_sheet(rgba, MERGE_GAP_BY_ASSET.get(asset_id))
         want = EXPECTED.get(asset_id)
         while want and len(found) < want:
             widest = max(range(len(found)), key=lambda i: found[i][0][2] * found[i][0][3])
             found = found[:widest] + split_at_valley(found[widest]) + found[widest + 1:]
+        if asset_id.endswith("_platforms"):
+            found = found[:6]   # the 6 pieces; the colour swatches at the bottom of the sheet are not sprites
         for n, (bbox, crop) in enumerate(found, start=1):
             name = "%s_%02d.png" % (asset_id, n)
             Image.fromarray(crop).save(os.path.join(outdir, name))

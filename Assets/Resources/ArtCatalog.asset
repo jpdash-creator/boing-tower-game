@@ -25,6 +25,52 @@ MonoBehaviour:
     Bounce: {fileID: 21300000, guid: 36bce2f08a31ac24f84d1fa7b9b5a066, type: 3}
     WallL: {fileID: 21300000, guid: 999ec4f3f10e13c47b8981bced281b57, type: 3}
     WallR: {fileID: 21300000, guid: 67c8b414deb4f3f49901854dbe04c1e3, type: 3}
+    Pieces:
+    - {fileID: 21300000, guid: 8ba9a81972ad8d9498c2870f356b8206, type: 3}
+    - {fileID: 21300000, guid: ce12e8177be0578438ce268ba4107170, type: 3}
+    - {fileID: 21300000, guid: 161dff4b178a3c84e80c80833eb4a8c1, type: 3}
+    - {fileID: 21300000, guid: 0e9415c4a2f94624d829fa44efbcaa11, type: 3}
+    - {fileID: 21300000, guid: 9ca29d678cd97cb46a50b12e1afe93c2, type: 3}
+    - {fileID: 21300000, guid: 76fba93afa68800418e71226ac42640f, type: 3}
+    PieceMetrics:
+    - W: 786
+      H: 248
+      BodyLeft: 14
+      BodyRight: 769
+      SurfaceY: 59
+      BodyBottom: 227
+    - W: 584
+      H: 185
+      BodyLeft: 15
+      BodyRight: 567
+      SurfaceY: 51
+      BodyBottom: 168
+    - W: 547
+      H: 192
+      BodyLeft: 13
+      BodyRight: 531
+      SurfaceY: 51
+      BodyBottom: 171
+    - W: 813
+      H: 388
+      BodyLeft: 14
+      BodyRight: 797
+      SurfaceY: 57
+      BodyBottom: 209
+    - W: 704
+      H: 256
+      BodyLeft: 17
+      BodyRight: 685
+      SurfaceY: 56
+      BodyBottom: 207
+    - W: 539
+      H: 379
+      BodyLeft: 12
+      BodyRight: 526
+      SurfaceY: 49
+      BodyBottom: 160
+    WallTileL: {fileID: 21300000, guid: 4ac2f7f0d37fdef4a954ac099dba5680, type: 3}
+    WallTileR: {fileID: 21300000, guid: 1ab090affd2130e499e998621191fdbb, type: 3}
     Metrics:
     - W: 623
       H: 231
@@ -83,6 +129,10 @@ MonoBehaviour:
     Bounce: {fileID: 21300000, guid: 09ceff3e435e86e4ba2f70ca638c4891, type: 3}
     WallL: {fileID: 21300000, guid: da742c6a074bfcc4b909f02597ae1cb8, type: 3}
     WallR: {fileID: 21300000, guid: ad5028cc10632684fb22291f3572a88a, type: 3}
+    Pieces: []
+    PieceMetrics: []
+    WallTileL: {fileID: 21300000, guid: 8d8c416ac7b93b44583898454228c7f1, type: 3}
+    WallTileR: {fileID: 21300000, guid: 7f7d14f9a053137469f12c4f5ea4b75e, type: 3}
     Metrics:
     - W: 1210
       H: 159
@@ -143,6 +193,10 @@ MonoBehaviour:
     Bounce: {fileID: 21300000, guid: 4c32f6e92a1479444b93b3f624a407d7, type: 3}
     WallL: {fileID: 21300000, guid: a4e6c881415985140bf32e3462d8a72a, type: 3}
     WallR: {fileID: 21300000, guid: 818a382e3cb00054a8a16e274ecd5865, type: 3}
+    Pieces: []
+    PieceMetrics: []
+    WallTileL: {fileID: 21300000, guid: 34b4381e3cab5384889368ac44811ad8, type: 3}
+    WallTileR: {fileID: 21300000, guid: a76bf2aeeb1c41d4088ab6064f1ce63c, type: 3}
     Metrics:
     - W: 562
       H: 167
@@ -202,6 +256,10 @@ MonoBehaviour:
     Bounce: {fileID: 21300000, guid: 158c6b92974499d46b4f21665456a859, type: 3}
     WallL: {fileID: 21300000, guid: e85f96a09999b2148a727b8489267921, type: 3}
     WallR: {fileID: 21300000, guid: e608a68b7ce327c4782353b0cf23d8fe, type: 3}
+    Pieces: []
+    PieceMetrics: []
+    WallTileL: {fileID: 21300000, guid: 5d8a89bdb8b571b4f9555a35fcf118b2, type: 3}
+    WallTileR: {fileID: 21300000, guid: fe1e8e12f65524845abe30fbe057b9f8, type: 3}
     Metrics:
     - W: 926
       H: 214
@@ -261,6 +319,10 @@ MonoBehaviour:
     Bounce: {fileID: 21300000, guid: 9671a7f0527abc9479fde5f0cd931712, type: 3}
     WallL: {fileID: 21300000, guid: 2aa44ed0b8867de4c8fa27db206d6fa9, type: 3}
     WallR: {fileID: 21300000, guid: 8a9c932ce50e75f4095b2c4a5f4d54a8, type: 3}
+    Pieces: []
+    PieceMetrics: []
+    WallTileL: {fileID: 21300000, guid: 2304a807df8213b40b5ac04d7be1d668, type: 3}
+    WallTileR: {fileID: 21300000, guid: 09a30e00bfe8b7a4899cf46086280093, type: 3}
     Metrics:
     - W: 905
       H: 128

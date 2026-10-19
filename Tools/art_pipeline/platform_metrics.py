@@ -83,7 +83,52 @@ def make_strip(path, m, out_path):
             "surfaceY": int(m["surfaceY"] - top), "bodyBottom": int(n)}
 
 
+def make_wall_tile(path, out_path):
+    """Seamless vertical wall tile: the straight middle band of the wall piece, mirrored once so the join is invisible. No end caps, no gaps."""
+    im = Image.open(path).convert("RGBA")
+    a = np.asarray(im)[:, :, 3] > 128
+    rows = np.nonzero(a.any(axis=1))[0]
+    top, bottom = rows.min(), rows.max()
+    h = bottom - top
+    band = im.crop((0, int(top + 0.38 * h), im.width, int(top + 0.62 * h)))
+    flipped = band.transpose(Image.FLIP_TOP_BOTTOM)
+    tile = Image.new("RGBA", (band.width, band.height * 2))
+    tile.paste(band, (0, 0))
+    tile.paste(flipped, (0, band.height))
+    # crop to the opaque columns so the tile is as wide as the wall itself
+    cols = np.nonzero((np.asarray(tile)[:, :, 3] > 128).any(axis=0))[0]
+    tile = tile.crop((int(cols.min()), 0, int(cols.max()) + 1, tile.height))
+    os.makedirs(os.path.dirname(out_path), exist_ok=True)
+    tile.save(out_path)
+    return {"file": "plat/%s" % os.path.basename(out_path), "w": tile.width, "h": tile.height}
+
+
+PIECE_KINDS = ["long", "medium", "short", "crumble", "moving", "bounce"]
+THICKNESS_WORLD = 0.5   # world units from the walking surface to the bottom of the body (all pieces share it)
+
+
+def process_set(d):
+    """For a hand-sliced '<id>_platforms' folder: measures each piece and writes platform_set.json (ppu, 9-slice borders, surface line)."""
+    pieces = []
+    for n, kind in enumerate(PIECE_KINDS, start=1):
+        f = os.path.join(d, os.path.basename(d) + "_%02d.png" % n)
+        if not os.path.exists(f):
+            continue
+        m = measure(f)
+        bw = m["bodyRight"] - m["bodyLeft"]
+        m.update({"kind": kind, "file": os.path.basename(f),
+                  "ppu": round((m["bodyBottom"] - m["surfaceY"]) / THICKNESS_WORLD, 2),
+                  "borderL": int(m["bodyLeft"] + 0.2 * bw), "borderR": int(m["w"] - m["bodyRight"] + 0.2 * bw)})
+        pieces.append(m)
+    with open(os.path.join(d, "platform_set.json"), "w", encoding="utf-8") as fh:
+        json.dump({"asset": os.path.basename(d), "thickness": THICKNESS_WORLD, "pieces": pieces}, fh, indent=2)
+        fh.write("\n")
+    print(os.path.basename(d), [(p["kind"], p["ppu"]) for p in pieces])
+
+
 def main():
+    for pdir in sorted(glob.glob(os.path.join(ROOT, "Assets", "Art", "Regions", "*", "tiles", "*_platforms"))):
+        process_set(pdir)
     debug = sys.argv[sys.argv.index("--debug") + 1] if "--debug" in sys.argv else None
     for tmap in sorted(glob.glob(os.path.join(ROOT, "Assets", "Art", "Regions", "*", "tiles", "*", "tileset_map.json"))):
         d = os.path.dirname(tmap)
@@ -112,6 +157,11 @@ def main():
                 dr.rectangle([m["bodyLeft"], m["surfaceY"], m["bodyRight"], m["bodyBottom"]], outline=(255, 0, 0, 255), width=3)
                 dr.line([0, m["surfaceY"], m["w"], m["surfaceY"]], fill=(0, 0, 255, 255), width=3)
                 bg.convert("RGB").save(os.path.join(debug, "%s_%s.png" % (asset, kind)))
+        out["walls"] = {}
+        for side, key in (("L", "wallL"), ("R", "wallR")):
+            idx = info.get(key)
+            if idx:
+                out["walls"][side] = make_wall_tile(os.path.join(d, "%s_%02d.png" % (asset, idx)), os.path.join(d, "plat", "%s_wall%s_tile.png" % (asset, side)))
         with open(os.path.join(d, "surface.json"), "w", encoding="utf-8", newline="\n") as fh:
             json.dump(out, fh, indent=2)
             fh.write("\n")

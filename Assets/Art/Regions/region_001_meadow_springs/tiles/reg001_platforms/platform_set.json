@@ -1,0 +1,84 @@
+{
+  "asset": "reg001_platforms",
+  "thickness": 0.5,
+  "pieces": [
+    {
+      "w": 786,
+      "h": 248,
+      "bodyLeft": 14,
+      "bodyRight": 769,
+      "surfaceY": 59,
+      "bodyBottom": 227,
+      "kind": "long",
+      "file": "reg001_platforms_01.png",
+      "ppu": 336.0,
+      "borderL": 165,
+      "borderR": 168
+    },
+    {
+      "w": 584,
+      "h": 185,
+      "bodyLeft": 15,
+      "bodyRight": 567,
+      "surfaceY": 51,
+      "bodyBottom": 168,
+      "kind": "medium",
+      "file": "reg001_platforms_02.png",
+      "ppu": 234.0,
+      "borderL": 125,
+      "borderR": 127
+    },
+    {
+      "w": 547,
+      "h": 192,
+      "bodyLeft": 13,
+      "bodyRight": 531,
+      "surfaceY": 51,
+      "bodyBottom": 171,
+      "kind": "short",
+      "file": "reg001_platforms_03.png",
+      "ppu": 240.0,
+      "borderL": 116,
+      "borderR": 119
+    },
+    {
+      "w": 813,
+      "h": 388,
+      "bodyLeft": 14,
+      "bodyRight": 797,
+      "surfaceY": 57,
+      "bodyBottom": 209,
+      "kind": "crumble",
+      "file": "reg001_platforms_04.png",
+      "ppu": 304.0,
+      "borderL": 170,
+      "borderR": 172
+    },
+    {
+      "w": 704,
+      "h": 256,
+      "bodyLeft": 17,
+      "bodyRight": 685,
+      "surfaceY": 56,
+      "bodyBottom": 207,
+      "kind": "moving",
+      "file": "reg001_platforms_05.png",
+      "ppu": 302.0,
+      "borderL": 150,
+      "borderR": 152
+    },
+    {
+      "w": 539,
+      "h": 379,
+      "bodyLeft": 12,
+      "bodyRight": 526,
+      "surfaceY": 49,
+      "bodyBottom": 160,
+      "kind": "bounce",
+      "file": "reg001_platforms_06.png",
+      "ppu": 222.0,
+      "borderL": 114,
+      "borderR": 115
+    }
+  ]
+}

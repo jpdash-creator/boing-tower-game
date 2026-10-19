@@ -75,6 +75,7 @@ namespace BoingTower.Gameplay
             momo = null;
             coinText = null;
             gemText = null;
+            starText = null;
             screenRoot = UiKit.Rect(canvas.transform, name);
             UiKit.Stretch(screenRoot);
             screen = UiKit.SafeArea(screenRoot);
@@ -105,30 +106,59 @@ namespace BoingTower.Gameplay
             }
         }
 
+        Text starText;
+
+        /// <summary>Wallet: one dark rounded panel at the top-right with three aligned rows (coins, gems, stars): [icon][number].</summary>
         void AddWallet()
         {
-            // [icon][number], right-aligned block: number box 190 px wide, icon directly left of it.
-            Image coinIcon = UiKit.AddImage(screen, "CoinIcon", art != null ? art.CoinIcon : null, Color.white);
-            UiKit.Place(coinIcon.rectTransform, new Vector2(1f, 1f), new Vector2(-230f, -30f), new Vector2(64f, 64f));
-            coinText = UiKit.AddText(screen, "Coins", "", 48, Color.white, TextAnchor.MiddleLeft);
-            UiKit.Place((RectTransform)coinText.transform, new Vector2(1f, 1f), new Vector2(-30f, -30f), new Vector2(190f, 64f));
-            Image gemIcon = UiKit.AddImage(screen, "GemIcon", art != null ? art.GemIcon : null, Color.white);
-            UiKit.Place(gemIcon.rectTransform, new Vector2(1f, 1f), new Vector2(-230f, -104f), new Vector2(64f, 64f));
-            gemText = UiKit.AddText(screen, "Gems", "", 48, new Color(0.7f, 0.9f, 1f), TextAnchor.MiddleLeft);
-            UiKit.Place((RectTransform)gemText.transform, new Vector2(1f, 1f), new Vector2(-30f, -104f), new Vector2(190f, 64f));
+            const float rowH = 84f, panelW = 330f;
+            Image panel = UiKit.AddPanel(screen, "WalletPanel", new Color(0.05f, 0.07f, 0.16f, 0.78f));
+            UiKit.Place(panel.rectTransform, new Vector2(1f, 1f), new Vector2(-20f, -20f), new Vector2(panelW, rowH * 3f + 30f));
+            coinText = WalletRow(panel.transform, 0, art != null ? art.CoinIcon : null, Color.white);
+            gemText = WalletRow(panel.transform, 1, art != null ? art.GemIcon : null, new Color(0.75f, 0.92f, 1f));
+            starText = WalletRow(panel.transform, 2, art != null ? art.StarFilled : null, new Color(1f, 0.92f, 0.5f));
             RefreshWallet();
+        }
+
+        Text WalletRow(Transform parent, int row, Sprite icon, Color numberColor)
+        {
+            float y = -15f - row * 84f;
+            Image ic = UiKit.AddImage(parent, "Icon" + row, icon, Color.white);
+            UiKit.Place(ic.rectTransform, new Vector2(0f, 1f), new Vector2(22f, y - 8f), new Vector2(68f, 68f));
+            Text t = UiKit.AddText(parent, "Value" + row, "", 48, numberColor, TextAnchor.MiddleRight, true);
+            UiKit.Place((RectTransform)t.transform, new Vector2(1f, 1f), new Vector2(-24f, y), new Vector2(200f, 84f));
+            return t;
         }
 
         void RefreshWallet()
         {
             if (coinText != null) UiKit.SetText(coinText, progress.Coins.ToString());
             if (gemText != null) UiKit.SetText(gemText, progress.Gems.ToString());
+            if (starText != null)
+            {
+                int stars = 0;
+                for (int i = 1; i <= GameSession.PlayableRegions; i++)
+                {
+                    RegionDef r = repo.TryGetRegionByIndex(i);
+                    if (r != null) stars += progress.StarsInRegion(r);
+                }
+                UiKit.SetText(starText, stars.ToString());
+            }
         }
 
+        /// <summary>Round icon button at the top-left (home or back arrow): no text, with an accessibility label.</summary>
         void AddBack(string label, Action action)
         {
-            Button b = UiKit.AddButton(screen, "Back", label, Btn(2), new Color(1f, 1f, 1f, 0.95f), new Vector2(260f, 130f), action, 44);
-            UiKit.Place((RectTransform)b.transform, new Vector2(0f, 1f), new Vector2(20f, -20f), new Vector2(260f, 130f));
+            int icon = label == "Menu" ? 2 : 3;   // round buttons: 2 = home, 3 = back arrow
+            Sprite sprite = art != null ? ArtCatalog.Pick(art.RoundButtons, icon) : null;
+            Button b = UiKit.AddButton(screen, "Back", "", sprite, Color.white, new Vector2(150f, 150f), action, 40);
+            b.GetComponent<A11yLabel>().Text = label;
+            UiKit.Place((RectTransform)b.transform, new Vector2(0f, 1f), new Vector2(20f, -20f), new Vector2(150f, 150f));
+            if (sprite == null)
+            {
+                Text t = UiKit.AddText(b.transform, "Fallback", label, 40, UiKit.ButtonInk);
+                UiKit.Stretch((RectTransform)t.transform);
+            }
         }
 
         // ---------------- main menu ----------------
@@ -165,8 +195,8 @@ namespace BoingTower.Gameplay
             Background(art != null ? art.MapBackground : null, new Color(0.1f, 0.14f, 0.25f, 1f));
             AddWallet();
             AddBack("Menu", ShowMenu);
-            Text hdr = UiKit.AddText(screen, "Header", "World map", 64, Color.white);
-            UiKit.Place((RectTransform)hdr.transform, new Vector2(0.5f, 1f), new Vector2(0f, -170f), new Vector2(600f, 90f));
+            Text hdr = UiKit.AddText(screen, "Header", "World map", 64, Color.white, TextAnchor.MiddleLeft);
+            UiKit.Place((RectTransform)hdr.transform, new Vector2(0f, 1f), new Vector2(190f, -30f), new Vector2(520f, 130f));
 
             for (int i = 0; i < MapSpots.Length; i++)
             {
@@ -250,10 +280,10 @@ namespace BoingTower.Gameplay
             Background(ra != null ? ra.BgFar : null, new Color(0.1f, 0.14f, 0.25f, 1f));
             AddWallet();
             AddBack("Map", ShowMap);
-            Text hdr = UiKit.AddText(screen, "Header", region.Name, 70, Color.white);
-            UiKit.Place((RectTransform)hdr.transform, new Vector2(0.5f, 1f), new Vector2(0f, -170f), new Vector2(900f, 100f));
-            Text sub = UiKit.AddText(screen, "Sub", progress.StarsInRegion(region) + " / " + region.Levels.Count * 3 + " stars", 44, new Color(1f, 0.92f, 0.5f));
-            UiKit.Place((RectTransform)sub.transform, new Vector2(0.5f, 1f), new Vector2(0f, -290f), new Vector2(600f, 60f));
+            Text hdr = UiKit.AddText(screen, "Header", region.Name, 56, Color.white, TextAnchor.MiddleLeft);
+            UiKit.Place((RectTransform)hdr.transform, new Vector2(0f, 1f), new Vector2(190f, -20f), new Vector2(520f, 180f));
+            Text sub = UiKit.AddText(screen, "Sub", progress.StarsInRegion(region) + " / " + region.Levels.Count * 3 + " stars", 44, new Color(1f, 0.92f, 0.5f), TextAnchor.MiddleLeft);
+            UiKit.Place((RectTransform)sub.transform, new Vector2(0f, 1f), new Vector2(190f, -205f), new Vector2(520f, 60f));
 
             List<LevelDef> levels = repo.LevelsOf(region.Id);
             string currentId = null;
@@ -264,7 +294,7 @@ namespace BoingTower.Gameplay
             {
                 LevelDef l = levels[i];
                 int row = i / 3, col = i % 3;
-                AddLevelNode(l, new Vector2(0.2f + 0.3f * col, 0.115f + row * 0.150f), l.Id == currentId);
+                AddLevelNode(l, new Vector2(0.2f + 0.3f * col, 0.115f + row * 0.143f), l.Id == currentId);
             }
         }
 
@@ -369,7 +399,7 @@ namespace BoingTower.Gameplay
         void AddTextSize(float yFromTop)
         {
             Text t = UiKit.AddText(screen, "Text size", "Text size", 54, Color.white, TextAnchor.MiddleLeft);
-            UiKit.Place((RectTransform)t.transform, new Vector2(0f, 1f), new Vector2(70f, yFromTop), new Vector2(520f, 130f));
+            UiKit.Place((RectTransform)t.transform, new Vector2(0f, 1f), new Vector2(70f, yFromTop), new Vector2(470f, 130f));
             Button b = UiKit.AddButton(screen, "TextSizeButton", GameSettings.TextPercent + "%", Btn(0), Color.white, new Vector2(240f, 130f), () =>
             {
                 GameSettings.NextTextPercent();
@@ -381,7 +411,7 @@ namespace BoingTower.Gameplay
         void AddToggle(string label, float yFromTop, Func<bool> get, Action<bool> set)
         {
             Text t = UiKit.AddText(screen, label, label, 54, Color.white, TextAnchor.MiddleLeft);
-            UiKit.Place((RectTransform)t.transform, new Vector2(0f, 1f), new Vector2(70f, yFromTop), new Vector2(520f, 130f));
+            UiKit.Place((RectTransform)t.transform, new Vector2(0f, 1f), new Vector2(70f, yFromTop), new Vector2(470f, 130f));
             Button b = null;
             b = UiKit.AddButton(screen, label + "Toggle", get() ? "ON" : "OFF", Btn(get() ? 1 : 2), Color.white, new Vector2(240f, 130f), () =>
             {

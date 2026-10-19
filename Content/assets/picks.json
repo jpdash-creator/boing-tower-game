@@ -594,6 +594,12 @@
       "sourceCandidate": "Art/_candidates/vfx_wall_spark/1.png",
       "priority": "Medium",
       "owner_verified": true
+    },
+    "reg001_platforms": {
+      "pick": 1,
+      "sourceCandidate": "Art/_candidates/reg001_platforms/1.png",
+      "finalPath": "Assets/Art/Regions/region_001_meadow_springs/tiles/reg001_platforms.png",
+      "note": "T25 owner-approved region-1 pilot; default pick 1 (thin, consistent) pending owner verification"
     }
   }
 }

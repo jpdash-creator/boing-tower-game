@@ -100,6 +100,22 @@ namespace BoingTower.Editor
             ra.Crumble = Idx(t, (int)map["crumble"]);
             ra.Bounce = Idx(t, (int)map["bounce"]);
             ra.WallL = Idx(t, (int)map["wallL"]);
+            string setDir = regionDir + "/tiles/reg00" + r + "_platforms";
+            if (Directory.Exists(setDir) && File.Exists(setDir + "/platform_set.json"))
+            {
+                JArray pcs = (JArray)JObject.Parse(File.ReadAllText(setDir + "/platform_set.json"))["pieces"];
+                ra.Pieces = new Sprite[pcs.Count];
+                ra.PieceMetrics = new PlatformMetric[pcs.Count];
+                for (int k = 0; k < pcs.Count; k++)
+                {
+                    ra.Pieces[k] = AssetDatabase.LoadAssetAtPath<Sprite>(setDir + "/" + (string)pcs[k]["file"]);
+                    ra.PieceMetrics[k] = new PlatformMetric
+                    {
+                        W = (float)pcs[k]["w"], H = (float)pcs[k]["h"], BodyLeft = (float)pcs[k]["bodyLeft"], BodyRight = (float)pcs[k]["bodyRight"],
+                        SurfaceY = (float)pcs[k]["surfaceY"], BodyBottom = (float)pcs[k]["bodyBottom"]
+                    };
+                }
+            }
             string surfacePath = tiles + "/surface.json";
             if (File.Exists(surfacePath))
             {
@@ -125,6 +141,12 @@ namespace BoingTower.Editor
                         W = (float)m["w"], H = (float)m["h"], BodyLeft = (float)m["bodyLeft"], BodyRight = (float)m["bodyRight"],
                         SurfaceY = (float)m["surfaceY"], BodyBottom = (float)m["bodyBottom"]
                     };
+                }
+                JToken walls = root["walls"];
+                if (walls != null)
+                {
+                    if (walls["L"] != null) ra.WallTileL = AssetDatabase.LoadAssetAtPath<Sprite>(tiles + "/" + (string)walls["L"]["file"]);
+                    if (walls["R"] != null) ra.WallTileR = AssetDatabase.LoadAssetAtPath<Sprite>(tiles + "/" + (string)walls["R"]["file"]);
                 }
                 if (strips[0] != null) ra.Normal = strips[0];
                 if (strips[1] != null) ra.Narrow = strips[1];

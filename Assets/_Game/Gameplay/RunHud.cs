@@ -62,19 +62,19 @@ namespace BoingTower.Gameplay
 
             RectTransform root = UiKit.SafeArea(canvas.transform);
 
-            floorText = UiKit.AddText(root, "Floor", "", 46, Color.white, Align(TextAnchor.UpperLeft));
+            floorText = UiKit.AddText(root, "Floor", "", 46, Color.white, Align(TextAnchor.UpperLeft), true);
             P((RectTransform)floorText.transform, new Vector2(0f, 1f), new Vector2(30f, -30f), new Vector2(420f, 60f));
 
             goalText = UiKit.AddText(root, "Goal", RunSession.DescribeGoal(session.Spec), 34, new Color(1f, 0.95f, 0.6f), Align(TextAnchor.UpperLeft));
-            P((RectTransform)goalText.transform, new Vector2(0f, 1f), new Vector2(30f, -92f), new Vector2(700f, 90f));
+            P((RectTransform)goalText.transform, new Vector2(0f, 1f), new Vector2(30f, -112f), new Vector2(700f, 90f));
 
             Image coinIcon = UiKit.AddImage(root, "CoinIcon", art != null ? art.CoinIcon : null, Color.white);
             P(coinIcon.rectTransform, new Vector2(1f, 1f), new Vector2(-190f, -30f), new Vector2(56f, 56f));
-            coinText = UiKit.AddText(root, "Coins", "0", 46, Color.white, Align(TextAnchor.MiddleLeft));
+            coinText = UiKit.AddText(root, "Coins", "0", 46, Color.white, Align(TextAnchor.MiddleLeft), true);
             P((RectTransform)coinText.transform, new Vector2(1f, 1f), new Vector2(-30f, -30f), new Vector2(150f, 56f));
             Image gemIcon = UiKit.AddImage(root, "GemIcon", art != null ? art.GemIcon : null, Color.white);
             P(gemIcon.rectTransform, new Vector2(1f, 1f), new Vector2(-190f, -96f), new Vector2(56f, 56f));
-            gemText = UiKit.AddText(root, "Gems", "0", 46, new Color(0.7f, 0.9f, 1f), Align(TextAnchor.MiddleLeft));
+            gemText = UiKit.AddText(root, "Gems", "0", 46, new Color(0.7f, 0.9f, 1f), Align(TextAnchor.MiddleLeft), true);
             P((RectTransform)gemText.transform, new Vector2(1f, 1f), new Vector2(-30f, -96f), new Vector2(150f, 56f));
 
             Button pause = UiKit.AddButton(root, "Pause", "II", art != null ? ArtCatalog.Pick(art.RoundButtons, 0) : null, new Color(1f, 1f, 1f, 0.95f), new Vector2(130f, 130f), () => { if (OnPause != null) OnPause(); }, 48);
@@ -84,7 +84,7 @@ namespace BoingTower.Gameplay
             P((RectTransform)comboText.transform, new Vector2(0.5f, 1f), new Vector2(0f, -260f), new Vector2(700f, 100f));
 
             timeText = UiKit.AddText(root, "Time", "", 40, Color.white, Align(TextAnchor.UpperLeft));
-            P((RectTransform)timeText.transform, new Vector2(0f, 1f), new Vector2(30f, -200f), new Vector2(500f, 60f));
+            P((RectTransform)timeText.transform, new Vector2(0f, 1f), new Vector2(30f, -215f), new Vector2(500f, 60f));
 
             introText = UiKit.AddText(root, "Intro", session.Region.Name + "\nLevel " + session.Level.Index + "\n" + RunSession.DescribeGoal(session.Spec) + "\n\nHold < > to move, tap JUMP", 64, Color.white);
             P((RectTransform)introText.transform, new Vector2(0.5f, 0.5f), new Vector2(0f, 120f), new Vector2(820f, 460f));

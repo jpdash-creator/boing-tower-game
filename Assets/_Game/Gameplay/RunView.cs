@@ -47,6 +47,7 @@ namespace BoingTower.Gameplay
         readonly List<Layer> layers = new List<Layer>();
         SpriteRenderer[] wallL, wallR;
         float wallSegHeight = 3.2f;
+        const float wallWidth = 1.0f;
         SpriteRenderer killZone;
         SpriteRenderer killLine;
         readonly Pop[] pops = new Pop[24];
@@ -171,14 +172,21 @@ namespace BoingTower.Gameplay
 
         void BuildWalls()
         {
-            if (region == null || (region.WallL == null && region.WallR == null)) return;
+            if (region == null || (region.WallL == null && region.WallR == null && region.WallTileL == null)) return;
+            Sprite tl = region.WallTileL ?? region.WallL, tr = region.WallTileR ?? region.WallR;
+            if (region.WallTileL != null)
+            {
+                // Seamless tower wall: equal tiles stacked edge to edge (slightly overlapping), mirrored art so the joins match.
+                Vector2 sz = region.WallTileL.bounds.size;
+                wallSegHeight = wallWidth * sz.y / sz.x;
+            }
             int count = Mathf.CeilToInt(designHalfH * 2f / wallSegHeight) + 2;
             wallL = new SpriteRenderer[count];
             wallR = new SpriteRenderer[count];
             for (int i = 0; i < count; i++)
             {
-                wallL[i] = MakeWall(region.WallL, true);
-                wallR[i] = MakeWall(region.WallR, false);
+                wallL[i] = MakeWall(tl, true);
+                wallR[i] = MakeWall(tr, false);
             }
         }
 
@@ -187,6 +195,11 @@ namespace BoingTower.Gameplay
             if (sprite == null) return null;
             var sr = NewSprite(left ? "wallL" : "wallR", sprite, -20);
             Vector2 size = sprite.bounds.size;
+            if (region.WallTileL != null)
+            {
+                sr.transform.localScale = new Vector3(wallWidth / size.x, (wallSegHeight * 1.01f) / size.y, 1f);   // 1 percent overlap hides hairline seams
+                return sr;
+            }
             float h = wallSegHeight;
             float w = Mathf.Min(1.1f, size.x / size.y * h);
             sr.transform.localScale = new Vector3(w / size.x, h / size.y, 1f);
@@ -234,6 +247,20 @@ namespace BoingTower.Gameplay
             Sprite sp = Sprite.Create(tex, new Rect(0, 0, w, h), new Vector2(0.5f, 0.5f), 64f, 0, SpriteMeshType.FullRect, new Vector4(14, 10, 14, 10));
             slabs[key] = sp;
             return sp;
+        }
+
+        /// <summary>Index into region.Pieces (long, medium, short, crumble, moving, bounce), or -1 when the region has no piece art.</summary>
+        int PieceIndex(Platform p, float width)
+        {
+            if (region == null || region.Pieces == null || region.Pieces.Length < 6 || region.Pieces[0] == null) return -1;
+            switch (p.Kind)
+            {
+                case PlatformKind.Crumble: return 3;
+                case PlatformKind.Moving: return 4;
+                case PlatformKind.Bounce:
+                case PlatformKind.BounceCap: return 5;
+                default: return width < 2.4f ? 2 : (width < 4f ? 1 : 0);
+            }
         }
 
         PlatformMetric PlatformMetricFor(Platform p)
@@ -320,7 +347,24 @@ namespace BoingTower.Gameplay
                 var sr = NewSprite("plat" + p.Id + "_" + p.Kind, sprite, 0);
                 float width = p.Width.F();
                 platformOffX[i] = 0f;
-                if (region != null && region.PlatSide.a > 0f)
+                int piece = PieceIndex(p, width);
+                if (piece >= 0)
+                {
+                    // On-style art piece, never stretched out of shape: caps keep their size (9-slice), the middle is stretched sideways only,
+                    // and a platform narrower than its piece is scaled down uniformly (thinner, same proportions).
+                    Sprite sp = region.Pieces[piece];
+                    PlatformMetric m = region.PieceMetrics[piece];
+                    float ppu = sp.pixelsPerUnit;
+                    float bodyW = (m.BodyRight - m.BodyLeft) / ppu;
+                    float s = Mathf.Min(1f, width / bodyW);
+                    sr.sprite = sp;
+                    sr.drawMode = SpriteDrawMode.Sliced;
+                    sr.size = new Vector2((width / s) * (m.W / (m.BodyRight - m.BodyLeft)), m.H / ppu);
+                    sr.transform.localScale = new Vector3(s, s, 1f);
+                    platformBaseScaleX[i] = s;
+                    platformOffY[i] = (m.H * 0.5f - m.SurfaceY) / ppu * s;
+                }
+                else if (region != null && region.PlatSide.a > 0f)
                 {
                     // Clean code-drawn slab in the region's colours, 0.5 units thick; the top edge is exactly the walking surface.
                     Color top = region.PlatTop, side = region.PlatSide;
@@ -344,7 +388,7 @@ namespace BoingTower.Gameplay
                 platformTf[i] = sr.transform;
 
                 // Non-colour cue (CUX-6): a pattern strip on the walking surface.
-                int cue = p.Kind == PlatformKind.Sticky ? 0 : p.Kind == PlatformKind.Slippery ? 1 : p.Kind == PlatformKind.Vanishing ? 2 : (p.Kind == PlatformKind.Bounce || p.Kind == PlatformKind.BounceCap) ? 4 : -1;
+                int cue = p.Kind == PlatformKind.Sticky ? 0 : p.Kind == PlatformKind.Slippery ? 1 : p.Kind == PlatformKind.Vanishing ? 2 : ((p.Kind == PlatformKind.Bounce || p.Kind == PlatformKind.BounceCap) && piece < 0) ? 4 : -1;
                 if (cue >= 0)
                 {
                     if (patterns == null) patterns = new Sprite[5];
@@ -665,8 +709,10 @@ namespace BoingTower.Gameplay
             for (int i = 0; i < wallL.Length; i++)
             {
                 float y = (first + i) * wallSegHeight + wallSegHeight * 0.5f;
-                if (wallL[i] != null) wallL[i].transform.position = new Vector3(0.3f, y, 0f);
-                if (wallR[i] != null) wallR[i].transform.position = new Vector3(camHalfW * 2f - 0.3f, y, 0f);
+                bool tiled = region != null && region.WallTileL != null;
+                float inset = tiled ? wallWidth * 0.5f - 0.1f : 0.3f;   // the playfield edge is x = 0 / screen width; the wall overlaps it by 0.1
+                if (wallL[i] != null) wallL[i].transform.position = new Vector3(inset, y, 0f);
+                if (wallR[i] != null) wallR[i].transform.position = new Vector3(camHalfW * 2f - inset, y, 0f);
             }
         }
 

@@ -63,5 +63,17 @@
       168,
       175
     ]
+  },
+  "walls": {
+    "L": {
+      "file": "plat/reg004_tileset_wallL_tile.png",
+      "w": 315,
+      "h": 242
+    },
+    "R": {
+      "file": "plat/reg004_tileset_wallR_tile.png",
+      "w": 311,
+      "h": 244
+    }
   }
 }

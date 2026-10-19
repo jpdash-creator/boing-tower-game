@@ -58,16 +58,30 @@ namespace BoingTower.Gameplay
             return new Rect(sa.x / Screen.width, sa.y / Screen.height, sa.width / Screen.width, sa.height / Screen.height);
         };
 
-        static Font font;
+        static Font bodyFont, displayFont;
 
+        /// <summary>Body text: Nunito Bold (OFL). Falls back to the built-in font if the asset is missing.</summary>
         public static Font DefaultFont
         {
             get
             {
-                if (font == null) font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-                return font;
+                if (bodyFont == null) bodyFont = Resources.Load<Font>("Fonts/Nunito-Bold") ?? Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+                return bodyFont;
             }
         }
+
+        /// <summary>Display text (titles, numbers, button labels): Lilita One (OFL).</summary>
+        public static Font DisplayFont
+        {
+            get
+            {
+                if (displayFont == null) displayFont = Resources.Load<Font>("Fonts/LilitaOne-Regular") ?? DefaultFont;
+                return displayFont;
+            }
+        }
+
+        /// <summary>Sizes from this up use the display font automatically.</summary>
+        public const int DisplayFromSize = 56;
 
         public static Canvas CreateCanvas(string name, int sortingOrder)
         {
@@ -140,11 +154,11 @@ namespace BoingTower.Gameplay
         }
 
         /// <summary>Font size is raised to the 16 sp minimum and multiplied by the accessibility text scale.</summary>
-        public static Text AddText(Transform parent, string name, string text, int size, Color color, TextAnchor align = TextAnchor.MiddleCenter)
+        public static Text AddText(Transform parent, string name, string text, int size, Color color, TextAnchor align = TextAnchor.MiddleCenter, bool display = false)
         {
             RectTransform rt = Rect(parent, name);
             var t = rt.gameObject.AddComponent<Text>();
-            t.font = DefaultFont;
+            t.font = display || size >= DisplayFromSize ? DisplayFont : DefaultFont;
             t.text = text;
             t.fontSize = Mathf.RoundToInt(Mathf.Max(size, MinBodyTextPx) * TextScale);
             t.color = color;
@@ -176,6 +190,42 @@ namespace BoingTower.Gameplay
         }
 
         static float Lin(float v) { return v <= 0.03928f ? v / 12.92f : Mathf.Pow((v + 0.055f) / 1.055f, 2.4f); }
+
+        static Sprite pill;
+
+        /// <summary>A white rounded rectangle (9-sliced): tint it for backings behind icons and numbers.</summary>
+        public static Sprite PillSprite
+        {
+            get
+            {
+                if (pill != null) return pill;
+                const int n = 64, r = 24;
+                var tex = new Texture2D(n, n, TextureFormat.RGBA32, false) { filterMode = FilterMode.Bilinear, wrapMode = TextureWrapMode.Clamp };
+                var px = new Color32[n * n];
+                for (int y = 0; y < n; y++)
+                {
+                    for (int x = 0; x < n; x++)
+                    {
+                        float dx = Mathf.Min(x + 0.5f, n - x - 0.5f), dy = Mathf.Min(y + 0.5f, n - y - 0.5f);
+                        float d = dx < r && dy < r ? r - Mathf.Sqrt((r - dx) * (r - dx) + (r - dy) * (r - dy)) : Mathf.Min(dx, dy);
+                        byte a = (byte)(Mathf.Clamp01(d) * 255f);
+                        px[y * n + x] = new Color32(255, 255, 255, a);
+                    }
+                }
+                tex.SetPixels32(px);
+                tex.Apply();
+                pill = Sprite.Create(tex, new Rect(0, 0, n, n), new Vector2(0.5f, 0.5f), 100f, 0, SpriteMeshType.FullRect, new Vector4(r, r, r, r));
+                return pill;
+            }
+        }
+
+        public static Image AddPanel(Transform parent, string name, Color tint)
+        {
+            Image img = AddImage(parent, name, PillSprite, tint);
+            img.type = Image.Type.Sliced;
+            img.preserveAspect = false;
+            return img;
+        }
 
         public static readonly Color PanelInk = new Color(0.20f, 0.11f, 0.16f, 1f);
 
@@ -216,7 +266,7 @@ namespace BoingTower.Gameplay
             rt.gameObject.AddComponent<A11yLabel>().Text = string.IsNullOrEmpty(label) ? name : label;
             if (!string.IsNullOrEmpty(label))
             {
-                Text t = AddText(rt, "Label", label, fontSize, ButtonInk);
+                Text t = AddText(rt, "Label", label, fontSize, ButtonInk, TextAnchor.MiddleCenter, true);
                 var o = t.GetComponent<Outline>();
                 if (o != null) o.enabled = false;
                 Stretch((RectTransform)t.transform);

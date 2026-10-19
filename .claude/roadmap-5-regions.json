@@ -200,7 +200,7 @@
     {
       "id": "T19",
       "task": "Android test kit: adb harness (install, launch, tap, screenshot, logcat asserts) plus in-game UI-tree dump; run on the OnePlus 13",
-      "status": "pending",
+      "status": "active",
       "minutes": 120,
       "blocker": "",
       "depends": [
@@ -220,7 +220,7 @@
     {
       "id": "T21",
       "task": "Typography: pick and import free OFL fonts (3 pairings sampled), apply to every screen, fix number centering in nodes, remove map-node numbers",
-      "status": "pending",
+      "status": "active",
       "minutes": 120,
       "blocker": "",
       "depends": [
@@ -230,8 +230,8 @@
     {
       "id": "T22",
       "task": "Scroll model: camera and kill line scroll after the first jump, speed +step every 5 s, death below the bottom edge, no hazard band; update sim, view, bot and tests",
-      "status": "active",
-      "minutes": 150,
+      "status": "done",
+      "minutes": 0,
       "blocker": "",
       "depends": [
         "T18"
@@ -255,6 +255,26 @@
       "blocker": "",
       "depends": [
         "T22"
+      ]
+    },
+    {
+      "id": "T25",
+      "task": "Thin on-style platform art: region 1 pilot approved (30 credits, pick pending), test end to end, then regions 2-5 in the same style (120 credits, needs a new approval)",
+      "status": "active",
+      "minutes": 120,
+      "blocker": "owner verifies region 1 pick; new approval for regions 2-5",
+      "depends": [
+        "T20"
+      ]
+    },
+    {
+      "id": "T26",
+      "task": "AltTester SDK + Desktop on E: (owner approved the install); keep Tools/android_test as the lightweight kit",
+      "status": "pending",
+      "minutes": 90,
+      "blocker": "",
+      "depends": [
+        "T19"
       ]
     }
   ]

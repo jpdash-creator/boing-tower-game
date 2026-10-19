@@ -19,6 +19,11 @@ namespace BoingTower.Gameplay
         public string Id;
         public Sprite BgFar, BgMid, BgNear;
         public Sprite Normal, Narrow, Moving, Crumble, Bounce, WallL, WallR;
+        /// <summary>Thin on-style platform pieces (optional): long, medium, short, crumble, moving, bounce. Each has the same world thickness.</summary>
+        public Sprite[] Pieces = new Sprite[0];
+        public PlatformMetric[] PieceMetrics = new PlatformMetric[0];
+        /// <summary>Seamless vertical wall tiles (mirrored middle band of the wall art): stacked edge to edge they never leave a gap.</summary>
+        public Sprite WallTileL, WallTileR;
         /// <summary>Order: normal, narrow, moving, crumble, bounce.</summary>
         public PlatformMetric[] Metrics = new PlatformMetric[5];
         /// <summary>Colours of the code-drawn platform slab (sampled from the tileset art).</summary>
