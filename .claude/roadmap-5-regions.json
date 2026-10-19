@@ -84,9 +84,9 @@
     {
       "id": "T8",
       "task": "Local save, wallet (coins/gems), rewards payout, sequential unlock and gem skip",
-      "status": "pending",
-      "minutes": 75,
-      "blocker": "needs T2 and T3",
+      "status": "done",
+      "minutes": 0,
+      "blocker": "none (done)",
       "depends": [
         "T2",
         "T3"

@@ -50,10 +50,10 @@ Open items waiting on the owner are logged in `.claude/pendingdecisions/` (asset
 - Score = floors x 10 + combo^2 x 5 + coins. Floor = platform row index. Screen about 10 units wide. These are prototype values.
 
 ## Open / next
-- Status and task list: `.claude/roadmap-5-regions.json` (`python Tools/status_ticker.py`). Done: T0 Unity setup, T2 runtime content, T3 gameplay completeness, T4 bot solvability (75 of 75 star-1 goals for regions 1-5).
+- Status and task list: `.claude/roadmap-5-regions.json` (`python Tools/status_ticker.py`). Done: T0 Unity setup, T2 runtime content, T3 gameplay completeness, T4 bot solvability (75 of 75 star-1 goals for regions 1-5), T8 save/wallet/rewards/unlocks (`Assets/_Game/Economy`, notes in its NOTES.md).
 - Simulation (`Assets/_Game/Simulation`, plain C# 9, no floats): Fx, Rng, SimConfig, Sim, LevelGenerator, LevelBuilder/LevelSpec/LevelData, Chunks, Goals (GoalEvaluator, StarEvaluator), LevelBot. API summary: `Assets/_Game/Simulation/NOTES.md`. Content side: `Assets/_Game/Content/NOTES.md` (ContentRepository, LevelSpecFactory).
 - Determinism contract: `Content/golden/level_hashes_r1-5.txt` (dotnet writes it; the Unity test `LevelSpecFactoryTests` must match). Regenerate only for an intended generator change: set `UPDATE_GOLDEN=1` and run `dotnet test Tests/Simulation`.
-- Test counts to keep green: dotnet 80 (`dotnet test Tests/Simulation`, ~2 min), Unity EditMode 20 (headless, ~25 s).
+- Test counts to keep green: dotnet 80 (`dotnet test Tests/Simulation`, ~2 min), Unity EditMode 48 (headless, ~25 s).
 - Physics constants in `SimConfig` are unplayed baselines (doc 09 D4): tune by playing, then freeze; builder caps may need retuning afterwards.
 - Open owner questions from T3/T4 (coin-star targets too easy, speedrun content infeasible at doc 08 gaps, level-end semantics, hidden-gem reward): `.claude/pendingdecisions/open-items.md`.
 - Signature modules (`Content/config/modules.json`) are all `planned`; regions 1-5 now have working signatures (bounce flowers, bounce caps, drifting, sticky gum, gongs); track `buildStatus` there.

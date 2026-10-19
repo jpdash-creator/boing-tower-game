@@ -1,0 +1,217 @@
+using System;
+using BoingTower.Content;
+
+namespace BoingTower.Economy
+{
+    public enum SkipResult
+    {
+        Ok,
+        AlreadyUnlocked,
+        NotPlayable,
+        NotNextRegion,
+        NotEnoughGems
+    }
+
+    /// <summary>
+    /// Owns the player's local progress: wallet, per-level results, region unlocks. Every mutation saves immediately.
+    /// Rules (doc 01 FR-P5, FR-P6; doc 08):
+    ///  - Region 1 is always unlocked. Clearing level 15 of a region unlocks the next region (if it is playable).
+    ///  - Or pay the region's gem skip price to unlock the NEXT locked region without clearing the previous one.
+    ///  - Teaser regions can never be entered. Only regions with index &lt;= PlayableRegionLimit are playable in this build
+    ///    (launch scope is 5 regions; the content still marks 6-20 live, so the limit lives here until the content is updated).
+    ///  - Inside a region, level N unlocks when level N-1 has been cleared (assumption, doc 02 is silent).
+    /// </summary>
+    public sealed class ProgressService
+    {
+        readonly ContentRepository repo;
+        readonly ISaveStore store;
+
+        public SaveData Data { get; private set; }
+        public int PlayableRegionLimit { get; private set; }
+
+        /// <summary>Raised after any change to coins, gems or progress.</summary>
+        public event Action Changed;
+
+        public ProgressService(ContentRepository repo, ISaveStore store, int playableRegionLimit = 5)
+        {
+            this.repo = repo;
+            this.store = store;
+            PlayableRegionLimit = playableRegionLimit;
+            Data = store.Load();
+        }
+
+        public int Coins { get { return Data.Coins; } }
+        public int Gems { get { return Data.Gems; } }
+
+        // ---- wallet ----
+
+        public void AddCoins(int amount)
+        {
+            if (amount < 0) throw new ArgumentOutOfRangeException("amount");
+            Data.Coins = SaturatingAdd(Data.Coins, amount);
+            Commit();
+        }
+
+        public void AddGems(int amount)
+        {
+            if (amount < 0) throw new ArgumentOutOfRangeException("amount");
+            Data.Gems = SaturatingAdd(Data.Gems, amount);
+            Commit();
+        }
+
+        public bool TrySpendCoins(int amount)
+        {
+            if (amount < 0) throw new ArgumentOutOfRangeException("amount");
+            if (Data.Coins < amount) return false;
+            Data.Coins -= amount;
+            Commit();
+            return true;
+        }
+
+        public bool TrySpendGems(int amount)
+        {
+            if (amount < 0) throw new ArgumentOutOfRangeException("amount");
+            if (Data.Gems < amount) return false;
+            Data.Gems -= amount;
+            Commit();
+            return true;
+        }
+
+        static int SaturatingAdd(int a, int b)
+        {
+            long sum = (long)a + b;
+            return sum > int.MaxValue ? int.MaxValue : (int)sum;
+        }
+
+        // ---- regions ----
+
+        public bool IsRegionPlayable(RegionDef region)
+        {
+            return region.IsLive && region.Index <= PlayableRegionLimit;
+        }
+
+        public bool IsRegionUnlocked(RegionDef region)
+        {
+            return region.Index == 1 || Data.UnlockedRegions.Contains(region.Id);
+        }
+
+        public bool CanEnterRegion(RegionDef region)
+        {
+            return IsRegionPlayable(region) && IsRegionUnlocked(region);
+        }
+
+        /// <summary>Index of the highest unlocked region (1 when nothing else is unlocked).</summary>
+        public int HighestUnlockedRegionIndex()
+        {
+            int best = 1;
+            foreach (string id in Data.UnlockedRegions)
+            {
+                RegionDef r = repo.GetRegion(id);
+                if (r.Index > best) best = r.Index;
+            }
+            return best;
+        }
+
+        public int GemSkipPrice(RegionDef region)
+        {
+            return region.Unlock.GemSkip ?? 0;
+        }
+
+        public SkipResult TrySkipToRegion(RegionDef region)
+        {
+            if (IsRegionUnlocked(region)) return SkipResult.AlreadyUnlocked;
+            if (!IsRegionPlayable(region)) return SkipResult.NotPlayable;
+            if (region.Index != HighestUnlockedRegionIndex() + 1) return SkipResult.NotNextRegion;
+            int price = GemSkipPrice(region);
+            if (Data.Gems < price) return SkipResult.NotEnoughGems;
+            Data.Gems -= price;
+            Data.UnlockedRegions.Add(region.Id);
+            Commit();
+            return SkipResult.Ok;
+        }
+
+        // ---- levels ----
+
+        public LevelProgress GetProgress(string levelId)
+        {
+            LevelProgress p;
+            return Data.Levels.TryGetValue(levelId, out p) ? p : null;
+        }
+
+        public bool IsLevelCleared(string levelId)
+        {
+            LevelProgress p = GetProgress(levelId);
+            return p != null && p.Clears > 0;
+        }
+
+        public bool IsLevelUnlocked(LevelDef level)
+        {
+            RegionDef region = repo.GetRegion(level.Region);
+            if (!CanEnterRegion(region)) return false;
+            if (level.Index <= 1) return true;
+            string previousId = region.Levels[level.Index - 2];
+            return IsLevelCleared(previousId);
+        }
+
+        public int TotalStars()
+        {
+            int n = 0;
+            foreach (LevelProgress p in Data.Levels.Values) n += p.Stars;
+            return n;
+        }
+
+        public int StarsInRegion(RegionDef region)
+        {
+            int n = 0;
+            foreach (string id in region.Levels)
+            {
+                LevelProgress p = GetProgress(id);
+                if (p != null) n += p.Stars;
+            }
+            return n;
+        }
+
+        /// <summary>
+        /// Applies a finished run: pays rewards, records the best result, unlocks the next region after level 15.
+        /// A run that did not complete changes nothing. Throws if the level is locked (callers must not start locked levels).
+        /// </summary>
+        public RewardResult ApplyRun(string levelId, RunOutcome run)
+        {
+            LevelDef level = repo.GetLevel(levelId);
+            RegionDef region = repo.GetRegion(level.Region);
+            if (!IsLevelUnlocked(level)) throw new InvalidOperationException("Level is locked: " + levelId);
+            if (!run.Completed) return new RewardResult();
+
+            LevelProgress before = GetProgress(levelId);
+            RewardResult reward = RewardCalculator.Compute(level, region, run, before);
+
+            LevelProgress p = before ?? new LevelProgress();
+            p.Clears++;
+            p.StarMask |= run.StarMask & 7;
+            p.Stars = new RunOutcome { StarMask = p.StarMask }.Stars;
+            if (run.Score > p.BestScore) p.BestScore = run.Score;
+            Data.Levels[levelId] = p;
+
+            Data.Coins = SaturatingAdd(Data.Coins, reward.TotalCoins);
+            Data.Gems = SaturatingAdd(Data.Gems, reward.TotalGems);
+
+            if (level.Index == region.Levels.Count)
+            {
+                RegionDef next = repo.GetRegionByIndex(region.Index + 1);
+                if (next != null && IsRegionPlayable(next) && !IsRegionUnlocked(next))
+                {
+                    Data.UnlockedRegions.Add(next.Id);
+                    reward.UnlockedRegionId = next.Id;
+                }
+            }
+            Commit();
+            return reward;
+        }
+
+        void Commit()
+        {
+            store.Save(Data);
+            Changed?.Invoke();
+        }
+    }
+}

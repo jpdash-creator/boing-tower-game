@@ -4,6 +4,7 @@
   "references": [
     "BoingTower.Simulation",
     "BoingTower.Content",
+    "BoingTower.Economy",
     "UnityEngine.TestRunner",
     "UnityEditor.TestRunner"
   ],
