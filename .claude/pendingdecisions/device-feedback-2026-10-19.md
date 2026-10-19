@@ -12,3 +12,12 @@ Verbatim themes (10 points) and the answers given via AskUserQuestion. Wording a
 8. Platforms must keep moving down the screen so there is always fear of dying (auto-scroll that speeds up with height).
 9. Timer not visible; remove the timed option. DECIDED: remove Speedrun goal and the time star; Speedrun levels become reach-floor goals; third star becomes a skill star; revive with gems stays.
 10. Make it feel real like the classic tower-jumper (momentum, combos, wall bounce, rising pressure).
+
+## Second device session (same day), points and decisions
+1. World map: numbers drawn over the region icons and padlocks. DECIDED (by me, reversible): remove the numbers on map nodes; the name label stays.
+2. Fonts are not liked anywhere. DECIDED: free OFL game fonts for all text (needs the owner's OK to download the font files), TextMeshPro or Font assets, sample 3 pairings first. OpenArt/Seedance is not used for fonts (Seedance Lite is a video model). Optional OpenArt logo wordmark was NOT chosen.
+3. Level 1 node not centered in its bubble: fix centering of the number inside the node art.
+4. The screen must scroll: after the first jump the camera climbs, platforms and background slide down, speed steps up every 5 s; dropping below the bottom edge ends the run. No red band or hazard from below. DECIDED.
+5. Coins must not sit inside a platform: on a platform top or in clear air. DECIDED.
+6. Galaxy portal at the top: the goal; Momo jumps into it to clear the level. DECIDED.
+7. Platform count x5: DECIDED as longer levels plus dense patches of SMALLER platforms (jump choice matters, some can fall/crumble); first few platforms fixed, then a randomizer changes the pattern every 15 s. Smaller platform art: use code-drawn slabs first, OpenArt only if needed (approval packet first).
