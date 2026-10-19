@@ -47,6 +47,16 @@ namespace BoingTower.Simulation
             return false;
         }
 
+        /// <summary>Largest allowed gap above or below a platform of width w: full jump height from 3.2 wide, shrinking to 55 percent at 1.5 wide.</summary>
+        public static Fx SmallPlatformGapCap(Fx maxGap, Fx w)
+        {
+            Fx full = Fx.FromRatio(32, 10), tiny = Fx.FromRatio(15, 10);
+            if (w >= full) return maxGap;
+            if (w <= tiny) return maxGap * 55 / 100;
+            Fx t = (w - tiny) / (full - tiny);              // 0..1
+            return maxGap * (55 + (Fx.FromInt(45) * t).FloorToInt()) / 100;
+        }
+
         public static LevelData Build(SimConfig cfg, LevelSpec spec)
         {
             int rows = spec.RowsFor();
@@ -262,7 +272,6 @@ namespace BoingTower.Simulation
                 if (prevKind == PlatformKind.Sticky) gap = Fx.Min(gap, cfg.StickyNextGapMax);
                 bool afterBounce = prevKind == PlatformKind.Bounce || prevKind == PlatformKind.BounceCap;
                 if (afterBounce) gap = Fx.Min(gap, cfg.BounceNextGapMax);
-                y = y + gap;
 
                 PlatformKind kind = PlatformKind.Normal;
                 if (sigShare > 0 && row != gemRow && rng.Next(100) < sigShare) kind = sigKind;
@@ -277,6 +286,9 @@ namespace BoingTower.Simulation
                 w = Fx.Clamp(w, minWidth, maxWidth);
                 if (kind == PlatformKind.Moving && w > cfg.DriftMaxWidth) w = cfg.DriftMaxWidth;
                 if (row == gemRow && w > Fx.FromRatio(35, 10)) w = Fx.FromRatio(35, 10);
+                // Narrow platforms get smaller gaps so one jump always works (owner, 2026-10-20).
+                gap = Fx.Min(gap, SmallPlatformGapCap(maxGap, Fx.Min(w, prevW)));
+                y = y + gap;
 
                 Fx jm = prevKind == PlatformKind.Sticky ? cfg.StickyJumpMultiplier : Fx.One;
                 Fx offFrac = rng.Range(Fx.Lerp(offEasyLo, offHardLo, d), Fx.Lerp(offEasyHi, offHardHi, d));
@@ -421,15 +433,10 @@ namespace BoingTower.Simulation
             bool hiddenGem, Fx hgx, Fx hgy)
         {
             Rng r = new Rng(spec.Seed ^ 0x2F1A7C35);
-            Rng gemRng = new Rng(spec.Seed ^ 0x1B3A5E77);   // separate stream: the gem chance never shifts the coin layout
+            Rng gemRng = new Rng(spec.Seed ^ 0x1B3A5E77);   // separate stream: gems never shift the star layout
             Fx screen = cfg.ScreenWidth;
-            int cls = spec.Class < 0 ? 0 : (spec.Class > 4 ? 4 : spec.Class);
-            int classPct = cfg.ClassCoinPercent[cls];
-            int pathPct = PercentLerp(cfg.PathCoinPercentEasy, cfg.PathCoinPercentHard, d) * classPct / 100;
-            int riskyPct = PercentLerp(cfg.RiskyCoinPercentEasy, cfg.RiskyCoinPercentHard, d) * classPct / 100;
-            if (riskyPct > 100) riskyPct = 100;
             Fx wallMin = Fx.FromRatio(7, 10), wallMax = screen - Fx.FromRatio(7, 10);
-            List<Pickup> list = new List<Pickup>(rows * 2);
+            List<Pickup> list = new List<Pickup>(rows / 4 + 8);
 
             int gemRow = -1;
             if (r.Next(100) < cfg.GemChancePercent)
@@ -438,30 +445,29 @@ namespace BoingTower.Simulation
                 gemRow = r.Range(lo, hi);
             }
 
+            // Economy v2: no coin pickups. Three stars on the way up (about a quarter, half and 85 percent of the level), each on a
+            // risky spot (beside the platform at the wall, or above the jump path), plus occasional gems of different rarity.
+            int[] starRows = { StarRow(rows, 25), StarRow(rows, 55), StarRow(rows, 85) };
+            for (int i = 1; i < 3; i++) if (starRows[i] <= starRows[i - 1]) starRows[i] = starRows[i - 1] + 1;
             for (int row = 1; row <= rows; row++)
             {
-                int n = pathPct / 100 + (r.Next(100) < pathPct % 100 ? 1 : 0);
-                for (int k = 0; k < n; k++)
+                for (int si = 0; si < 3; si++)
                 {
-                    Fx t = Fx.FromRatio(k + 1, n + 1);
-                    Fx px = Fx.Lerp(ctx.X[row - 1], ctx.X[row], t);
-                    Fx py = Fx.Lerp(ctx.Y[row - 1], ctx.Y[row], t) + Fx.FromRatio(12, 10);
-                    list.Add(MakeCoin(cfg, gemRng.Next(100) < cfg.GemInsteadOfCoinPercent ? PickupKind.Gem : PickupKind.Coin, px, py));
-                }
-                if (r.Next(100) < riskyPct)
-                {
-                    int type = r.Next(2);
-                    bool pair = r.Next(2) == 0;
-                    if (type == 0) AddEdgeCoins(cfg, list, ctx, row, screen, wallMin, wallMax, pair, PickupKind.Coin);
+                    if (starRows[si] != row) continue;
+                    if (r.Next(2) == 0) list.Add(MakePickup(cfg, PickupKind.Star, EdgeX(ctx, row, screen, wallMin, wallMax), ctx.Y[row] + Fx.FromRatio(12, 10), si));
                     else
                     {
                         Fx hx = Fx.Lerp(ctx.X[row - 1], ctx.X[row], Fx.FromRatio(6, 10));
-                        Fx hy = ctx.Y[row] + Fx.FromRatio(18, 10);
-                        list.Add(MakeCoin(cfg, gemRng.Next(100) < cfg.GemInsteadOfCoinPercent ? PickupKind.Gem : PickupKind.Coin, Fx.Clamp(hx, wallMin, wallMax), hy));
-                        if (pair) list.Add(MakeCoin(cfg, PickupKind.Coin, Fx.Clamp(hx, wallMin, wallMax), hy + Fx.FromRatio(9, 10)));
+                        list.Add(MakePickup(cfg, PickupKind.Star, Fx.Clamp(hx, wallMin, wallMax), ctx.Y[row] + Fx.FromRatio(18, 10), si));
                     }
                 }
-                if (row == gemRow) AddEdgeCoins(cfg, list, ctx, row, screen, wallMin, wallMax, false, PickupKind.Gem);
+                if (row != gemRow && gemRng.Next(100) < cfg.GemInsteadOfCoinPercent)
+                {
+                    Fx px = Fx.Lerp(ctx.X[row - 1], ctx.X[row], Fx.FromRatio(5, 10));
+                    Fx py = Fx.Lerp(ctx.Y[row - 1], ctx.Y[row], Fx.FromRatio(5, 10)) + Fx.FromRatio(12, 10);
+                    list.Add(MakePickup(cfg, PickupKind.Gem, px, py, DrawRarity(cfg, gemRng)));
+                }
+                if (row == gemRow) list.Add(MakePickup(cfg, PickupKind.Gem, EdgeX(ctx, row, screen, wallMin, wallMax), ctx.Y[row] + Fx.FromRatio(12, 10), DrawRarity(cfg, gemRng)));
             }
 
             if (hiddenGem)
@@ -476,6 +482,40 @@ namespace BoingTower.Simulation
             Pickup[] arr = list.ToArray();
             for (int i = 0; i < arr.Length; i++) arr[i].Id = i;
             return arr;
+        }
+
+        private static int StarRow(int rows, int percent)
+        {
+            int row = rows * percent / 100;
+            return row < 5 ? 5 : (row > rows - 2 ? rows - 2 : row);
+        }
+
+        private static int DrawRarity(SimConfig cfg, Rng rng)
+        {
+            int roll = rng.Next(100), acc = 0;
+            for (int i = 0; i < cfg.GemRarityPercent.Length; i++)
+            {
+                acc += cfg.GemRarityPercent[i];
+                if (roll < acc) return i;
+            }
+            return 0;
+        }
+
+        private static Fx EdgeX(Ctx ctx, int row, Fx screen, Fx wallMin, Fx wallMax)
+        {
+            bool left = ctx.X[row] < screen / 2;
+            Fx ex = left ? ctx.X[row] - ctx.W[row] / 2 - Fx.FromRatio(7, 10) : ctx.X[row] + ctx.W[row] / 2 + Fx.FromRatio(7, 10);
+            return Fx.Clamp(ex, wallMin, wallMax);
+        }
+
+        private static Pickup MakePickup(SimConfig cfg, PickupKind kind, Fx x, Fx y, int tag)
+        {
+            Pickup p = new Pickup();
+            p.Kind = kind;
+            p.X = x; p.Y = y;
+            p.Radius = kind == PickupKind.Star ? cfg.StarRadius : cfg.GemRadius;
+            p.Tag = tag;
+            return p;
         }
 
         private static Pickup MakeCoin(SimConfig cfg, PickupKind kind, Fx x, Fx y)

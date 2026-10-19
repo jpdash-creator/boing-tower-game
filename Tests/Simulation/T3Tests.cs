@@ -115,8 +115,8 @@ namespace BoingTower.Simulation.Tests
             LevelSpec b = T3.Spec(777, 700, 10, SignatureKind.SwingingGongs, GoalType.SurviveWave);
             b.FixedChunks = new string[] { "chunk_complex_a" };
             b.Class = 3;
-            Assert.Equal(1968675610309853494L, LevelBuilder.Build(cfg, a).ComputeHash());
-            Assert.Equal(-3247576078165943773L, LevelBuilder.Build(cfg, b).ComputeHash());
+            Assert.Equal(6769745202600320962L, LevelBuilder.Build(cfg, a).ComputeHash());
+            Assert.Equal(6672325137825293915L, LevelBuilder.Build(cfg, b).ComputeHash());
         }
 
         [Fact]
@@ -353,79 +353,41 @@ namespace BoingTower.Simulation.Tests
         }
 
         [Fact]
-        public void PickupCountsMatchDocEightRanges()
+        public void EveryLevelHasThreeStarsAndNoCoinPickups()
         {
             SimConfig cfg = new SimConfig();
-            foreach (int dm in new int[] { 50, 220, 600, 1000 })
+            for (int seed = 1; seed <= 40; seed++)
             {
-                long total = 0;
-                for (int seed = 1; seed <= 20; seed++)
-                {
-                    LevelSpec spec = T3.Spec(seed * 7919, dm, 4, SignatureKind.None, GoalType.ReachFloor, 60);
-                    spec.Class = 0;
-                    int c = Coins(LevelBuilder.Build(cfg, spec));
-                    Assert.InRange(c, 40, 140);
-                    total += c;
-                }
-                Assert.InRange((int)(total / 20), 45, 120);
-            }
-            // complex: 120 to 200, highly complex (150 rows): 250 to 400
-            long cx = 0, hx = 0;
-            for (int seed = 1; seed <= 20; seed++)
-            {
-                LevelSpec c = T3.Spec(seed * 31, 400, 5, SignatureKind.None, GoalType.ComboChain, 3, 2);
-                c.Class = 3;
-                cx += Coins(LevelBuilder.Build(cfg, c));
-                LevelSpec h = T3.Spec(seed * 37, 1000, 15, SignatureKind.None, GoalType.BossChase, 150);
-                h.Class = 4;
-                hx += Coins(LevelBuilder.Build(cfg, h));
-            }
-            Assert.InRange((int)(cx / 20), 110, 210);
-            Assert.InRange((int)(hx / 20), 250, 420);
-        }
-
-        [Fact]
-        public void EasyLevelsPutAboutOneCoinPerRowOnThePath()
-        {
-            SimConfig cfg = new SimConfig();
-            LevelSpec spec = T3.Spec(11, 50, 1, SignatureKind.None, GoalType.ReachFloor, 60);
-            LevelData d = LevelBuilder.Build(cfg, spec);
-            int onPath = 0;
-            for (int row = 1; row <= 60; row++)
-            {
-                Platform lo = FirstOnRow(d, row - 1), hi = FirstOnRow(d, row);
+                LevelData d = LevelBuilder.Build(cfg, T3.Spec(seed * 7919, 50 + seed * 20, 1 + seed % 5, SignatureKind.None, GoalType.ReachFloor, 60));
+                int mask = 0, stars = 0;
                 for (int i = 0; i < d.Pickups.Length; i++)
                 {
-                    Pickup p = d.Pickups[i];
-                    if (p.Y > lo.Y && p.Y < hi.Y + Fx.FromRatio(15, 10)) { onPath++; break; }
+                    Assert.NotEqual(PickupKind.Coin, d.Pickups[i].Kind);
+                    if (d.Pickups[i].Kind == PickupKind.Star) { stars++; mask |= 1 << d.Pickups[i].Tag; }
                 }
+                Assert.Equal(3, stars);
+                Assert.Equal(7, mask);
             }
-            Assert.True(onPath >= 50, "about one coin per row on easy levels: " + onPath);
-        }
-
-        private static Platform FirstOnRow(LevelData d, int row)
-        {
-            for (int i = 0; i < d.Platforms.Length; i++) if (d.Platforms[i].Row == row) return d.Platforms[i];
-            throw new InvalidOperationException();
         }
 
         [Fact]
-        public void GemChanceIsAboutThreePercent()
+        public void GemSpotsFollowTheDifficultySettingAndRarity()
         {
             SimConfig cfg = new SimConfig();
-            cfg.GemInsteadOfCoinPercent = 0;   // this test is about the rare level gem, not the difficulty setting's gem-for-coin chance
-            int levels = 0, withGem = 0;
-            for (int seed = 1; seed <= 500; seed++)
+            int[] counts = new int[2];
+            int[] tiers = new int[4];
+            for (int round = 0; round < 2; round++)
             {
-                LevelData d = LevelBuilder.Build(cfg, T3.Spec(seed * 104729, 300, 4, SignatureKind.None, GoalType.ReachFloor, 30));
-                levels++;
-                int gems = 0;
-                for (int i = 0; i < d.Pickups.Length; i++) if (d.Pickups[i].Kind == PickupKind.Gem) gems++;
-                Assert.True(gems <= 1);
-                if (gems == 1) withGem++;
+                cfg.GemInsteadOfCoinPercent = round == 0 ? 5 : 10;
+                for (int seed = 1; seed <= 60; seed++)
+                {
+                    LevelData d = LevelBuilder.Build(cfg, T3.Spec(seed * 104729, 300, 4, SignatureKind.None, GoalType.ReachFloor, 60));
+                    for (int i = 0; i < d.Pickups.Length; i++)
+                        if (d.Pickups[i].Kind == PickupKind.Gem) { counts[round]++; tiers[d.Pickups[i].Tag]++; }
+                }
             }
-            Assert.InRange(withGem, 5, 30); // expected 15 of 500
-            Assert.Equal(500, levels);
+            Assert.True(counts[1] > counts[0], "more gem spots at the higher setting: " + counts[0] + " vs " + counts[1]);
+            Assert.True(tiers[0] > tiers[1] && tiers[1] > tiers[3], "rarity tiers get rarer: " + tiers[0] + "," + tiers[1] + "," + tiers[2] + "," + tiers[3]);
         }
 
         [Fact]
@@ -507,11 +469,11 @@ namespace BoingTower.Simulation.Tests
             SimState s = sim.NewState();
             JumpUntilRow(sim, ref s, 2);
             Assert.Equal(2, s.Row);
-            // gained 2 floors: +1 landing +1 for the extra floor; first combo landing does not continue a combo
-            Assert.Equal(2, s.Coins);
+            // economy v2: a plain landing pays nothing; only continuing a combo pays (5)
+            Assert.Equal(0, s.Coins);
             JumpUntilRow(sim, ref s, 4);
             Assert.Equal(4, s.Row);
-            // continues the combo: +2 for the landing, +1 extra floor
+            // continues the combo: +5
             Assert.Equal(5, s.Coins);
             Assert.Equal(2, s.Combo);
             // score formula unchanged: floors x 10 + combo^2 x 5 (no coins in it)
@@ -519,18 +481,18 @@ namespace BoingTower.Simulation.Tests
         }
 
         [Fact]
-        public void SingleFloorLandingGivesOneCoinAndNoCoinOnRepeat()
+        public void SingleFloorLandingGivesNoCoins()
         {
             SimConfig cfg = new SimConfig();
             LevelData d = T3.World(cfg, null, null, T3.P(1, 5, 1.5, 8, PlatformKind.Normal));
             Sim sim = new Sim(cfg, d, Fx.Zero, false, false);
             SimState s = sim.NewState();
             JumpUntilRow(sim, ref s, 1);
-            Assert.Equal(1, s.Coins);
+            Assert.Equal(0, s.Coins);
             // drop back to row 0 is impossible here (walk off is not modelled); jump and land again on the same row: no new coin
             sim.Step(ref s, SimInput.Jump);
             for (int i = 0; i < 100; i++) sim.Step(ref s, 0);
-            Assert.Equal(1, s.Coins);
+            Assert.Equal(0, s.Coins);
         }
 
         [Fact]
@@ -1005,31 +967,21 @@ namespace BoingTower.Simulation.Tests
         }
 
         [Fact]
-        public void StarsFollowTheTemplate()
+        public void StarsAreTheCollectedStarPickupsOfAClearedLevel()
         {
             LevelSpec spec = Spec(GoalType.ReachFloor, 30, 0, 0);
-            spec.Stars = new StarSpec[]
-            {
-                new StarSpec { Kind = StarSpec.KindClear },
-                new StarSpec { Kind = StarSpec.KindCoins, Value = 25 },
-                new StarSpec { Kind = StarSpec.KindNoRevive }
-            };
             SimState s = State();
             s.Row = 29;
-            s.Coins = 99;
-            Assert.Equal(0, StarEvaluator.Stars(spec, s, 0, 100));   // goal not complete: nothing
+            s.StarMask = 7;
+            Assert.Equal(0, StarEvaluator.Stars(spec, s, 0, 100));   // goal not complete: nothing counts
             s.Row = 30;
-            s.Coins = 10;
-            Assert.Equal(2, StarEvaluator.Stars(spec, s, 0, 100));   // clear + noRevive
-            Assert.Equal(1, StarEvaluator.Stars(spec, s, 1, 100));   // clear only
-            s.Coins = 25;
+            s.StarMask = 0;
+            Assert.Equal(0, StarEvaluator.Stars(spec, s, 0, 100));   // cleared without stars
+            s.StarMask = 0b101;
+            Assert.Equal(2, StarEvaluator.Stars(spec, s, 0, 100));
+            Assert.Equal(0b101, StarEvaluator.Earned(spec, s, 3, 100));   // revives no longer matter
+            s.StarMask = 7;
             Assert.Equal(3, StarEvaluator.Stars(spec, s, 0, 100));
-            Assert.Equal(2, StarEvaluator.Stars(spec, s, 2, 100));   // clear + coins
-            Assert.Equal(0b011, StarEvaluator.Earned(spec, s, 3, 100));
-
-            spec.Stars[2] = new StarSpec { Kind = StarSpec.KindTime, Value = 60 };
-            Assert.Equal(3, StarEvaluator.Stars(spec, s, 5, 60 * 60));
-            Assert.Equal(2, StarEvaluator.Stars(spec, s, 0, 60 * 60 + 1));
         }
 
         [Fact]

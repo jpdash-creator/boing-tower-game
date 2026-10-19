@@ -55,7 +55,7 @@ LEVELS = {
     1: ("simple", 0.05, {"type": "reachFloor", "value": 60}),
     2: ("simple", 0.10, {"type": "reachFloor", "value": 90}),
     3: ("simple", 0.15, {"type": "reachFloor", "value": 120}),
-    4: ("simple", 0.22, {"type": "collectCoins", "count": 15}),
+    4: ("simple", 0.22, {"type": "reachFloor", "value": 100}),
     5: ("complex", 0.40, {"type": "comboChain", "value": 3, "count": 2}),
     6: ("medium", 0.35, {"type": "reachFloor", "value": 160}),
     7: ("medium", 0.42, {"type": "noWallBounce", "value": 120}),

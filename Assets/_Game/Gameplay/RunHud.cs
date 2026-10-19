@@ -15,7 +15,7 @@ namespace BoingTower.Gameplay
 
         ArtCatalog art;
         Canvas canvas;
-        Text floorText, goalText, coinText, gemText, comboText, timeText, introText;
+        Text floorText, goalText, gemText, comboText, timeText, introText;
         RectTransform overlay;
         float comboPulse;
         int lastCombo;
@@ -68,10 +68,13 @@ namespace BoingTower.Gameplay
             goalText = UiKit.AddText(root, "Goal", RunSession.DescribeGoal(session.Spec), 34, new Color(1f, 0.95f, 0.6f), Align(TextAnchor.UpperLeft));
             P((RectTransform)goalText.transform, new Vector2(0f, 1f), new Vector2(30f, -112f), new Vector2(700f, 90f));
 
-            Image coinIcon = UiKit.AddImage(root, "CoinIcon", art != null ? art.CoinIcon : null, Color.white);
-            P(coinIcon.rectTransform, new Vector2(1f, 1f), new Vector2(-190f, -30f), new Vector2(56f, 56f));
-            coinText = UiKit.AddText(root, "Coins", "0", 46, Color.white, Align(TextAnchor.MiddleLeft), true);
-            P((RectTransform)coinText.transform, new Vector2(1f, 1f), new Vector2(-30f, -30f), new Vector2(150f, 56f));
+            // Top right: the 3 stars of the level (filled when collected) and the gems taken so far.
+            starIcons = new Image[3];
+            for (int i = 0; i < 3; i++)
+            {
+                starIcons[i] = UiKit.AddImage(root, "Star" + i, art != null ? art.StarFilled : null, new Color(1f, 1f, 1f, 0.35f));
+                P(starIcons[i].rectTransform, new Vector2(1f, 1f), new Vector2(-30f - (2 - i) * 70f, -26f), new Vector2(60f, 60f));
+            }
             Image gemIcon = UiKit.AddImage(root, "GemIcon", art != null ? art.GemIcon : null, Color.white);
             P(gemIcon.rectTransform, new Vector2(1f, 1f), new Vector2(-190f, -96f), new Vector2(56f, 56f));
             gemText = UiKit.AddText(root, "Gems", "0", 46, new Color(0.7f, 0.9f, 1f), Align(TextAnchor.MiddleLeft), true);
@@ -92,24 +95,25 @@ namespace BoingTower.Gameplay
             introTimer = 3.2f;
         }
 
-        int lastRow = -1, lastCoins = -1, lastGems = -1, lastTimeKey = -1, lastCombo2 = -1;
+        Image[] starIcons;
+        int lastRow = -1, lastStarMask = -1, lastGems = -1, lastTimeKey = -1, lastCombo2 = -1;
 
         public void Refresh(RunSession s, float deltaTime)
         {
             SimState st = s.State;
             // Strings are rebuilt only when a value changes: no per-frame allocations (CUX-1).
             if (st.Row != lastRow) { lastRow = st.Row; UiKit.SetText(floorText, "Floor " + st.Row + " / " + s.Spec.TargetRow()); }
-            if (st.Coins != lastCoins) { lastCoins = st.Coins; UiKit.SetText(coinText, st.Coins.ToString()); }
+            if (st.StarMask != lastStarMask)
+            {
+                lastStarMask = st.StarMask;
+                for (int i = 0; i < 3; i++) if (starIcons[i] != null) starIcons[i].color = (st.StarMask & (1 << i)) != 0 ? Color.white : new Color(1f, 1f, 1f, 0.35f);
+            }
             int gems = st.Gems + st.HiddenGems;
             if (gems != lastGems) { lastGems = gems; UiKit.SetText(gemText, gems.ToString()); }
             if (s.Spec.Goal.Type == GoalType.Speedrun)
             {
                 int sec = st.Tick / 60;
                 if (sec != lastTimeKey) { lastTimeKey = sec; UiKit.SetText(timeText, sec + " / " + s.Spec.Goal.TimeSec + " s"); }
-            }
-            else if (s.Spec.Goal.Type == GoalType.CollectCoins)
-            {
-                if (st.Coins != lastTimeKey) { lastTimeKey = st.Coins; UiKit.SetText(timeText, st.Coins + " / " + s.Spec.Goal.Count + " coins"); }
             }
 
             if (st.Combo != lastCombo)
@@ -202,7 +206,8 @@ namespace BoingTower.Gameplay
                 UiKit.Place(star.rectTransform, new Vector2(0.5f, 1f), new Vector2((i - 1) * 200f, -190f), new Vector2(180f, 180f));
                 star.rectTransform.pivot = new Vector2(0.5f, 1f);
             }
-            string line = "Coins +" + reward.TotalCoins + "     Gems +" + reward.TotalGems + "\nScore " + s.State.Score + "     Best combo x" + s.State.BestCombo;
+            string line = "Coins +" + reward.TotalCoins + "     Gems +" + reward.TotalGems + "\nStars " + reward.Stars + " / 3     Best combo x" + s.State.BestCombo;
+            if (reward.TotalCoins > 0) line += "\n(clear + " + reward.Stars + " stars + combos " + reward.ComboCoins + ")";
             if (reward.FirstClear) line += "\nFirst clear!";
             if (!string.IsNullOrEmpty(reward.UnlockedRegionId)) line += "\nNew region unlocked!";
             Text info = UiKit.AddText(panel, "Info", line, 40, Color.white);

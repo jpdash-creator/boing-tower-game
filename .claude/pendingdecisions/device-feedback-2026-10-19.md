@@ -31,3 +31,17 @@ Verbatim themes (10 points) and the answers given via AskUserQuestion. Wording a
 4. Popups (you fell, level clear, pause, level info) look stretched and the painted X does not work. DECIDED: new clean popup frame via OpenArt (needs an approval packet; nothing generated yet). Until then the code-drawn panel with a real X button is the stopgap.
 5. Revive cost: 2 gems the first time, 5 gems the second (max 2 revives per run). DECIDED.
 6. Feet and coins must stand ON the platform surface, not on the glow line: per-piece surface offset (walkable line is the top of the grass, not the neon rim).
+
+## Issue list 5 (2026-10-20) and decisions
+1. Narrow platforms need smaller gaps so one jump always works (the owner lost 3 runs). DECIDED: gap and sideways offset limits shrink with platform width; bot-verified.
+2. ECONOMY V2 (owner): coins are NOT collected in the level. They are paid at the end.
+   - Each level has 3 collectible stars (side routes and risky spots) plus occasional gems with rarity.
+   - End payout: clear 30 coins + 40 per star collected + 5 per combo step. Scaled by region as today.
+   - Gem rarity: Common 1, Rare 2, Epic 5, Legendary 10 gems, chances 70/22/7/1 percent per gem spot. Difficulty setting raises the number of gem spots (5 to 10 percent).
+   - After a level has 3 stars: replays pay 50% coins and drop no gems. Levels with fewer stars keep full rewards.
+   - The old coin-pickup stars (clear/coins/no revive) and the CollectCoins goal type are retired.
+3. The 'You fell!' popup and the X still look bad: DECIDED compact card (no big ribbon, big title in the display font, round X icon generated with OpenArt, panel only as tall as its content). OpenArt packet needed.
+4. Level-select wallet coin icon looks out of place: fix wallet icon/number alignment.
+5. WORLD MAP V2: scrollable vertical map with all 30 regions and many 'coming soon'. DECIDED by the owner: 10 chained vertical OpenArt segments of 3 regions each (richer detail, higher cost accepted). Region marker = small pin on the path plus a slim name tag beside it, never covering the art. Needs an OpenArt approval packet.
+6. Map icons did not fit the map art (Meadow Springs and the locked ones): redo markers with the new map.
+7. Level info popup (Goal, stars, PLAY): fix position and fonts, center content.

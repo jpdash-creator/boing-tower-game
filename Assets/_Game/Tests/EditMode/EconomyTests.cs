@@ -243,21 +243,24 @@ namespace BoingTower.Tests
         // ---- rewards ----
 
         [Test]
-        public void FirstClearPaysTheRegionScaledPayoutAndReplayPaysForty()
+        public void ClearPaysThirtyPlusFortyPerStarAndThreeStarReplaysPayHalf()
         {
             var svc = NewService();
             LevelDef l = repo.GetLevel("lvl_001_01");
-            RegionDef r = repo.GetRegionByIndex(1);
-            int payout = ContentRepository.CoinPayoutFor(l, r);
+            double factor = repo.GetRegionByIndex(1).CoinFactor;
 
-            RewardResult first = svc.ApplyRun(l.Id, Won(starMask: 1));
+            RewardResult first = svc.ApplyRun(l.Id, Won(starMask: 1));       // 1 star: 30 + 40
             Assert.IsTrue(first.FirstClear);
-            Assert.AreEqual(payout, first.PayoutCoins);
+            Assert.AreEqual((int)System.Math.Round(70 * factor), first.PayoutCoins);
 
-            RewardResult replay = svc.ApplyRun(l.Id, Won(starMask: 1));
-            Assert.IsFalse(replay.FirstClear);
-            Assert.AreEqual(payout * 40 / 100, replay.PayoutCoins);
-            Assert.AreEqual(first.PayoutCoins + replay.PayoutCoins, svc.Coins);
+            RewardResult second = svc.ApplyRun(l.Id, Won(starMask: 3));      // 2 stars so far: still full pay
+            Assert.AreEqual((int)System.Math.Round(110 * factor), second.PayoutCoins);
+
+            RewardResult third = svc.ApplyRun(l.Id, Won(starMask: 7));       // reaches 3 stars: full pay
+            Assert.AreEqual((int)System.Math.Round(150 * factor), third.PayoutCoins);
+
+            RewardResult replay = svc.ApplyRun(l.Id, Won(starMask: 7));      // 3 stars already: half the coins
+            Assert.AreEqual((int)System.Math.Round(150 * factor) / 2, replay.PayoutCoins, 1);
         }
 
         [Test]
@@ -266,33 +269,34 @@ namespace BoingTower.Tests
             var svc = NewService(5);
             svc.AddGems(5000);
             for (int r = 2; r <= 3; r++) svc.TrySkipToRegion(repo.GetRegionByIndex(r));
-            RewardResult res = svc.ApplyRun("lvl_003_01", Won());
-            Assert.AreEqual(ContentRepository.CoinPayoutFor(repo.GetLevel("lvl_003_01"), repo.GetRegionByIndex(3)), res.PayoutCoins);
-            Assert.Greater(res.PayoutCoins, ContentRepository.CoinPayoutFor(repo.GetLevel("lvl_001_01"), repo.GetRegionByIndex(1)));
+            RewardResult res = svc.ApplyRun("lvl_003_01", Won(starMask: 1));
+            RewardResult base1 = NewService().ApplyRun("lvl_001_01", Won(starMask: 1));
+            Assert.Greater(res.PayoutCoins, base1.PayoutCoins, "a later region pays more");
         }
 
         [Test]
-        public void ExtraStarsAddATenPercentBonusEach()
+        public void EachStarAddsFortyCoins()
         {
-            var svc = NewService();
-            LevelDef l = repo.GetLevel("lvl_001_01");
-            int payout = ContentRepository.CoinPayoutFor(l, repo.GetRegionByIndex(1));
-            RewardResult three = svc.ApplyRun(l.Id, Won(starMask: 7));
-            Assert.AreEqual(payout + payout * 20 / 100, three.PayoutCoins);
-            Assert.AreEqual(payout * 20 / 100, three.StarBonusCoins);
+            var one = NewService().ApplyRun("lvl_001_01", Won(starMask: 1));
+            var three = NewService().ApplyRun("lvl_001_01", Won(starMask: 7));
+            double factor = repo.GetRegionByIndex(1).CoinFactor;
+            Assert.AreEqual((int)System.Math.Round(80 * factor), three.PayoutCoins - one.PayoutCoins, 1);
+            Assert.AreEqual((int)System.Math.Round(120 * factor), three.StarBonusCoins, 1);
         }
 
         [Test]
-        public void PickupsPayInFullEvenOnReplay()
+        public void ComboCoinsArePaidAtTheEndAndGemsDropUntilThreeStars()
         {
             var svc = NewService();
-            svc.ApplyRun("lvl_001_01", Won(coins: 10, gems: 1));
-            int coinsBefore = svc.Coins, gemsBefore = svc.Gems;
-            RewardResult replay = svc.ApplyRun("lvl_001_01", Won(coins: 10, gems: 1));
-            Assert.AreEqual(10, replay.PickupCoins);
-            Assert.AreEqual(1, replay.PickupGems);
-            Assert.AreEqual(coinsBefore + replay.TotalCoins, svc.Coins);
-            Assert.AreEqual(gemsBefore + 1, svc.Gems);
+            RewardResult first = svc.ApplyRun("lvl_001_01", Won(starMask: 1, coins: 25, gems: 2));
+            Assert.AreEqual(25, first.ComboCoins, 1, "combo coins are part of the payout");
+            Assert.AreEqual(2, first.PickupGems);
+            RewardResult again = svc.ApplyRun("lvl_001_01", Won(starMask: 1, coins: 25, gems: 2));   // 1 star: replay pays in full
+            Assert.AreEqual(2, again.PickupGems);
+            svc.ApplyRun("lvl_001_01", Won(starMask: 7, coins: 0, gems: 0));                          // now 3 stars
+            RewardResult replay = svc.ApplyRun("lvl_001_01", Won(starMask: 7, coins: 25, gems: 2));   // 3-star replay: no gems
+            Assert.AreEqual(0, replay.PickupGems);
+            Assert.AreEqual(0, replay.TotalGems);
         }
 
         [Test]

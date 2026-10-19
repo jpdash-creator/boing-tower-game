@@ -24,7 +24,7 @@ namespace BoingTower.Gameplay
 
         float acc;
         bool endHandled;
-        int lastCoins;
+        int lastPicked;
         float shotTimer;
 
         void Start()
@@ -46,7 +46,7 @@ namespace BoingTower.Gameplay
             acc = 0f;
             endHandled = false;
             Paused = false;
-            lastCoins = 0;
+            lastPicked = 0;
             Input.Clear();
 
             Camera cam = Camera.main;
@@ -113,9 +113,10 @@ namespace BoingTower.Gameplay
                 {
                     int bits = Input.ReadTick();
                     Session.Step(bits);
-                    bool coin = Session.State.Coins > lastCoins;
-                    lastCoins = Session.State.Coins;
-                    View.OnTick(coin, Session.State.X.F(), Session.State.Y.F() + 0.5f);
+                    int picked = Session.State.Stars + Session.State.Gems + Session.State.HiddenGems;
+                    bool got = picked > lastPicked;
+                    lastPicked = picked;
+                    View.OnTick(got, Session.State.X.F(), Session.State.Y.F() + 0.5f);
                     acc -= StepSeconds;
                     steps++;
                 }

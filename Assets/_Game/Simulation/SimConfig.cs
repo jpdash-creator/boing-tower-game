@@ -99,13 +99,18 @@ namespace BoingTower.Simulation
         public int SignatureMaxPercent = 40;
 
         // Coins (doc 08 section 7)
-        public int LandingCoins = 1;
+        // Economy v2: coins are not picked up. The only in-run coin source is the combo bonus, paid at the end of the level.
+        public int LandingCoins = 0;
         /// <summary>Total coins for a landing that continues a combo (replaces, does not add to, LandingCoins).</summary>
-        public int ComboLandingCoins = 2;
+        public int ComboLandingCoins = 5;
         /// <summary>Per extra floor of a multi-floor jump (floors gained beyond 1).</summary>
-        public int ExtraFloorCoins = 1;
+        public int ExtraFloorCoins = 0;
         public Fx CoinRadius = Fx.FromRatio(9, 10);
         public Fx GemRadius = Fx.FromRatio(9, 10);
+        public Fx StarRadius = Fx.FromRatio(10, 10);
+        /// <summary>Gems paid per rarity tier (common, rare, epic, legendary) and the chance of each tier in percent (sums to 100).</summary>
+        public int[] GemValues = { 1, 2, 5, 10 };
+        public int[] GemRarityPercent = { 70, 22, 7, 1 };
         public Fx HiddenGemRadius = Fx.FromRatio(8, 10);
         /// <summary>Path-coin chance per row (percent, 100 = one coin per row) at d = 0 and d = 1.</summary>
         public int PathCoinPercentEasy = 100;

@@ -106,8 +106,8 @@
     "class": "simple",
     "difficulty": 0.22,
     "goal": {
-      "type": "collectCoins",
-      "count": 15
+      "type": "reachFloor",
+      "value": 100
     },
     "stars": [
       {

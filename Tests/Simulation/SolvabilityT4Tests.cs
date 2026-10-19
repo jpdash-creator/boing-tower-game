@@ -238,7 +238,6 @@ namespace BoingTower.Simulation.Tests
             {
                 if (!o.Solve.Solved) continue;
                 Assert.True(GoalEvaluator.IsComplete(o.Level.Spec, o.Solve.Final), o.Level.Id);
-                Assert.True(StarEvaluator.Stars(o.Level.Spec, o.Solve.Final, 0, o.Solve.Final.Tick) >= 1, o.Level.Id);
             }
         }
 

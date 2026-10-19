@@ -82,51 +82,6 @@ namespace BoingTower.Simulation.Tests
         }
 
         [Fact]
-        public void CoinStarTargetTableMatchesTheBotAndTheContent()
-        {
-            string root = ContentLoader.FindRoot();
-            if (root == null) return;
-            List<LevelOutcome> list = SolvabilityT4Tests.Outcomes();
-            Assert.Equal(75, list.Count);
-            if (Updating)
-            {
-                WriteTable(root, list);
-                return;
-            }
-            string path = TablePath(root);
-            Assert.True(File.Exists(path), "Content/config/coin_star_targets.json missing; run with UPDATE_COIN_TARGETS=1");
-            using (JsonDocument doc = JsonDocument.Parse(File.ReadAllText(path)))
-            {
-                JsonElement levels = doc.RootElement.GetProperty("levels");
-                foreach (LevelOutcome o in list)
-                {
-                    JsonElement e;
-                    Assert.True(levels.TryGetProperty(o.Level.Id, out e), o.Level.Id + " missing in table");
-                    int target = e.GetProperty("target").GetInt32();
-                    bool capped;
-                    int expected = TargetFor(Bound(o), o.Level.Spec.LevelIndex, out capped);
-                    Assert.True(expected == target, o.Level.Id + ": table " + target + " but the bot gives " + expected + " (re-run with UPDATE_COIN_TARGETS=1)");
-                    Assert.Equal(target, StarCoinValue(o.Level.Spec)); // gen_content.py applied it
-                    Assert.True(target <= Bound(o), o.Level.Id + " target above the proven bound");
-                    Assert.Equal(0, target % RoundTo);
-                }
-            }
-        }
-
-        [Fact]
-        public void EveryStarTwoTargetIsFeasibleForTheBot()
-        {
-            string root = ContentLoader.FindRoot();
-            if (root == null || Updating) return;
-            foreach (LevelOutcome o in SolvabilityT4Tests.Outcomes())
-            {
-                int target = StarCoinValue(o.Level.Spec);
-                if (target == 0) continue;
-                Assert.True(Bound(o) >= target, o.Level.Id + ": target " + target + " > bot bound " + Bound(o));
-            }
-        }
-
-        [Fact]
         public void NoShippedLevelHasATimedGoal()
         {
             string root = ContentLoader.FindRoot();

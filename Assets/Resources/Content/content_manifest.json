@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "contentHash": "5a06e191cdeb88ff839c81054a60a0a230757d2a84c53617de297ee3d057b8e1",
+  "contentHash": "24e29d772d447b51aff950d180c82a65792b61c23fae0374897774c0f25253a9",
   "regions": [
     {
       "id": "region_001_meadow_springs",
@@ -1522,8 +1522,8 @@
       "class": "simple",
       "difficulty": 0.22,
       "goal": {
-        "type": "collectCoins",
-        "count": 15
+        "type": "reachFloor",
+        "value": 100
       },
       "stars": [
         {
@@ -2038,8 +2038,8 @@
       "class": "simple",
       "difficulty": 0.22,
       "goal": {
-        "type": "collectCoins",
-        "count": 15
+        "type": "reachFloor",
+        "value": 100
       },
       "stars": [
         {
@@ -2554,8 +2554,8 @@
       "class": "simple",
       "difficulty": 0.22,
       "goal": {
-        "type": "collectCoins",
-        "count": 15
+        "type": "reachFloor",
+        "value": 100
       },
       "stars": [
         {
@@ -3070,8 +3070,8 @@
       "class": "simple",
       "difficulty": 0.22,
       "goal": {
-        "type": "collectCoins",
-        "count": 15
+        "type": "reachFloor",
+        "value": 100
       },
       "stars": [
         {
@@ -3586,8 +3586,8 @@
       "class": "simple",
       "difficulty": 0.22,
       "goal": {
-        "type": "collectCoins",
-        "count": 15
+        "type": "reachFloor",
+        "value": 100
       },
       "stars": [
         {
@@ -4102,8 +4102,8 @@
       "class": "simple",
       "difficulty": 0.22,
       "goal": {
-        "type": "collectCoins",
-        "count": 15
+        "type": "reachFloor",
+        "value": 100
       },
       "stars": [
         {
@@ -4618,8 +4618,8 @@
       "class": "simple",
       "difficulty": 0.22,
       "goal": {
-        "type": "collectCoins",
-        "count": 15
+        "type": "reachFloor",
+        "value": 100
       },
       "stars": [
         {
@@ -5134,8 +5134,8 @@
       "class": "simple",
       "difficulty": 0.22,
       "goal": {
-        "type": "collectCoins",
-        "count": 15
+        "type": "reachFloor",
+        "value": 100
       },
       "stars": [
         {
@@ -5650,8 +5650,8 @@
       "class": "simple",
       "difficulty": 0.22,
       "goal": {
-        "type": "collectCoins",
-        "count": 15
+        "type": "reachFloor",
+        "value": 100
       },
       "stars": [
         {
@@ -6166,8 +6166,8 @@
       "class": "simple",
       "difficulty": 0.22,
       "goal": {
-        "type": "collectCoins",
-        "count": 15
+        "type": "reachFloor",
+        "value": 100
       },
       "stars": [
         {
@@ -6682,8 +6682,8 @@
       "class": "simple",
       "difficulty": 0.22,
       "goal": {
-        "type": "collectCoins",
-        "count": 15
+        "type": "reachFloor",
+        "value": 100
       },
       "stars": [
         {
@@ -7198,8 +7198,8 @@
       "class": "simple",
       "difficulty": 0.22,
       "goal": {
-        "type": "collectCoins",
-        "count": 15
+        "type": "reachFloor",
+        "value": 100
       },
       "stars": [
         {
@@ -7714,8 +7714,8 @@
       "class": "simple",
       "difficulty": 0.22,
       "goal": {
-        "type": "collectCoins",
-        "count": 15
+        "type": "reachFloor",
+        "value": 100
       },
       "stars": [
         {
@@ -8230,8 +8230,8 @@
       "class": "simple",
       "difficulty": 0.22,
       "goal": {
-        "type": "collectCoins",
-        "count": 15
+        "type": "reachFloor",
+        "value": 100
       },
       "stars": [
         {
@@ -8746,8 +8746,8 @@
       "class": "simple",
       "difficulty": 0.22,
       "goal": {
-        "type": "collectCoins",
-        "count": 15
+        "type": "reachFloor",
+        "value": 100
       },
       "stars": [
         {
@@ -9262,8 +9262,8 @@
       "class": "simple",
       "difficulty": 0.22,
       "goal": {
-        "type": "collectCoins",
-        "count": 15
+        "type": "reachFloor",
+        "value": 100
       },
       "stars": [
         {
@@ -9778,8 +9778,8 @@
       "class": "simple",
       "difficulty": 0.22,
       "goal": {
-        "type": "collectCoins",
-        "count": 15
+        "type": "reachFloor",
+        "value": 100
       },
       "stars": [
         {
@@ -10294,8 +10294,8 @@
       "class": "simple",
       "difficulty": 0.22,
       "goal": {
-        "type": "collectCoins",
-        "count": 15
+        "type": "reachFloor",
+        "value": 100
       },
       "stars": [
         {
@@ -10810,8 +10810,8 @@
       "class": "simple",
       "difficulty": 0.22,
       "goal": {
-        "type": "collectCoins",
-        "count": 15
+        "type": "reachFloor",
+        "value": 100
       },
       "stars": [
         {
@@ -11326,8 +11326,8 @@
       "class": "simple",
       "difficulty": 0.22,
       "goal": {
-        "type": "collectCoins",
-        "count": 15
+        "type": "reachFloor",
+        "value": 100
       },
       "stars": [
         {
@@ -11842,8 +11842,8 @@
       "class": "simple",
       "difficulty": 0.22,
       "goal": {
-        "type": "collectCoins",
-        "count": 15
+        "type": "reachFloor",
+        "value": 100
       },
       "stars": [
         {
@@ -12358,8 +12358,8 @@
       "class": "simple",
       "difficulty": 0.22,
       "goal": {
-        "type": "collectCoins",
-        "count": 15
+        "type": "reachFloor",
+        "value": 100
       },
       "stars": [
         {
@@ -12874,8 +12874,8 @@
       "class": "simple",
       "difficulty": 0.22,
       "goal": {
-        "type": "collectCoins",
-        "count": 15
+        "type": "reachFloor",
+        "value": 100
       },
       "stars": [
         {
@@ -13390,8 +13390,8 @@
       "class": "simple",
       "difficulty": 0.22,
       "goal": {
-        "type": "collectCoins",
-        "count": 15
+        "type": "reachFloor",
+        "value": 100
       },
       "stars": [
         {
@@ -13906,8 +13906,8 @@
       "class": "simple",
       "difficulty": 0.22,
       "goal": {
-        "type": "collectCoins",
-        "count": 15
+        "type": "reachFloor",
+        "value": 100
       },
       "stars": [
         {
@@ -14422,8 +14422,8 @@
       "class": "simple",
       "difficulty": 0.22,
       "goal": {
-        "type": "collectCoins",
-        "count": 15
+        "type": "reachFloor",
+        "value": 100
       },
       "stars": [
         {
@@ -14938,8 +14938,8 @@
       "class": "simple",
       "difficulty": 0.22,
       "goal": {
-        "type": "collectCoins",
-        "count": 15
+        "type": "reachFloor",
+        "value": 100
       },
       "stars": [
         {
@@ -15454,8 +15454,8 @@
       "class": "simple",
       "difficulty": 0.22,
       "goal": {
-        "type": "collectCoins",
-        "count": 15
+        "type": "reachFloor",
+        "value": 100
       },
       "stars": [
         {
@@ -15970,8 +15970,8 @@
       "class": "simple",
       "difficulty": 0.22,
       "goal": {
-        "type": "collectCoins",
-        "count": 15
+        "type": "reachFloor",
+        "value": 100
       },
       "stars": [
         {
@@ -16486,8 +16486,8 @@
       "class": "simple",
       "difficulty": 0.22,
       "goal": {
-        "type": "collectCoins",
-        "count": 15
+        "type": "reachFloor",
+        "value": 100
       },
       "stars": [
         {

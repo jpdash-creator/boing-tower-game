@@ -5,7 +5,9 @@ namespace BoingTower.Simulation
         Coin = 0,
         Gem = 1,
         /// <summary>The goal item of FindHiddenGem levels.</summary>
-        HiddenGem = 2
+        HiddenGem = 2,
+        /// <summary>One of the 3 collectible stars of a level (Tag = star index 0..2). Economy v2 (owner, 2026-10-20).</summary>
+        Star = 3
     }
 
     /// <summary>A collectable. Collected once when the player centre (X, feet Y + PlayerCenterY) is within Radius.</summary>
@@ -15,6 +17,8 @@ namespace BoingTower.Simulation
         public PickupKind Kind;
         public Fx X, Y;
         public Fx Radius;
+        /// <summary>Star: star index 0..2. Gem: rarity 0 common, 1 rare, 2 epic, 3 legendary.</summary>
+        public int Tag;
     }
 
     public enum HazardKind
@@ -90,7 +94,7 @@ namespace BoingTower.Simulation
             for (int i = 0; i < Pickups.Length; i++)
             {
                 Pickup k = Pickups[i];
-                h = Mix(h, (int)k.Kind); h = Mix(h, k.X.Raw); h = Mix(h, k.Y.Raw); h = Mix(h, k.Radius.Raw);
+                h = Mix(h, (int)k.Kind); h = Mix(h, k.X.Raw); h = Mix(h, k.Y.Raw); h = Mix(h, k.Radius.Raw); h = Mix(h, k.Tag);
             }
             return Mix(h, Rows);
         }

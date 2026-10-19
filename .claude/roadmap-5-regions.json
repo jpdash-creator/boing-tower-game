@@ -306,6 +306,56 @@
       "depends": [
         "T23"
       ]
+    },
+    {
+      "id": "T30",
+      "task": "Economy v2: 3 collectible stars per level, coins paid at the end (30 + 40/star + 5/combo step), gem rarity tiers (1/2/5/10), 3-star replay rule (50% coins, no gems); retire coin pickups and CollectCoins goal; sim, builder, rewards, HUD, tests",
+      "status": "done",
+      "minutes": 0,
+      "blocker": "",
+      "depends": [
+        "T23"
+      ]
+    },
+    {
+      "id": "T31",
+      "task": "Platform spacing: gap and sideways reach shrink with platform width so one jump always works",
+      "status": "done",
+      "minutes": 0,
+      "blocker": "",
+      "depends": [
+        "T23"
+      ]
+    },
+    {
+      "id": "T32",
+      "task": "Compact end popups (fell/clear/pause) with big display-font title and round X icon (OpenArt icon, 15 credits, packet first)",
+      "status": "pending",
+      "minutes": 90,
+      "blocker": "Owner approval of the X icon packet",
+      "depends": [
+        "T28"
+      ]
+    },
+    {
+      "id": "T33",
+      "task": "World map v2: 10 chained OpenArt segments of 3 regions each, scrollable 30 regions plus coming soon, pin and slim name tag markers",
+      "status": "pending",
+      "minutes": 360,
+      "blocker": "OpenArt approval packet (about 10 jobs); you pick per segment",
+      "depends": [
+        "T25"
+      ]
+    },
+    {
+      "id": "T34",
+      "task": "Level info popup rebuild (goal, stars, PLAY) with centered layout and fonts; wallet icon alignment",
+      "status": "active",
+      "minutes": 30,
+      "blocker": "Level popup rebuilt; wallet alignment next",
+      "depends": [
+        "T27"
+      ]
     }
   ]
 }

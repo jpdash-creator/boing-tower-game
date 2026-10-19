@@ -44,28 +44,15 @@ namespace BoingTower.Simulation
         }
     }
 
-    /// <summary>Star rules (doc 08 section 6): 1 = clear, 2 = coin target, 3 = no revive or a time target.</summary>
+    /// <summary>Star rules (economy v2, owner 2026-10-20): 3 collectible stars per level, earned by taking them and clearing the level.</summary>
     public static class StarEvaluator
     {
         /// <summary>Bit flags of the stars in spec.Stars order that are earned: bit i set = star i earned. All zero when the goal is not complete.</summary>
         public static int Earned(LevelSpec spec, SimState s, int revivesUsed, int ticks)
         {
+            // Economy v2: the stars are the collectible star pickups taken during the run; they count when the level is cleared.
             if (!GoalEvaluator.IsComplete(spec, s)) return 0;
-            int mask = 0;
-            for (int i = 0; i < spec.Stars.Length && i < 3; i++)
-            {
-                StarSpec st = spec.Stars[i];
-                bool ok;
-                switch (st.Kind)
-                {
-                    case StarSpec.KindCoins: ok = s.Coins >= st.Value; break;
-                    case StarSpec.KindNoRevive: ok = revivesUsed == 0; break;
-                    case StarSpec.KindTime: ok = ticks <= st.Value * SimConfig.TicksPerSecond; break;
-                    default: ok = true; break;
-                }
-                if (ok) mask |= 1 << i;
-            }
-            return mask;
+            return s.StarMask & 7;
         }
 
         /// <summary>Number of stars earned, 0..3 (0 when the goal is not complete).</summary>

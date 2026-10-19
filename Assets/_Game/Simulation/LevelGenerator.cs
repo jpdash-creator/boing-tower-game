@@ -90,13 +90,14 @@ namespace BoingTower.Simulation
 
                 Fx gap = rng.Range(Fx.Lerp(gapEasyLo, gapHardLo, d), Fx.Lerp(gapEasyHi, gapHardHi, d));
                 gap = Fx.Min(gap, maxGap);
-                y = y + gap;
 
                 Fx w = rng.Range(Fx.Lerp(widthEasyLo, widthHardLo, d), Fx.Lerp(widthEasyHi, widthHardHi, d));
                 w = w * rng.Range(jitterLo, jitterHi);
                 if (rowPattern == PatternDense) w = rng.Range(Fx.Lerp(Fx.FromRatio(26, 10), Fx.FromRatio(15, 10), d), Fx.Lerp(Fx.FromRatio(32, 10), Fx.FromRatio(24, 10), d));
                 else if (rowPattern == PatternZigzag) w = rng.Range(Fx.FromRatio(28, 10), Fx.FromRatio(40, 10));
                 w = Fx.Clamp(w, minWidth, maxWidth);
+                gap = Fx.Min(gap, LevelBuilder.SmallPlatformGapCap(maxGap, Fx.Min(w, prevW)));
+                y = y + gap;
 
                 Fx offFrac = rng.Range(Fx.Lerp(offEasyLo, offHardLo, d), Fx.Lerp(offEasyHi, offHardHi, d));
                 Fx dx = offFrac * screen;

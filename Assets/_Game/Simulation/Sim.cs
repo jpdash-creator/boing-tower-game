@@ -32,6 +32,8 @@ namespace BoingTower.Simulation
         // ---- T3 run tracking (plain value fields except the PickupTaken array) ----
         /// <summary>Coins collected this run (landing rules plus pickups). Not part of Score.</summary>
         public int Coins;
+        /// <summary>Bits of the collectible stars taken (bit i = star i) and how many.</summary>
+        public int StarMask, Stars;
         public int Gems;
         /// <summary>Hidden gems collected (FindHiddenGem goal). Counted separately from Gems.</summary>
         public int HiddenGems;
@@ -385,7 +387,13 @@ namespace BoingTower.Simulation
                 switch (Pickups[i].Kind)
                 {
                     case PickupKind.Coin: s.Coins++; break;
-                    case PickupKind.Gem: s.Gems++; break;
+                    case PickupKind.Star: s.StarMask |= 1 << Pickups[i].Tag; s.Stars++; break;
+                    case PickupKind.Gem:
+                        {
+                            int tier = Pickups[i].Tag < 0 ? 0 : (Pickups[i].Tag >= Cfg.GemValues.Length ? Cfg.GemValues.Length - 1 : Pickups[i].Tag);
+                            s.Gems += Cfg.GemValues[tier];
+                            break;
+                        }
                     default: s.HiddenGems++; break;
                 }
             }

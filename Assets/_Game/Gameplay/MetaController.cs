@@ -367,20 +367,34 @@ namespace BoingTower.Gameplay
             if (!progress.IsLevelUnlocked(level)) { ShowMessage("Locked", "Clear level " + (level.Index - 1) + " first."); return; }
             LevelSpec spec = LevelSpecFactory.Build(level, repo.GetRegion(level.Region));
             LevelProgress p = progress.GetProgress(level.Id);
-            string body = "Goal: " + RunSession.DescribeGoal(spec) + "\n";
-            for (int i = 0; i < spec.Stars.Length; i++)
+            int starsHave = p != null ? p.Stars : 0;
+            OpenPopup("Level " + level.Index, "");
+            Transform panel = popup.Find("Panel");
+            Destroy(panel.Find("Body").gameObject);
+
+            // Everything is centred on the panel: goal, the three stars, what pays, then the buttons.
+            Text goal = UiKit.AddText(panel, "Goal", RunSession.DescribeGoal(spec), 52, Color.white, TextAnchor.MiddleCenter, true);
+            UiKit.OnPanel(goal);
+            UiKit.Place((RectTransform)goal.transform, new Vector2(0.5f, 1f), new Vector2(0f, -170f), new Vector2(740f, 130f));
+            for (int i = 0; i < 3; i++)
             {
-                bool got = p != null && (p.StarMask & (1 << i)) != 0;
-                body += (got ? "[x] " : "[  ] ") + RunSession.DescribeStar(spec.Stars[i]) + "\n";
+                bool got = i < starsHave;
+                Image star = UiKit.AddImage(panel, "Star" + i, art != null ? (got ? art.StarFilled : art.StarEmpty) : null, got ? Color.white : new Color(1f, 1f, 1f, 0.55f));
+                UiKit.Place(star.rectTransform, new Vector2(0.5f, 1f), new Vector2((i - 1) * 170f, -300f), new Vector2(150f, 150f));
+                star.rectTransform.pivot = new Vector2(0.5f, 1f);
             }
-            if (p != null) body += "Best score " + p.BestScore;
-            OpenPopup("Level " + level.Index, body);
-            PopupButton("PLAY", Btn(1), Color.white, 230f, () =>
+            string info = "Collect the 3 stars on the way up.\nPays 30 coins + 40 per star + 5 per combo.";
+            if (starsHave >= 3) info = "All 3 stars collected.\nReplays pay half the coins and no gems.";
+            if (p != null && p.BestScore > 0) info += "\nBest score " + p.BestScore;
+            Text t = UiKit.AddText(panel, "Info", info, 42, Color.white, TextAnchor.UpperCenter);
+            UiKit.OnPanel(t);
+            UiKit.Place((RectTransform)t.transform, new Vector2(0.5f, 1f), new Vector2(0f, -465f), new Vector2(740f, 330f));
+            PopupButton("PLAY", Btn(1), Color.white, 200f, () =>
             {
                 GameSession.CurrentLevelId = level.Id;
                 SceneManager.LoadScene("Run");
             });
-            PopupButton("Close", Btn(0), Color.white, 60f, ClosePopup);
+            PopupButton("Close", Btn(0), Color.white, 40f, ClosePopup);
         }
 
         // ---------------- settings ----------------

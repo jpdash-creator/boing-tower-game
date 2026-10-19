@@ -105,7 +105,7 @@ namespace BoingTower.Tests
             Assert.IsFalse(s.Failed);
             RunOutcome o = s.BuildOutcome();
             Assert.IsTrue(o.Completed);
-            Assert.AreNotEqual(0, o.StarMask & 1, "star 1 = clear");
+            Assert.AreEqual(0, o.StarMask, "no stars were collected in this fabricated climb");
         }
 
         [Test]

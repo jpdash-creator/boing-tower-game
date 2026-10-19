@@ -491,12 +491,13 @@ namespace BoingTower.Gameplay
             }
         }
 
-        /// <summary>Drawn size in world units (the Simulation radius is only the collection zone).</summary>
-        static float VisualDiameter(PickupKind kind)
+        /// <summary>Drawn size in world units (the Simulation radius is only the collection zone). Rarer gems are drawn bigger.</summary>
+        static float VisualDiameter(Pickup pk)
         {
-            switch (kind)
+            switch (pk.Kind)
             {
-                case PickupKind.Gem: return 0.8f;
+                case PickupKind.Star: return 1.0f;
+                case PickupKind.Gem: return 0.75f + 0.1f * Mathf.Clamp(pk.Tag, 0, 3);
                 case PickupKind.HiddenGem: return 1.1f;
                 default: return 0.7f;
             }
@@ -513,11 +514,16 @@ namespace BoingTower.Gameplay
                 float x = plats[i].X.F();
                 if (Mathf.Abs(px - x) > halfW + 1.5f) continue;   // moving platforms drift; keep a margin
                 float top = plats[i].Y.F();
-                float r = VisualDiameter(pk.Kind) * 0.5f;
+                float r = VisualDiameter(pk) * 0.5f;
                 if (py > top - 0.7f - r && py < top + 0.45f + r) return top + 0.12f + r;
             }
             return py;
         }
+
+        static readonly Color[] RarityTint =
+        {
+            Color.white, new Color(0.65f, 0.9f, 1f), new Color(0.9f, 0.6f, 1f), new Color(1f, 0.85f, 0.3f)
+        };
 
         void BuildPickups()
         {
@@ -529,11 +535,11 @@ namespace BoingTower.Gameplay
                 Sprite sprite = null;
                 if (art != null)
                 {
-                    if (pk.Kind == PickupKind.Coin) sprite = ArtCatalog.Pick(art.CoinFrames, 0);
-                    else sprite = ArtCatalog.Pick(art.GemSizes, pk.Kind == PickupKind.HiddenGem ? 2 : 1);
+                    if (pk.Kind == PickupKind.Star) sprite = art.StarFilled;
+                    else sprite = ArtCatalog.Pick(art.GemSizes, pk.Kind == PickupKind.HiddenGem ? 2 : Mathf.Min(pk.Tag, 2));
                 }
                 var sr = NewSprite("pick" + pk.Id, sprite, 5);
-                float diameter = VisualDiameter(pk.Kind);
+                float diameter = VisualDiameter(pk);
                 if (sprite != null)
                 {
                     Vector2 size = sprite.bounds.size;
@@ -542,6 +548,7 @@ namespace BoingTower.Gameplay
                 }
                 else sr.transform.localScale = new Vector3(diameter, diameter, 1f);
                 if (pk.Kind == PickupKind.HiddenGem) sr.color = new Color(1f, 0.6f, 1f, 1f);
+                else if (pk.Kind == PickupKind.Gem) sr.color = RarityTint[Mathf.Clamp(pk.Tag, 0, 3)];
                 sr.transform.position = new Vector3(pk.X.F(), PickupVisualY(pk), 0f);
                 pickupSr[i] = sr;
             }
@@ -586,27 +593,13 @@ namespace BoingTower.Gameplay
             else player.localScale = new Vector3(0.9f, playerHeight, 1f);
         }
 
-        void BuildKillZone()
-        {
-            killZone = NewSprite("DangerZone", white, 30);
-            killZone.color = new Color(1f, 0.1f, 0.2f, 0.28f);
-            killLine = NewSprite("DangerLine", white, 31);
-            killLine.color = new Color(1f, 0.3f, 0.35f, 0.9f);
-            // Hazard stripes along the line: the danger zone is not signalled by red alone (CUX-6).
-            if (patterns == null) patterns = new Sprite[5];
-            patterns[3] = MakePattern(3);
-            dangerBand = NewSprite("DangerBand", patterns[3], 32);
-            dangerBand.drawMode = SpriteDrawMode.Tiled;
-            dangerBand.size = new Vector2(camHalfW * 2f + 2f, 0.3f);
-            dangerBand.color = new Color(1f, 1f, 1f, 0.8f);
-        }
-
         Pop MakePop()
         {
             var sr = NewSprite("pop", null, 20);
             sr.enabled = false;
             return new Pop { Tf = sr.transform, Sr = sr };
         }
+
 
         // ---------------- per tick / per frame ----------------
 
@@ -698,20 +691,18 @@ namespace BoingTower.Gameplay
                 if (cueSr[i] != null) cueSr[i].transform.position = new Vector3(x, y - 0.14f, 0f);
             }
 
-            // Pickups (taken ones hide; coins spin through their frames).
+            // Pickups (taken ones hide; stars pulse gently, unless reduced motion is on).
             Pickup[] picks = session.Data.Pickups;
-            Sprite[] frames = art != null ? art.CoinFrames : null;
-            int frame = (tick / 6) % (frames != null && frames.Length > 0 ? frames.Length : 1);
+            float pulse = reduced ? 1f : 1f + 0.08f * Mathf.Sin(tick * 0.12f);
             for (int i = 0; i < picks.Length; i++)
             {
                 var sr = pickupSr[i];
                 if (s.PickupTaken != null && s.PickupTaken[i]) { if (sr.enabled) sr.enabled = false; continue; }
-                if (picks[i].Kind == PickupKind.Coin && frames != null && frames.Length > 0 && sr.sprite != frames[frame])
+                if (picks[i].Kind == PickupKind.Star)
                 {
-                    sr.sprite = frames[frame];
-                    Vector2 sz = sr.sprite.bounds.size;
-                    float d = VisualDiameter(picks[i].Kind);
-                    float k = d / Mathf.Max(sz.x, sz.y);
+                    float d0 = VisualDiameter(picks[i]);
+                    Vector2 sz = sr.sprite != null ? (Vector2)sr.sprite.bounds.size : Vector2.one;
+                    float k = d0 / Mathf.Max(sz.x, sz.y) * pulse;
                     sr.transform.localScale = new Vector3(k, k, 1f);
                 }
             }
