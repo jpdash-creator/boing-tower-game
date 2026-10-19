@@ -14,9 +14,9 @@
     {
       "id": "T1",
       "task": "Art pipeline: key out #808080, slice tilesets/pickups/UI sheets, make Momo sprite, parallax layers, Unity import",
-      "status": "blocked",
+      "status": "active",
       "minutes": 120,
-      "blocker": "OWNER DECISION: owner will re-pick the images (all picks reopened); T1 cannot start until the picks are final",
+      "blocker": "none (owner picks final 2026-10-19)",
       "depends": [
         "T0"
       ]
