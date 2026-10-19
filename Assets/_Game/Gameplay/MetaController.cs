@@ -241,7 +241,7 @@ namespace BoingTower.Gameplay
             // Ribbon banner under the node (the game's own ribbon art): cream for open regions, tan for locked, no black boxes.
             int ribbonIdx = !playable ? 3 : (!unlocked ? 3 : (cleared >= region.Levels.Count ? 2 : 0));
             Sprite ribbon = art != null ? ArtCatalog.Pick(art.Ribbons, ribbonIdx) : null;
-            float rw = 440f, rh = 140f;   // the ribbon overlaps the lower rim of the node, so the labels need little vertical room
+            float rw = 500f, rh = 140f;   // the ribbon overlaps the lower rim of the node, so the labels need little vertical room
             if (ribbon != null) { Vector2 rs = ribbon.bounds.size; rh = rw * rs.y / rs.x; }
             Image rib = UiKit.AddImage(rt, "Ribbon", ribbon, ribbon != null ? Color.white : new Color(0.95f, 0.9f, 0.8f, 1f));
             rib.rectTransform.anchorMin = rib.rectTransform.anchorMax = new Vector2(0.5f, 0f);
@@ -255,7 +255,7 @@ namespace BoingTower.Gameplay
             nrt.anchorMin = nrt.anchorMax = new Vector2(0.5f, 0f);
             nrt.pivot = new Vector2(0.5f, 0.5f);
             nrt.anchoredPosition = new Vector2(0f, 44f - rh * 0.5f);
-            nrt.sizeDelta = new Vector2(rw * 0.84f, rh * 0.5f);
+            nrt.sizeDelta = new Vector2(rw * 0.80f, rh * 0.5f);
             // Star counts live on the level-select screen and in the wallet; the map stays uncluttered.
         }
 

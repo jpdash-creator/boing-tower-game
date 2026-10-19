@@ -169,9 +169,9 @@ namespace BoingTower.Gameplay
             OpenOverlay("Paused");
             OnClose = () => { if (OnResume != null) OnResume(); };
             Sprite b = art != null ? ArtCatalog.Pick(art.Buttons, 0) : null;
-            OverlayButton("Resume", b, Color.white, 640f, () => { if (OnResume != null) OnResume(); });
-            OverlayButton("Restart", b, new Color(1f, 0.85f, 0.9f), 480f, () => { if (OnRetry != null) OnRetry(); });
-            OverlayButton("Level select", b, new Color(0.9f, 0.95f, 1f), 320f, () => { if (OnMenu != null) OnMenu(); });
+            OverlayButton("Resume", b, Color.white, 440f, () => { if (OnResume != null) OnResume(); });
+            OverlayButton("Restart", b, new Color(1f, 0.85f, 0.9f), 280f, () => { if (OnRetry != null) OnRetry(); });
+            OverlayButton("Level select", b, new Color(0.9f, 0.95f, 1f), 120f, () => { if (OnMenu != null) OnMenu(); });
         }
 
         public void ShowFailed(RunSession s, bool canAffordRevive)
@@ -182,11 +182,11 @@ namespace BoingTower.Gameplay
             UiKit.OnPanel(sub);
             UiKit.Place((RectTransform)sub.transform, new Vector2(0.5f, 1f), new Vector2(0f, -220f), new Vector2(760f, 80f));
             Sprite b = art != null ? ArtCatalog.Pick(art.Buttons, 1) : null;
-            Button revive = OverlayButton("Revive  (" + s.NextReviveCost + " gems)", b, canAffordRevive ? Color.white : new Color(0.5f, 0.5f, 0.5f, 0.8f), 640f, () => { if (OnRevive != null) OnRevive(); });
+            Button revive = OverlayButton("Revive  (" + s.NextReviveCost + " gems)", b, canAffordRevive ? Color.white : new Color(0.5f, 0.5f, 0.5f, 0.8f), 440f, () => { if (OnRevive != null) OnRevive(); });
             revive.interactable = canAffordRevive;
             Sprite b2 = art != null ? ArtCatalog.Pick(art.Buttons, 0) : null;
-            OverlayButton("Try again", b2, Color.white, 480f, () => { if (OnRetry != null) OnRetry(); });
-            OverlayButton("Level select", b2, new Color(0.9f, 0.95f, 1f), 320f, () => { if (OnMenu != null) OnMenu(); });
+            OverlayButton("Try again", b2, Color.white, 280f, () => { if (OnRetry != null) OnRetry(); });
+            OverlayButton("Level select", b2, new Color(0.9f, 0.95f, 1f), 120f, () => { if (OnMenu != null) OnMenu(); });
         }
 
         public void ShowResults(RunSession s, RewardResult reward, bool hasNext)
