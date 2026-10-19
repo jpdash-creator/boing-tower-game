@@ -496,17 +496,17 @@ namespace BoingTower.Gameplay
 
         // ---------------- popups ----------------
 
-        void OpenPopup(string title, string body)
+        void OpenPopup(string title, string body, float height = 1180f)
         {
             ClosePopup();
             popup = UiKit.Rect(canvas.transform, "Popup");
             UiKit.Stretch(popup);
             var dim = popup.gameObject.AddComponent<Image>();
             dim.color = new Color(0f, 0f, 0f, 0.65f);
-            RectTransform panel = UiKit.BuildPopupFrame(popup, title, art, new Vector2(860f, 1180f), ClosePopup);
+            RectTransform panel = UiKit.BuildPopupFrame(popup, title, art, new Vector2(860f, height), ClosePopup);
             Text b = UiKit.AddText(panel, "Body", body, 44, Color.white);
             UiKit.OnPanel(b);
-            UiKit.Place((RectTransform)b.transform, new Vector2(0.5f, 1f), new Vector2(0f, -190f), new Vector2(740f, 560f));
+            UiKit.Place((RectTransform)b.transform, new Vector2(0.5f, 1f), new Vector2(0f, -240f), new Vector2(740f, 520f));
         }
 
         Button PopupButton(string label, Sprite sprite, Color tint, float y, Action action)
@@ -518,7 +518,7 @@ namespace BoingTower.Gameplay
 
         void ShowMessage(string title, string body)
         {
-            OpenPopup(title, body);
+            OpenPopup(title, body, 860f);
             PopupButton("OK", Btn(0), Color.white, 60f, ClosePopup);
         }
 

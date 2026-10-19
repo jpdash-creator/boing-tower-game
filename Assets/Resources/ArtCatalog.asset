@@ -525,3 +525,4 @@ MonoBehaviour:
   LoadingArt: {fileID: 21300000, guid: ed49c6161d3ffad4cba51053b6e12e8e, type: 3}
   AppIcon: {fileID: 21300000, guid: 097f27dc56274424babe092e76b0468a, type: 3}
   PopupFrame: {fileID: 21300000, guid: 121bfbf9c76b1284b807e0c08bf963cc, type: 3}
+  CloseIcon: {fileID: 21300000, guid: 452d53cf2d96f1349a43f095ef524c21, type: 3}

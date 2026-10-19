@@ -255,20 +255,19 @@ namespace BoingTower.Gameplay
                 fill.rectTransform.offsetMax = new Vector2(-10f, -10f);
             }
 
-            Sprite ribbon = art != null ? ArtCatalog.Pick(art.Ribbons, 1) : null;
-            float rw = 600f, rh = 210f;
-            if (ribbon != null) { Vector2 rs = ribbon.bounds.size; rh = rw * rs.y / rs.x; }
-            Image rib = AddImage(rim.transform, "Ribbon", ribbon, ribbon != null ? Color.white : new Color(0.95f, 0.45f, 0.65f, 1f));
-            Place(rib.rectTransform, new Vector2(0.5f, 1f), new Vector2(0f, 80f), new Vector2(rw, rh));
-            Text t = AddText(rim.transform, "Title", title, 64, Color.white);
-            Place((RectTransform)t.transform, new Vector2(0.5f, 1f), new Vector2(0f, 80f - rh * 0.5f + 55f), new Vector2(520f, 120f));
+            // Compact card (owner, 2026-10-20): no ribbon. A big outlined title in the display font sits on the frame, and a round X icon in the corner.
+            Text t = AddText(rim.transform, "Title", title, title.Length > 14 ? 60 : 84, new Color(0.60f, 0.16f, 0.30f, 1f), TextAnchor.MiddleCenter, true);
+            var tout = t.GetComponent<Outline>();
+            if (tout != null) { tout.effectColor = new Color(1f, 1f, 1f, 0.9f); tout.effectDistance = new Vector2(3f, -3f); }
+            Place((RectTransform)t.transform, new Vector2(0.5f, 1f), new Vector2(-40f, -50f), new Vector2(560f, 130f));
 
             if (onClose != null)
             {
-                Button x = AddButton(rim.transform, "CloseX", "X", PillSprite, new Color(0.96f, 0.80f, 0.55f, 1f), new Vector2(130f, 130f), onClose, 64);
-                x.GetComponent<Image>().type = Image.Type.Sliced;
+                Sprite icon = art != null ? art.CloseIcon : null;
+                Button x = AddButton(rim.transform, "CloseX", icon != null ? "" : "X", icon != null ? icon : PillSprite, icon != null ? Color.white : new Color(0.96f, 0.80f, 0.55f, 1f), new Vector2(130f, 130f), onClose, 64);
+                if (icon == null) x.GetComponent<Image>().type = Image.Type.Sliced;
                 x.GetComponent<A11yLabel>().Text = "Close";
-                Place((RectTransform)x.transform, new Vector2(1f, 1f), new Vector2(-18f, -18f), new Vector2(130f, 130f));
+                Place((RectTransform)x.transform, new Vector2(1f, 1f), new Vector2(-26f, -26f), new Vector2(130f, 130f));
             }
             return rim.rectTransform;
         }

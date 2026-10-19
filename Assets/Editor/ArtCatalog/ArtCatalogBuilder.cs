@@ -61,6 +61,7 @@ namespace BoingTower.Editor
             catalog.MapBackground = One(Art + "/Map/map_world_v1.png");
             catalog.LoadingArt = One(Art + "/UI/ui_loading_screen_art.png");
             catalog.PopupFrame = OptionalSprite(Art + "/UI/ui_popup_frame/ui_popup_frame_01.png");
+            catalog.CloseIcon = OptionalSprite(Art + "/UI/ui_close_icon/ui_close_icon_01.png");
             catalog.AppIcon = One(Art + "/Marketing/icon/app_icon_concept_v1.png");
 
             EditorUtility.SetDirty(catalog);

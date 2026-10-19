@@ -66,6 +66,8 @@ namespace BoingTower.Gameplay
         public Sprite MapBackground, LoadingArt, AppIcon;
         /// <summary>Clean 9-slice popup frame (OpenArt, T28). Null = the code-drawn panel.</summary>
         public Sprite PopupFrame;
+        /// <summary>Round close (X) button icon (OpenArt, T32).</summary>
+        public Sprite CloseIcon;
 
         public RegionArt ForRegion(int index)
         {

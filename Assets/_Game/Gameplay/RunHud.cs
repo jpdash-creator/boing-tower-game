@@ -143,14 +143,14 @@ namespace BoingTower.Gameplay
 
         // ---------------- overlays ----------------
 
-        void OpenOverlay(string title)
+        void OpenOverlay(string title, float height = 1000f)
         {
             CloseOverlay();
             overlay = UiKit.Rect(canvas.transform, "Overlay");
             UiKit.Stretch(overlay);
             var dim = overlay.gameObject.AddComponent<Image>();
             dim.color = new Color(0f, 0f, 0f, 0.62f);
-            UiKit.BuildPopupFrame(overlay, title, art, new Vector2(860f, 1180f), () => { if (OnClose != null) OnClose(); });
+            UiKit.BuildPopupFrame(overlay, title, art, new Vector2(860f, height), () => { if (OnClose != null) OnClose(); });
         }
 
         public void CloseOverlay()
@@ -170,32 +170,32 @@ namespace BoingTower.Gameplay
 
         public void ShowPause()
         {
-            OpenOverlay("Paused");
+            OpenOverlay("Paused", 820f);
             OnClose = () => { if (OnResume != null) OnResume(); };
             Sprite b = art != null ? ArtCatalog.Pick(art.Buttons, 0) : null;
-            OverlayButton("Resume", b, Color.white, 440f, () => { if (OnResume != null) OnResume(); });
-            OverlayButton("Restart", b, new Color(1f, 0.85f, 0.9f), 280f, () => { if (OnRetry != null) OnRetry(); });
-            OverlayButton("Level select", b, new Color(0.9f, 0.95f, 1f), 120f, () => { if (OnMenu != null) OnMenu(); });
+            OverlayButton("Resume", b, Color.white, 400f, () => { if (OnResume != null) OnResume(); });
+            OverlayButton("Restart", b, new Color(1f, 0.85f, 0.9f), 240f, () => { if (OnRetry != null) OnRetry(); });
+            OverlayButton("Level select", b, new Color(0.9f, 0.95f, 1f), 80f, () => { if (OnMenu != null) OnMenu(); });
         }
 
         public void ShowFailed(RunSession s, bool canAffordRevive)
         {
-            OpenOverlay("You fell!");
+            OpenOverlay("You fell!", 860f);
             OnClose = () => { if (OnMenu != null) OnMenu(); };
             Text sub = UiKit.AddText(PanelOf(), "Sub", "Floor " + s.State.Row + " of " + s.Spec.TargetRow(), 52, Color.white);
             UiKit.OnPanel(sub);
-            UiKit.Place((RectTransform)sub.transform, new Vector2(0.5f, 1f), new Vector2(0f, -220f), new Vector2(760f, 80f));
+            UiKit.Place((RectTransform)sub.transform, new Vector2(0.5f, 1f), new Vector2(0f, -240f), new Vector2(760f, 80f));
             Sprite b = art != null ? ArtCatalog.Pick(art.Buttons, 1) : null;
-            Button revive = OverlayButton("Revive  (" + s.NextReviveCost + " gems)", b, canAffordRevive ? Color.white : new Color(0.5f, 0.5f, 0.5f, 0.8f), 440f, () => { if (OnRevive != null) OnRevive(); });
+            Button revive = OverlayButton("Revive  (" + s.NextReviveCost + " gems)", b, canAffordRevive ? Color.white : new Color(0.5f, 0.5f, 0.5f, 0.8f), 400f, () => { if (OnRevive != null) OnRevive(); });
             revive.interactable = canAffordRevive;
             Sprite b2 = art != null ? ArtCatalog.Pick(art.Buttons, 0) : null;
-            OverlayButton("Try again", b2, Color.white, 280f, () => { if (OnRetry != null) OnRetry(); });
-            OverlayButton("Level select", b2, new Color(0.9f, 0.95f, 1f), 120f, () => { if (OnMenu != null) OnMenu(); });
+            OverlayButton("Try again", b2, Color.white, 240f, () => { if (OnRetry != null) OnRetry(); });
+            OverlayButton("Level select", b2, new Color(0.9f, 0.95f, 1f), 80f, () => { if (OnMenu != null) OnMenu(); });
         }
 
         public void ShowResults(RunSession s, RewardResult reward, bool hasNext)
         {
-            OpenOverlay("Level clear!");
+            OpenOverlay("Level clear!", 1180f);
             OnClose = () => { if (OnMenu != null) OnMenu(); };
             Transform panel = PanelOf();
             int mask = s.BuildOutcome().StarMask;
