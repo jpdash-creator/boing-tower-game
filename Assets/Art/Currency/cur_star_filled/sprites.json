@@ -1,0 +1,17 @@
+{
+  "asset": "cur_star_filled",
+  "mode": "single",
+  "pick": 1,
+  "sprites": [
+    {
+      "file": "cur_star_filled.png",
+      "w": 1217,
+      "h": 1192
+    }
+  ],
+  "keyColour": [
+    109,
+    111,
+    117
+  ]
+}

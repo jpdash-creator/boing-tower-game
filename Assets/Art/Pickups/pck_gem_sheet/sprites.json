@@ -1,0 +1,33 @@
+{
+  "asset": "pck_gem_sheet",
+  "mode": "sheet",
+  "pick": 1,
+  "sprites": [
+    {
+      "file": "pck_gem_sheet_01.png",
+      "x": 340,
+      "y": 762,
+      "w": 484,
+      "h": 561
+    },
+    {
+      "file": "pck_gem_sheet_02.png",
+      "x": 1015,
+      "y": 612,
+      "w": 584,
+      "h": 708
+    },
+    {
+      "file": "pck_gem_sheet_03.png",
+      "x": 1756,
+      "y": 357,
+      "w": 825,
+      "h": 957
+    }
+  ],
+  "keyColour": [
+    104,
+    107,
+    112
+  ]
+}

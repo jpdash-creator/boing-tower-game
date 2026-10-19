@@ -1,0 +1,54 @@
+{
+  "asset": "pck_coin_sheet",
+  "mode": "sheet",
+  "pick": 3,
+  "sprites": [
+    {
+      "file": "pck_coin_sheet_01.png",
+      "x": 112,
+      "y": 546,
+      "w": 470,
+      "h": 485
+    },
+    {
+      "file": "pck_coin_sheet_02.png",
+      "x": 597,
+      "y": 548,
+      "w": 416,
+      "h": 468
+    },
+    {
+      "file": "pck_coin_sheet_03.png",
+      "x": 993,
+      "y": 544,
+      "w": 392,
+      "h": 502
+    },
+    {
+      "file": "pck_coin_sheet_04.png",
+      "x": 1499,
+      "y": 546,
+      "w": 260,
+      "h": 502
+    },
+    {
+      "file": "pck_coin_sheet_05.png",
+      "x": 1835,
+      "y": 540,
+      "w": 451,
+      "h": 510
+    },
+    {
+      "file": "pck_coin_sheet_06.png",
+      "x": 2265,
+      "y": 516,
+      "w": 471,
+      "h": 535
+    }
+  ],
+  "keyColour": [
+    96,
+    99,
+    103
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "asset": "cur_gem_single",
+  "mode": "single",
+  "pick": 1,
+  "sprites": [
+    {
+      "file": "cur_gem_single.png",
+      "w": 1057,
+      "h": 985
+    }
+  ],
+  "keyColour": [
+    106,
+    112,
+    124
+  ]
+}

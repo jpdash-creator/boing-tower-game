@@ -1,0 +1,17 @@
+{
+  "asset": "cur_coin_single",
+  "mode": "single",
+  "pick": 1,
+  "sprites": [
+    {
+      "file": "cur_coin_single.png",
+      "w": 1750,
+      "h": 1628
+    }
+  ],
+  "keyColour": [
+    88,
+    92,
+    98
+  ]
+}

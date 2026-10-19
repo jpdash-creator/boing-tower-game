@@ -1,0 +1,40 @@
+{
+  "asset": "ui_buttons_primary",
+  "mode": "sheet",
+  "pick": 3,
+  "sprites": [
+    {
+      "file": "ui_buttons_primary_01.png",
+      "x": 356,
+      "y": 70,
+      "w": 789,
+      "h": 817
+    },
+    {
+      "file": "ui_buttons_primary_02.png",
+      "x": 1189,
+      "y": 85,
+      "w": 786,
+      "h": 801
+    },
+    {
+      "file": "ui_buttons_primary_03.png",
+      "x": 422,
+      "y": 907,
+      "w": 691,
+      "h": 755
+    },
+    {
+      "file": "ui_buttons_primary_04.png",
+      "x": 1247,
+      "y": 908,
+      "w": 688,
+      "h": 756
+    }
+  ],
+  "keyColour": [
+    83,
+    95,
+    115
+  ]
+}
