@@ -114,7 +114,7 @@
     {
       "id": "T11",
       "task": "Android build, install and device smoke test",
-      "status": "blocked",
+      "status": "done",
       "minutes": 60,
       "blocker": "Owner has an Android phone (USB debugging + cable); needs a playable build first",
       "depends": [
@@ -185,6 +185,36 @@
       "blocker": "T11 phone build",
       "depends": [
         "T11"
+      ]
+    },
+    {
+      "id": "T18",
+      "task": "Device feedback fixes: on-screen Left/Right/Jump buttons, auto-scroll death line at screen bottom, real-aspect platforms with feet aligned, remove timer goal and time star",
+      "status": "active",
+      "minutes": 240,
+      "blocker": "",
+      "depends": [
+        "T11"
+      ]
+    },
+    {
+      "id": "T19",
+      "task": "Android test kit: adb harness (install, launch, tap, screenshot, logcat asserts) plus in-game UI-tree dump; run on the OnePlus 13",
+      "status": "pending",
+      "minutes": 120,
+      "blocker": "",
+      "depends": [
+        "T11"
+      ]
+    },
+    {
+      "id": "T20",
+      "task": "Screen-by-screen polish pass from device screenshots (boot, menu, map, levels, settings, popups, HUD, results)",
+      "status": "pending",
+      "minutes": 180,
+      "blocker": "",
+      "depends": [
+        "T18"
       ]
     }
   ]

@@ -44,3 +44,6 @@ __pycache__/
 
 # Local contact sheet (generated)
 Art/_pick/
+
+# Android build scratch
+.utmp/
