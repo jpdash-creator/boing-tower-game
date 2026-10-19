@@ -14,9 +14,9 @@
     {
       "id": "T1",
       "task": "Art pipeline: key out #808080, slice tilesets/pickups/UI sheets, make Momo sprite, parallax layers, Unity import",
-      "status": "active",
-      "minutes": 120,
-      "blocker": "none (owner picks final 2026-10-19)",
+      "status": "done",
+      "minutes": 0,
+      "blocker": "none (done; see Assets/Art/NOTES.md for limitations)",
       "depends": [
         "T0"
       ]

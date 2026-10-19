@@ -1,0 +1,68 @@
+{
+  "asset": "ui_dividers_corners",
+  "mode": "sheet",
+  "pick": 2,
+  "sprites": [
+    {
+      "file": "ui_dividers_corners_01.png",
+      "x": 163,
+      "y": 186,
+      "w": 670,
+      "h": 166
+    },
+    {
+      "file": "ui_dividers_corners_02.png",
+      "x": 1105,
+      "y": 106,
+      "w": 395,
+      "h": 438
+    },
+    {
+      "file": "ui_dividers_corners_03.png",
+      "x": 1683,
+      "y": 115,
+      "w": 415,
+      "h": 537
+    },
+    {
+      "file": "ui_dividers_corners_04.png",
+      "x": 159,
+      "y": 549,
+      "w": 614,
+      "h": 646
+    },
+    {
+      "file": "ui_dividers_corners_05.png",
+      "x": 1681,
+      "y": 708,
+      "w": 433,
+      "h": 365
+    },
+    {
+      "file": "ui_dividers_corners_06.png",
+      "x": 185,
+      "y": 1343,
+      "w": 599,
+      "h": 182
+    },
+    {
+      "file": "ui_dividers_corners_07.png",
+      "x": 987,
+      "y": 1106,
+      "w": 484,
+      "h": 501
+    },
+    {
+      "file": "ui_dividers_corners_08.png",
+      "x": 1656,
+      "y": 1126,
+      "w": 457,
+      "h": 523
+    }
+  ],
+  "keyColour": [
+    76,
+    84,
+    95
+  ]
+}

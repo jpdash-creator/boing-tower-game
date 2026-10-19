@@ -1,0 +1,14 @@
+{
+  "asset": "reg004_tileset",
+  "spriteCount": 7,
+  "pivot": "top-centre for platforms (set in game)",
+  "normal": 1,
+  "narrow": 2,
+  "moving": 3,
+  "crumble": 4,
+  "bounce": 5,
+  "wallL": 6,
+  "wallR": 7,
+  "decor": [],
+  "notes": "clean; bounce = gumdrop blob"
+}

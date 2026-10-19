@@ -1,0 +1,40 @@
+{
+  "asset": "ui_keyboard_free_input",
+  "mode": "sheet",
+  "pick": 1,
+  "sprites": [
+    {
+      "file": "ui_keyboard_free_input_01.png",
+      "x": 217,
+      "y": 227,
+      "w": 912,
+      "h": 419
+    },
+    {
+      "file": "ui_keyboard_free_input_02.png",
+      "x": 1197,
+      "y": 314,
+      "w": 893,
+      "h": 324
+    },
+    {
+      "file": "ui_keyboard_free_input_03.png",
+      "x": 222,
+      "y": 950,
+      "w": 893,
+      "h": 435
+    },
+    {
+      "file": "ui_keyboard_free_input_04.png",
+      "x": 1196,
+      "y": 863,
+      "w": 894,
+      "h": 525
+    }
+  ],
+  "keyColour": [
+    89,
+    94,
+    105
+  ]
+}

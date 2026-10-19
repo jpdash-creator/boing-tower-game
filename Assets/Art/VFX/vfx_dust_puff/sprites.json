@@ -1,0 +1,54 @@
+{
+  "asset": "vfx_dust_puff",
+  "mode": "sheet",
+  "pick": 1,
+  "sprites": [
+    {
+      "file": "vfx_dust_puff_01.png",
+      "x": 166,
+      "y": 394,
+      "w": 581,
+      "h": 402
+    },
+    {
+      "file": "vfx_dust_puff_02.png",
+      "x": 848,
+      "y": 348,
+      "w": 581,
+      "h": 448
+    },
+    {
+      "file": "vfx_dust_puff_03.png",
+      "x": 1524,
+      "y": 330,
+      "w": 610,
+      "h": 464
+    },
+    {
+      "file": "vfx_dust_puff_04.png",
+      "x": 207,
+      "y": 980,
+      "w": 489,
+      "h": 373
+    },
+    {
+      "file": "vfx_dust_puff_05.png",
+      "x": 923,
+      "y": 991,
+      "w": 446,
+      "h": 359
+    },
+    {
+      "file": "vfx_dust_puff_06.png",
+      "x": 1639,
+      "y": 1013,
+      "w": 374,
+      "h": 330
+    }
+  ],
+  "keyColour": [
+    83,
+    91,
+    102
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "asset": "ui_toggles_sliders",
+  "mode": "sheet",
+  "pick": 1,
+  "sprites": [
+    {
+      "file": "ui_toggles_sliders_01.png",
+      "x": 363,
+      "y": 207,
+      "w": 742,
+      "h": 342
+    },
+    {
+      "file": "ui_toggles_sliders_02.png",
+      "x": 1222,
+      "y": 213,
+      "w": 719,
+      "h": 338
+    },
+    {
+      "file": "ui_toggles_sliders_03.png",
+      "x": 367,
+      "y": 715,
+      "w": 1056,
+      "h": 248
+    },
+    {
+      "file": "ui_toggles_sliders_04.png",
+      "x": 1578,
+      "y": 672,
+      "w": 361,
+      "h": 357
+    },
+    {
+      "file": "ui_toggles_sliders_05.png",
+      "x": 368,
+      "y": 1135,
+      "w": 372,
+      "h": 379
+    },
+    {
+      "file": "ui_toggles_sliders_06.png",
+      "x": 953,
+      "y": 1126,
+      "w": 401,
+      "h": 391
+    },
+    {
+      "file": "ui_toggles_sliders_07.png",
+      "x": 1555,
+      "y": 1128,
+      "w": 391,
+      "h": 388
+    }
+  ],
+  "keyColour": [
+    84,
+    93,
+    107
+  ]
+}

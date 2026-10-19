@@ -1,0 +1,14 @@
+{
+  "asset": "reg005_tileset",
+  "spriteCount": 7,
+  "pivot": "top-centre for platforms (set in game)",
+  "normal": 1,
+  "narrow": 2,
+  "moving": 3,
+  "crumble": 4,
+  "bounce": 5,
+  "wallL": 6,
+  "wallR": 7,
+  "decor": [],
+  "notes": "irregular: bamboo/pagoda scenery is baked into platforms, sprite 3 has a gong and arrow, sprite 5 is a curved arc; candidate for a re-generation (credits) if it looks wrong in game"
+}

@@ -1,0 +1,33 @@
+{
+  "asset": "reg001_signature",
+  "mode": "sheet",
+  "pick": 1,
+  "sprites": [
+    {
+      "file": "reg001_signature_01.png",
+      "x": 163,
+      "y": 456,
+      "w": 642,
+      "h": 680
+    },
+    {
+      "file": "reg001_signature_02.png",
+      "x": 815,
+      "y": 410,
+      "w": 1887,
+      "h": 727
+    },
+    {
+      "file": "reg001_signature_03.png",
+      "x": 827,
+      "y": 692,
+      "w": 103,
+      "h": 129
+    }
+  ],
+  "keyColour": [
+    87,
+    96,
+    110
+  ]
+}

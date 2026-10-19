@@ -1,0 +1,16 @@
+{
+  "asset": "reg003_tileset",
+  "spriteCount": 7,
+  "pivot": "top-centre for platforms (set in game)",
+  "normal": 2,
+  "narrow": 2,
+  "moving": 3,
+  "crumble": 4,
+  "bounce": 6,
+  "wallL": 5,
+  "wallR": 7,
+  "decor": [
+    1
+  ],
+  "notes": "irregular: sprite 1 is a palm island (scenery), sprite 6 is a water pool used as the bounce pad; layout is 4 + 3 so row-major order puts the pool between the walls"
+}

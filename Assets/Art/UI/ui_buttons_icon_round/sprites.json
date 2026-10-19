@@ -1,0 +1,96 @@
+{
+  "asset": "ui_buttons_icon_round",
+  "mode": "sheet",
+  "pick": 2,
+  "sprites": [
+    {
+      "file": "ui_buttons_icon_round_01.png",
+      "x": 271,
+      "y": 45,
+      "w": 383,
+      "h": 374
+    },
+    {
+      "file": "ui_buttons_icon_round_02.png",
+      "x": 956,
+      "y": 45,
+      "w": 383,
+      "h": 372
+    },
+    {
+      "file": "ui_buttons_icon_round_03.png",
+      "x": 1629,
+      "y": 46,
+      "w": 384,
+      "h": 372
+    },
+    {
+      "file": "ui_buttons_icon_round_04.png",
+      "x": 272,
+      "y": 460,
+      "w": 383,
+      "h": 372
+    },
+    {
+      "file": "ui_buttons_icon_round_05.png",
+      "x": 954,
+      "y": 461,
+      "w": 382,
+      "h": 371
+    },
+    {
+      "file": "ui_buttons_icon_round_06.png",
+      "x": 1630,
+      "y": 460,
+      "w": 380,
+      "h": 372
+    },
+    {
+      "file": "ui_buttons_icon_round_07.png",
+      "x": 271,
+      "y": 873,
+      "w": 384,
+      "h": 373
+    },
+    {
+      "file": "ui_buttons_icon_round_08.png",
+      "x": 954,
+      "y": 873,
+      "w": 384,
+      "h": 373
+    },
+    {
+      "file": "ui_buttons_icon_round_09.png",
+      "x": 1630,
+      "y": 873,
+      "w": 381,
+      "h": 373
+    },
+    {
+      "file": "ui_buttons_icon_round_10.png",
+      "x": 270,
+      "y": 1305,
+      "w": 386,
+      "h": 375
+    },
+    {
+      "file": "ui_buttons_icon_round_11.png",
+      "x": 954,
+      "y": 1307,
+      "w": 385,
+      "h": 373
+    },
+    {
+      "file": "ui_buttons_icon_round_12.png",
+      "x": 1628,
+      "y": 1305,
+      "w": 385,
+      "h": 375
+    }
+  ],
+  "keyColour": [
+    79,
+    88,
+    102
+  ]
+}

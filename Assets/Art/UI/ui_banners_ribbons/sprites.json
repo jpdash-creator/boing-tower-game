@@ -1,0 +1,54 @@
+{
+  "asset": "ui_banners_ribbons",
+  "mode": "sheet",
+  "pick": 3,
+  "sprites": [
+    {
+      "file": "ui_banners_ribbons_01.png",
+      "x": 47,
+      "y": 278,
+      "w": 714,
+      "h": 401
+    },
+    {
+      "file": "ui_banners_ribbons_02.png",
+      "x": 787,
+      "y": 284,
+      "w": 722,
+      "h": 394
+    },
+    {
+      "file": "ui_banners_ribbons_03.png",
+      "x": 1543,
+      "y": 283,
+      "w": 718,
+      "h": 396
+    },
+    {
+      "file": "ui_banners_ribbons_04.png",
+      "x": 48,
+      "y": 944,
+      "w": 712,
+      "h": 396
+    },
+    {
+      "file": "ui_banners_ribbons_05.png",
+      "x": 795,
+      "y": 932,
+      "w": 713,
+      "h": 408
+    },
+    {
+      "file": "ui_banners_ribbons_06.png",
+      "x": 1544,
+      "y": 945,
+      "w": 712,
+      "h": 395
+    }
+  ],
+  "keyColour": [
+    87,
+    92,
+    101
+  ]
+}

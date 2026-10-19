@@ -31,10 +31,10 @@ MERGE_GAP = 8          # px: parts of one object (glow, sparkles, arrows) closer
 PAD = 10
 
 # Sheets whose object count is known: if keying merges touching objects, the widest sprite is cut at its narrowest column.
-EXPECTED = {"pck_coin_sheet": 6}
+EXPECTED = {"pck_coin_sheet": 6, "pck_orbs": 6, "ui_frames_rarity": 5}
 
 FULL = {"fnd_app_icon", "map_region_map", "ui_loading_screen_art"}
-SINGLE = {"cur_coin_single", "cur_gem_single", "cur_star_empty", "cur_star_filled"}
+SINGLE = {"char_momo", "cur_coin_single", "cur_gem_single", "cur_star_empty", "cur_star_filled"}
 
 
 def mode_of(asset_id):
@@ -114,23 +114,31 @@ def split_sheet(rgba):
 
 
 def split_at_valley(sprite):
-    """Cuts one sprite into two at the column with the least opaque pixels in its middle 30-70 percent."""
+    """Cuts one sprite into two at the thinnest row (tall sprite) or column (wide sprite), searched in the middle 30-70 percent."""
     bbox, crop = sprite
-    cols = (crop[:, :, 3] > 128).sum(axis=0).astype(np.float32)
-    k = max(3, crop.shape[1] // 40)
-    smooth = np.convolve(cols, np.ones(k) / k, mode="same")
-    lo, hi = int(crop.shape[1] * 0.3), int(crop.shape[1] * 0.7)
+    tall = crop.shape[0] > crop.shape[1] * 1.25
+    opaque = (crop[:, :, 3] > 128)
+    proj = opaque.sum(axis=1 if tall else 0).astype(np.float32)
+    n = proj.shape[0]
+    k = max(3, n // 40)
+    smooth = np.convolve(proj, np.ones(k) / k, mode="same")
+    lo, hi = int(n * 0.3), int(n * 0.7)
     cut = lo + int(np.argmin(smooth[lo:hi]))
-    left, right = crop.copy(), crop.copy()
-    left[:, cut:, 3] = 0
-    right[:, :cut, 3] = 0
+    a, b = crop.copy(), crop.copy()
+    if tall:
+        a[cut:, :, 3] = 0
+        b[:cut, :, 3] = 0
+    else:
+        a[:, cut:, 3] = 0
+        b[:, :cut, 3] = 0
     out = []
-    for part, x_off in ((left, 0), (right, cut)):
-        sub = trim(part)
+    for part in (a, b):
         ys, xs = np.nonzero(part[:, :, 3] > 8)
         y0 = max(0, ys.min() - PAD)
+        y1 = min(part.shape[0], ys.max() + 1 + PAD)
         x0 = max(0, xs.min() - PAD)
-        out.append(((bbox[0] + x0, bbox[1] + y0, sub.shape[1], sub.shape[0]), sub))
+        x1 = min(part.shape[1], xs.max() + 1 + PAD)
+        out.append(((bbox[0] + x0, bbox[1] + y0, x1 - x0, y1 - y0), part[y0:y1, x0:x1]))
     return out
 
 
@@ -170,7 +178,7 @@ def process(asset_id, entry):
         found = split_sheet(rgba)
         want = EXPECTED.get(asset_id)
         while want and len(found) < want:
-            widest = max(range(len(found)), key=lambda i: found[i][0][2])
+            widest = max(range(len(found)), key=lambda i: found[i][0][2] * found[i][0][3])
             found = found[:widest] + split_at_valley(found[widest]) + found[widest + 1:]
         for n, (bbox, crop) in enumerate(found, start=1):
             name = "%s_%02d.png" % (asset_id, n)
@@ -190,6 +198,10 @@ def process(asset_id, entry):
 def main():
     with open(os.path.join(ROOT, "Content", "assets", "picks.json"), encoding="utf-8") as f:
         picks = json.load(f)["picks"]
+    # Momo (the owner's Gate-0 pick, downloaded from OpenArt) is not in picks.json; add it as a single trimmed sprite.
+    if os.path.exists(os.path.join(ROOT, "Art", "_candidates", "char_momo", "1.png")):
+        picks["char_momo"] = {"pick": 1, "sourceCandidate": "Art/_candidates/char_momo/1.png",
+                              "finalPath": "Assets/Art/Characters/char_momo/char_momo.png"}
     only = set(sys.argv[1:])
     summary = []
     for asset_id in sorted(picks):

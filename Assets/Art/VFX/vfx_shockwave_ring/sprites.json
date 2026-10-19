@@ -1,0 +1,61 @@
+{
+  "asset": "vfx_shockwave_ring",
+  "mode": "sheet",
+  "pick": 2,
+  "sprites": [
+    {
+      "file": "vfx_shockwave_ring_01.png",
+      "x": 236,
+      "y": 303,
+      "w": 324,
+      "h": 265
+    },
+    {
+      "file": "vfx_shockwave_ring_02.png",
+      "x": 912,
+      "y": 272,
+      "w": 482,
+      "h": 352
+    },
+    {
+      "file": "vfx_shockwave_ring_03.png",
+      "x": 1640,
+      "y": 289,
+      "w": 553,
+      "h": 351
+    },
+    {
+      "file": "vfx_shockwave_ring_04.png",
+      "x": 0,
+      "y": 0,
+      "w": 2304,
+      "h": 1728
+    },
+    {
+      "file": "vfx_shockwave_ring_05.png",
+      "x": 101,
+      "y": 1097,
+      "w": 575,
+      "h": 406
+    },
+    {
+      "file": "vfx_shockwave_ring_06.png",
+      "x": 837,
+      "y": 1082,
+      "w": 623,
+      "h": 464
+    },
+    {
+      "file": "vfx_shockwave_ring_07.png",
+      "x": 1601,
+      "y": 1051,
+      "w": 637,
+      "h": 500
+    }
+  ],
+  "keyColour": [
+    74,
+    86,
+    99
+  ]
+}

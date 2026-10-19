@@ -1,0 +1,61 @@
+{
+  "asset": "reg004_tileset",
+  "mode": "sheet",
+  "pick": 3,
+  "sprites": [
+    {
+      "file": "reg004_tileset_01.png",
+      "x": 215,
+      "y": 175,
+      "w": 954,
+      "h": 391
+    },
+    {
+      "file": "reg004_tileset_02.png",
+      "x": 1340,
+      "y": 233,
+      "w": 741,
+      "h": 305
+    },
+    {
+      "file": "reg004_tileset_03.png",
+      "x": 217,
+      "y": 677,
+      "w": 950,
+      "h": 288
+    },
+    {
+      "file": "reg004_tileset_04.png",
+      "x": 1266,
+      "y": 565,
+      "w": 814,
+      "h": 405
+    },
+    {
+      "file": "reg004_tileset_05.png",
+      "x": 266,
+      "y": 1143,
+      "w": 570,
+      "h": 335
+    },
+    {
+      "file": "reg004_tileset_06.png",
+      "x": 944,
+      "y": 1027,
+      "w": 371,
+      "h": 545
+    },
+    {
+      "file": "reg004_tileset_07.png",
+      "x": 1442,
+      "y": 1025,
+      "w": 370,
+      "h": 548
+    }
+  ],
+  "keyColour": [
+    88,
+    93,
+    106
+  ]
+}

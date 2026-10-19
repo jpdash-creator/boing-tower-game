@@ -1,0 +1,61 @@
+{
+  "asset": "ui_settings_icons",
+  "mode": "sheet",
+  "pick": 3,
+  "sprites": [
+    {
+      "file": "ui_settings_icons_01.png",
+      "x": 282,
+      "y": 246,
+      "w": 501,
+      "h": 534
+    },
+    {
+      "file": "ui_settings_icons_02.png",
+      "x": 942,
+      "y": 280,
+      "w": 456,
+      "h": 504
+    },
+    {
+      "file": "ui_settings_icons_03.png",
+      "x": 1588,
+      "y": 291,
+      "w": 444,
+      "h": 488
+    },
+    {
+      "file": "ui_settings_icons_04.png",
+      "x": 250,
+      "y": 957,
+      "w": 369,
+      "h": 424
+    },
+    {
+      "file": "ui_settings_icons_05.png",
+      "x": 694,
+      "y": 983,
+      "w": 392,
+      "h": 383
+    },
+    {
+      "file": "ui_settings_icons_06.png",
+      "x": 1165,
+      "y": 1005,
+      "w": 416,
+      "h": 357
+    },
+    {
+      "file": "ui_settings_icons_07.png",
+      "x": 1633,
+      "y": 1011,
+      "w": 466,
+      "h": 341
+    }
+  ],
+  "keyColour": [
+    79,
+    86,
+    100
+  ]
+}

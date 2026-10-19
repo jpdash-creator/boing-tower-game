@@ -1,0 +1,68 @@
+{
+  "asset": "ui_tutorial_hints",
+  "mode": "sheet",
+  "pick": 2,
+  "sprites": [
+    {
+      "file": "ui_tutorial_hints_01.png",
+      "x": 139,
+      "y": 253,
+      "w": 566,
+      "h": 455
+    },
+    {
+      "file": "ui_tutorial_hints_02.png",
+      "x": 904,
+      "y": 245,
+      "w": 522,
+      "h": 451
+    },
+    {
+      "file": "ui_tutorial_hints_03.png",
+      "x": 1608,
+      "y": 196,
+      "w": 496,
+      "h": 575
+    },
+    {
+      "file": "ui_tutorial_hints_04.png",
+      "x": 100,
+      "y": 938,
+      "w": 621,
+      "h": 582
+    },
+    {
+      "file": "ui_tutorial_hints_05.png",
+      "x": 928,
+      "y": 943,
+      "w": 313,
+      "h": 375
+    },
+    {
+      "file": "ui_tutorial_hints_06.png",
+      "x": 1077,
+      "y": 1201,
+      "w": 314,
+      "h": 344
+    },
+    {
+      "file": "ui_tutorial_hints_07.png",
+      "x": 1577,
+      "y": 1088,
+      "w": 308,
+      "h": 339
+    },
+    {
+      "file": "ui_tutorial_hints_08.png",
+      "x": 1917,
+      "y": 1086,
+      "w": 310,
+      "h": 343
+    }
+  ],
+  "keyColour": [
+    74,
+    82,
+    93
+  ]
+}

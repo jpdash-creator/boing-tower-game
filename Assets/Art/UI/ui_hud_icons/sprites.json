@@ -1,0 +1,82 @@
+{
+  "asset": "ui_hud_icons",
+  "mode": "sheet",
+  "pick": 3,
+  "sprites": [
+    {
+      "file": "ui_hud_icons_01.png",
+      "x": 271,
+      "y": 162,
+      "w": 370,
+      "h": 374
+    },
+    {
+      "file": "ui_hud_icons_02.png",
+      "x": 747,
+      "y": 160,
+      "w": 331,
+      "h": 375
+    },
+    {
+      "file": "ui_hud_icons_03.png",
+      "x": 1197,
+      "y": 173,
+      "w": 360,
+      "h": 355
+    },
+    {
+      "file": "ui_hud_icons_04.png",
+      "x": 1637,
+      "y": 166,
+      "w": 394,
+      "h": 361
+    },
+    {
+      "file": "ui_hud_icons_05.png",
+      "x": 291,
+      "y": 679,
+      "w": 336,
+      "h": 357
+    },
+    {
+      "file": "ui_hud_icons_06.png",
+      "x": 744,
+      "y": 676,
+      "w": 331,
+      "h": 365
+    },
+    {
+      "file": "ui_hud_icons_07.png",
+      "x": 1204,
+      "y": 683,
+      "w": 344,
+      "h": 347
+    },
+    {
+      "file": "ui_hud_icons_08.png",
+      "x": 1648,
+      "y": 672,
+      "w": 372,
+      "h": 368
+    },
+    {
+      "file": "ui_hud_icons_09.png",
+      "x": 290,
+      "y": 1138,
+      "w": 342,
+      "h": 394
+    },
+    {
+      "file": "ui_hud_icons_10.png",
+      "x": 733,
+      "y": 1207,
+      "w": 367,
+      "h": 300
+    }
+  ],
+  "keyColour": [
+    71,
+    80,
+    93
+  ]
+}

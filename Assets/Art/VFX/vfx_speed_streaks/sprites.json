@@ -1,0 +1,96 @@
+{
+  "asset": "vfx_speed_streaks",
+  "mode": "sheet",
+  "pick": 1,
+  "sprites": [
+    {
+      "file": "vfx_speed_streaks_01.png",
+      "x": 220,
+      "y": 491,
+      "w": 218,
+      "h": 147
+    },
+    {
+      "file": "vfx_speed_streaks_02.png",
+      "x": 279,
+      "y": 509,
+      "w": 245,
+      "h": 175
+    },
+    {
+      "file": "vfx_speed_streaks_03.png",
+      "x": 372,
+      "y": 332,
+      "w": 230,
+      "h": 146
+    },
+    {
+      "file": "vfx_speed_streaks_04.png",
+      "x": 466,
+      "y": 357,
+      "w": 217,
+      "h": 146
+    },
+    {
+      "file": "vfx_speed_streaks_05.png",
+      "x": 551,
+      "y": 373,
+      "w": 513,
+      "h": 317
+    },
+    {
+      "file": "vfx_speed_streaks_06.png",
+      "x": 583,
+      "y": 248,
+      "w": 409,
+      "h": 241
+    },
+    {
+      "file": "vfx_speed_streaks_07.png",
+      "x": 657,
+      "y": 340,
+      "w": 332,
+      "h": 196
+    },
+    {
+      "file": "vfx_speed_streaks_08.png",
+      "x": 1254,
+      "y": 208,
+      "w": 877,
+      "h": 488
+    },
+    {
+      "file": "vfx_speed_streaks_09.png",
+      "x": 1707,
+      "y": 534,
+      "w": 255,
+      "h": 178
+    },
+    {
+      "file": "vfx_speed_streaks_10.png",
+      "x": 0,
+      "y": 0,
+      "w": 2304,
+      "h": 1728
+    },
+    {
+      "file": "vfx_speed_streaks_11.png",
+      "x": 98,
+      "y": 1013,
+      "w": 1004,
+      "h": 595
+    },
+    {
+      "file": "vfx_speed_streaks_12.png",
+      "x": 1186,
+      "y": 1004,
+      "w": 1038,
+      "h": 625
+    }
+  ],
+  "keyColour": [
+    76,
+    86,
+    97
+  ]
+}

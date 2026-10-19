@@ -1,0 +1,54 @@
+{
+  "asset": "vfx_coin_burst",
+  "mode": "sheet",
+  "pick": 1,
+  "sprites": [
+    {
+      "file": "vfx_coin_burst_01.png",
+      "x": 55,
+      "y": 46,
+      "w": 743,
+      "h": 832
+    },
+    {
+      "file": "vfx_coin_burst_02.png",
+      "x": 784,
+      "y": 46,
+      "w": 736,
+      "h": 832
+    },
+    {
+      "file": "vfx_coin_burst_03.png",
+      "x": 1505,
+      "y": 46,
+      "w": 744,
+      "h": 832
+    },
+    {
+      "file": "vfx_coin_burst_04.png",
+      "x": 55,
+      "y": 862,
+      "w": 743,
+      "h": 820
+    },
+    {
+      "file": "vfx_coin_burst_05.png",
+      "x": 784,
+      "y": 862,
+      "w": 736,
+      "h": 820
+    },
+    {
+      "file": "vfx_coin_burst_06.png",
+      "x": 1505,
+      "y": 862,
+      "w": 744,
+      "h": 820
+    }
+  ],
+  "keyColour": [
+    253,
+    254,
+    254
+  ]
+}

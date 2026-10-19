@@ -1,0 +1,54 @@
+{
+  "asset": "vfx_wall_spark",
+  "mode": "sheet",
+  "pick": 1,
+  "sprites": [
+    {
+      "file": "vfx_wall_spark_01.png",
+      "x": 238,
+      "y": 306,
+      "w": 336,
+      "h": 319
+    },
+    {
+      "file": "vfx_wall_spark_02.png",
+      "x": 906,
+      "y": 264,
+      "w": 489,
+      "h": 414
+    },
+    {
+      "file": "vfx_wall_spark_03.png",
+      "x": 1646,
+      "y": 204,
+      "w": 527,
+      "h": 555
+    },
+    {
+      "file": "vfx_wall_spark_04.png",
+      "x": 202,
+      "y": 1091,
+      "w": 405,
+      "h": 443
+    },
+    {
+      "file": "vfx_wall_spark_05.png",
+      "x": 1005,
+      "y": 1137,
+      "w": 323,
+      "h": 346
+    },
+    {
+      "file": "vfx_wall_spark_06.png",
+      "x": 1843,
+      "y": 1211,
+      "w": 162,
+      "h": 184
+    }
+  ],
+  "keyColour": [
+    81,
+    92,
+    104
+  ]
+}

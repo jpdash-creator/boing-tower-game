@@ -1,0 +1,54 @@
+{
+  "asset": "ui_level_nodes",
+  "mode": "sheet",
+  "pick": 1,
+  "sprites": [
+    {
+      "file": "ui_level_nodes_01.png",
+      "x": 163,
+      "y": 280,
+      "w": 482,
+      "h": 492
+    },
+    {
+      "file": "ui_level_nodes_02.png",
+      "x": 666,
+      "y": 281,
+      "w": 484,
+      "h": 491
+    },
+    {
+      "file": "ui_level_nodes_03.png",
+      "x": 1173,
+      "y": 282,
+      "w": 478,
+      "h": 490
+    },
+    {
+      "file": "ui_level_nodes_04.png",
+      "x": 1676,
+      "y": 281,
+      "w": 477,
+      "h": 491
+    },
+    {
+      "file": "ui_level_nodes_05.png",
+      "x": 164,
+      "y": 867,
+      "w": 1487,
+      "h": 562
+    },
+    {
+      "file": "ui_level_nodes_06.png",
+      "x": 1675,
+      "y": 909,
+      "w": 474,
+      "h": 489
+    }
+  ],
+  "keyColour": [
+    75,
+    87,
+    101
+  ]
+}

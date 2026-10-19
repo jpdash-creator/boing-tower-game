@@ -1,0 +1,33 @@
+{
+  "asset": "ui_panel_glass",
+  "mode": "sheet",
+  "pick": 1,
+  "sprites": [
+    {
+      "file": "ui_panel_glass_01.png",
+      "x": 276,
+      "y": 176,
+      "w": 404,
+      "h": 421
+    },
+    {
+      "file": "ui_panel_glass_02.png",
+      "x": 363,
+      "y": 662,
+      "w": 853,
+      "h": 599
+    },
+    {
+      "file": "ui_panel_glass_03.png",
+      "x": 1238,
+      "y": 1032,
+      "w": 827,
+      "h": 601
+    }
+  ],
+  "keyColour": [
+    94,
+    102,
+    111
+  ]
+}

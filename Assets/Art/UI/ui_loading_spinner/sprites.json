@@ -1,0 +1,89 @@
+{
+  "asset": "ui_loading_spinner",
+  "mode": "sheet",
+  "pick": 2,
+  "sprites": [
+    {
+      "file": "ui_loading_spinner_01.png",
+      "x": 177,
+      "y": 359,
+      "w": 346,
+      "h": 347
+    },
+    {
+      "file": "ui_loading_spinner_02.png",
+      "x": 717,
+      "y": 357,
+      "w": 344,
+      "h": 345
+    },
+    {
+      "file": "ui_loading_spinner_03.png",
+      "x": 1250,
+      "y": 358,
+      "w": 342,
+      "h": 323
+    },
+    {
+      "file": "ui_loading_spinner_04.png",
+      "x": 1376,
+      "y": 532,
+      "w": 212,
+      "h": 171
+    },
+    {
+      "file": "ui_loading_spinner_05.png",
+      "x": 1784,
+      "y": 358,
+      "w": 344,
+      "h": 346
+    },
+    {
+      "file": "ui_loading_spinner_06.png",
+      "x": 178,
+      "y": 1006,
+      "w": 345,
+      "h": 345
+    },
+    {
+      "file": "ui_loading_spinner_07.png",
+      "x": 717,
+      "y": 1041,
+      "w": 344,
+      "h": 314
+    },
+    {
+      "file": "ui_loading_spinner_08.png",
+      "x": 847,
+      "y": 997,
+      "w": 188,
+      "h": 144
+    },
+    {
+      "file": "ui_loading_spinner_09.png",
+      "x": 1250,
+      "y": 1003,
+      "w": 341,
+      "h": 347
+    },
+    {
+      "file": "ui_loading_spinner_10.png",
+      "x": 1784,
+      "y": 1006,
+      "w": 345,
+      "h": 358
+    },
+    {
+      "file": "ui_loading_spinner_11.png",
+      "x": 1719,
+      "y": 1454,
+      "w": 239,
+      "h": 241
+    }
+  ],
+  "keyColour": [
+    89,
+    95,
+    105
+  ]
+}

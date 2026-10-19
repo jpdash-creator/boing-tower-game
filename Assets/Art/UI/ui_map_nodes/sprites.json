@@ -1,0 +1,54 @@
+{
+  "asset": "ui_map_nodes",
+  "mode": "sheet",
+  "pick": 2,
+  "sprites": [
+    {
+      "file": "ui_map_nodes_01.png",
+      "x": 316,
+      "y": 263,
+      "w": 506,
+      "h": 512
+    },
+    {
+      "file": "ui_map_nodes_02.png",
+      "x": 901,
+      "y": 260,
+      "w": 506,
+      "h": 521
+    },
+    {
+      "file": "ui_map_nodes_03.png",
+      "x": 1497,
+      "y": 267,
+      "w": 500,
+      "h": 506
+    },
+    {
+      "file": "ui_map_nodes_04.png",
+      "x": 310,
+      "y": 890,
+      "w": 511,
+      "h": 518
+    },
+    {
+      "file": "ui_map_nodes_05.png",
+      "x": 903,
+      "y": 892,
+      "w": 503,
+      "h": 515
+    },
+    {
+      "file": "ui_map_nodes_06.png",
+      "x": 1492,
+      "y": 891,
+      "w": 507,
+      "h": 515
+    }
+  ],
+  "keyColour": [
+    86,
+    95,
+    109
+  ]
+}

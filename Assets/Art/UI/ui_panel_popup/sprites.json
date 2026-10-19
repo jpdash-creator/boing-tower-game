@@ -1,0 +1,19 @@
+{
+  "asset": "ui_panel_popup",
+  "mode": "sheet",
+  "pick": 3,
+  "sprites": [
+    {
+      "file": "ui_panel_popup_01.png",
+      "x": 279,
+      "y": 113,
+      "w": 1736,
+      "h": 1494
+    }
+  ],
+  "keyColour": [
+    90,
+    99,
+    108
+  ]
+}

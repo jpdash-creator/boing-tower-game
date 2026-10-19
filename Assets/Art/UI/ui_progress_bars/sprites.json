@@ -1,0 +1,68 @@
+{
+  "asset": "ui_progress_bars",
+  "mode": "sheet",
+  "pick": 2,
+  "sprites": [
+    {
+      "file": "ui_progress_bars_01.png",
+      "x": 76,
+      "y": 481,
+      "w": 486,
+      "h": 191
+    },
+    {
+      "file": "ui_progress_bars_02.png",
+      "x": 596,
+      "y": 453,
+      "w": 524,
+      "h": 204
+    },
+    {
+      "file": "ui_progress_bars_03.png",
+      "x": 1154,
+      "y": 449,
+      "w": 609,
+      "h": 208
+    },
+    {
+      "file": "ui_progress_bars_04.png",
+      "x": 1805,
+      "y": 411,
+      "w": 424,
+      "h": 267
+    },
+    {
+      "file": "ui_progress_bars_05.png",
+      "x": 76,
+      "y": 1000,
+      "w": 489,
+      "h": 209
+    },
+    {
+      "file": "ui_progress_bars_06.png",
+      "x": 596,
+      "y": 986,
+      "w": 525,
+      "h": 202
+    },
+    {
+      "file": "ui_progress_bars_07.png",
+      "x": 1154,
+      "y": 973,
+      "w": 610,
+      "h": 246
+    },
+    {
+      "file": "ui_progress_bars_08.png",
+      "x": 1803,
+      "y": 948,
+      "w": 425,
+      "h": 271
+    }
+  ],
+  "keyColour": [
+    83,
+    90,
+    101
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "asset": "reg005_signature",
+  "mode": "sheet",
+  "pick": 2,
+  "sprites": [
+    {
+      "file": "reg005_signature_01.png",
+      "x": 172,
+      "y": 351,
+      "w": 721,
+      "h": 896
+    },
+    {
+      "file": "reg005_signature_02.png",
+      "x": 1026,
+      "y": 351,
+      "w": 743,
+      "h": 896
+    },
+    {
+      "file": "reg005_signature_03.png",
+      "x": 1825,
+      "y": 578,
+      "w": 128,
+      "h": 268
+    },
+    {
+      "file": "reg005_signature_04.png",
+      "x": 1893,
+      "y": 351,
+      "w": 913,
+      "h": 897
+    }
+  ],
+  "keyColour": [
+    79,
+    89,
+    101
+  ]
+}

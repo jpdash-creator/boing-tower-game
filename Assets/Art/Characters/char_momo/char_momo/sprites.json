@@ -1,0 +1,17 @@
+{
+  "asset": "char_momo",
+  "mode": "single",
+  "pick": 1,
+  "sprites": [
+    {
+      "file": "char_momo.png",
+      "w": 1365,
+      "h": 1649
+    }
+  ],
+  "keyColour": [
+    106,
+    110,
+    118
+  ]
+}

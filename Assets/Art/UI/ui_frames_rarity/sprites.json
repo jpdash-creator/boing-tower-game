@@ -1,0 +1,47 @@
+{
+  "asset": "ui_frames_rarity",
+  "mode": "sheet",
+  "pick": 3,
+  "sprites": [
+    {
+      "file": "ui_frames_rarity_01.png",
+      "x": 76,
+      "y": 584,
+      "w": 448,
+      "h": 507
+    },
+    {
+      "file": "ui_frames_rarity_02.png",
+      "x": 504,
+      "y": 579,
+      "w": 439,
+      "h": 512
+    },
+    {
+      "file": "ui_frames_rarity_03.png",
+      "x": 936,
+      "y": 584,
+      "w": 437,
+      "h": 506
+    },
+    {
+      "file": "ui_frames_rarity_04.png",
+      "x": 1353,
+      "y": 563,
+      "w": 446,
+      "h": 529
+    },
+    {
+      "file": "ui_frames_rarity_05.png",
+      "x": 1779,
+      "y": 569,
+      "w": 466,
+      "h": 540
+    }
+  ],
+  "keyColour": [
+    85,
+    90,
+    99
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "asset": "ui_notification_badges",
+  "mode": "sheet",
+  "pick": 2,
+  "sprites": [
+    {
+      "file": "ui_notification_badges_01.png",
+      "x": 191,
+      "y": 233,
+      "w": 470,
+      "h": 475
+    },
+    {
+      "file": "ui_notification_badges_02.png",
+      "x": 847,
+      "y": 229,
+      "w": 522,
+      "h": 521
+    },
+    {
+      "file": "ui_notification_badges_03.png",
+      "x": 1497,
+      "y": 290,
+      "w": 665,
+      "h": 391
+    },
+    {
+      "file": "ui_notification_badges_04.png",
+      "x": 139,
+      "y": 934,
+      "w": 573,
+      "h": 559
+    },
+    {
+      "file": "ui_notification_badges_05.png",
+      "x": 804,
+      "y": 996,
+      "w": 582,
+      "h": 433
+    },
+    {
+      "file": "ui_notification_badges_06.png",
+      "x": 1556,
+      "y": 993,
+      "w": 592,
+      "h": 440
+    }
+  ],
+  "keyColour": [
+    84,
+    90,
+    104
+  ]
+}

@@ -1,0 +1,110 @@
+{
+  "asset": "vfx_sparkles",
+  "mode": "sheet",
+  "pick": 1,
+  "sprites": [
+    {
+      "file": "vfx_sparkles_01.png",
+      "x": 254,
+      "y": 256,
+      "w": 310,
+      "h": 363
+    },
+    {
+      "file": "vfx_sparkles_02.png",
+      "x": 689,
+      "y": 207,
+      "w": 407,
+      "h": 415
+    },
+    {
+      "file": "vfx_sparkles_03.png",
+      "x": 1177,
+      "y": 246,
+      "w": 438,
+      "h": 355
+    },
+    {
+      "file": "vfx_sparkles_04.png",
+      "x": 1675,
+      "y": 181,
+      "w": 469,
+      "h": 467
+    },
+    {
+      "file": "vfx_sparkles_05.png",
+      "x": 196,
+      "y": 677,
+      "w": 432,
+      "h": 378
+    },
+    {
+      "file": "vfx_sparkles_06.png",
+      "x": 297,
+      "y": 685,
+      "w": 109,
+      "h": 130
+    },
+    {
+      "file": "vfx_sparkles_07.png",
+      "x": 724,
+      "y": 703,
+      "w": 344,
+      "h": 345
+    },
+    {
+      "file": "vfx_sparkles_08.png",
+      "x": 1168,
+      "y": 709,
+      "w": 439,
+      "h": 356
+    },
+    {
+      "file": "vfx_sparkles_09.png",
+      "x": 1683,
+      "y": 672,
+      "w": 415,
+      "h": 382
+    },
+    {
+      "file": "vfx_sparkles_10.png",
+      "x": 253,
+      "y": 1139,
+      "w": 348,
+      "h": 398
+    },
+    {
+      "file": "vfx_sparkles_11.png",
+      "x": 693,
+      "y": 1126,
+      "w": 403,
+      "h": 408
+    },
+    {
+      "file": "vfx_sparkles_12.png",
+      "x": 1184,
+      "y": 1153,
+      "w": 396,
+      "h": 375
+    },
+    {
+      "file": "vfx_sparkles_13.png",
+      "x": 1214,
+      "y": 1137,
+      "w": 117,
+      "h": 125
+    },
+    {
+      "file": "vfx_sparkles_14.png",
+      "x": 1695,
+      "y": 1112,
+      "w": 392,
+      "h": 446
+    }
+  ],
+  "keyColour": [
+    78,
+    87,
+    101
+  ]
+}

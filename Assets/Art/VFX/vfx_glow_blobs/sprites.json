@@ -1,0 +1,54 @@
+{
+  "asset": "vfx_glow_blobs",
+  "mode": "sheet",
+  "pick": 1,
+  "sprites": [
+    {
+      "file": "vfx_glow_blobs_01.png",
+      "x": 253,
+      "y": 247,
+      "w": 544,
+      "h": 568
+    },
+    {
+      "file": "vfx_glow_blobs_02.png",
+      "x": 877,
+      "y": 247,
+      "w": 547,
+      "h": 569
+    },
+    {
+      "file": "vfx_glow_blobs_03.png",
+      "x": 1508,
+      "y": 250,
+      "w": 542,
+      "h": 561
+    },
+    {
+      "file": "vfx_glow_blobs_04.png",
+      "x": 254,
+      "y": 902,
+      "w": 545,
+      "h": 567
+    },
+    {
+      "file": "vfx_glow_blobs_05.png",
+      "x": 877,
+      "y": 903,
+      "w": 548,
+      "h": 572
+    },
+    {
+      "file": "vfx_glow_blobs_06.png",
+      "x": 1502,
+      "y": 904,
+      "w": 553,
+      "h": 570
+    }
+  ],
+  "keyColour": [
+    98,
+    100,
+    106
+  ]
+}

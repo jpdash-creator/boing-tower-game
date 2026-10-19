@@ -1,0 +1,96 @@
+{
+  "asset": "vfx_confetti",
+  "mode": "sheet",
+  "pick": 1,
+  "sprites": [
+    {
+      "file": "vfx_confetti_01.png",
+      "x": 253,
+      "y": 176,
+      "w": 412,
+      "h": 433
+    },
+    {
+      "file": "vfx_confetti_02.png",
+      "x": 697,
+      "y": 194,
+      "w": 445,
+      "h": 401
+    },
+    {
+      "file": "vfx_confetti_03.png",
+      "x": 1204,
+      "y": 163,
+      "w": 393,
+      "h": 453
+    },
+    {
+      "file": "vfx_confetti_04.png",
+      "x": 1649,
+      "y": 180,
+      "w": 423,
+      "h": 422
+    },
+    {
+      "file": "vfx_confetti_05.png",
+      "x": 254,
+      "y": 629,
+      "w": 387,
+      "h": 436
+    },
+    {
+      "file": "vfx_confetti_06.png",
+      "x": 720,
+      "y": 649,
+      "w": 404,
+      "h": 392
+    },
+    {
+      "file": "vfx_confetti_07.png",
+      "x": 1188,
+      "y": 668,
+      "w": 398,
+      "h": 362
+    },
+    {
+      "file": "vfx_confetti_08.png",
+      "x": 1664,
+      "y": 636,
+      "w": 387,
+      "h": 419
+    },
+    {
+      "file": "vfx_confetti_09.png",
+      "x": 251,
+      "y": 1074,
+      "w": 408,
+      "h": 475
+    },
+    {
+      "file": "vfx_confetti_10.png",
+      "x": 687,
+      "y": 1080,
+      "w": 463,
+      "h": 464
+    },
+    {
+      "file": "vfx_confetti_11.png",
+      "x": 1193,
+      "y": 1093,
+      "w": 390,
+      "h": 437
+    },
+    {
+      "file": "vfx_confetti_12.png",
+      "x": 1671,
+      "y": 1075,
+      "w": 383,
+      "h": 482
+    }
+  ],
+  "keyColour": [
+    88,
+    94,
+    107
+  ]
+}

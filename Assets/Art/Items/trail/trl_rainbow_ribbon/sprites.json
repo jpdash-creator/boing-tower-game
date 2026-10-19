@@ -1,0 +1,47 @@
+{
+  "asset": "trl_rainbow_ribbon",
+  "mode": "sheet",
+  "pick": 1,
+  "sprites": [
+    {
+      "file": "trl_rainbow_ribbon_01.png",
+      "x": 242,
+      "y": 245,
+      "w": 2363,
+      "h": 377
+    },
+    {
+      "file": "trl_rainbow_ribbon_02.png",
+      "x": 608,
+      "y": 801,
+      "w": 320,
+      "h": 311
+    },
+    {
+      "file": "trl_rainbow_ribbon_03.png",
+      "x": 1052,
+      "y": 815,
+      "w": 334,
+      "h": 287
+    },
+    {
+      "file": "trl_rainbow_ribbon_04.png",
+      "x": 1518,
+      "y": 807,
+      "w": 296,
+      "h": 304
+    },
+    {
+      "file": "trl_rainbow_ribbon_05.png",
+      "x": 1937,
+      "y": 813,
+      "w": 299,
+      "h": 297
+    }
+  ],
+  "keyColour": [
+    89,
+    93,
+    102
+  ]
+}
