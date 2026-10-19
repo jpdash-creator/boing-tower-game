@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "contentHash": "ab54b02fbfa95726c3496a89e7f10eb154aa2c29b578af47a1c380a6042321d4",
+  "contentHash": "2673c3fe49ba75912851d0992c1cf9b76809ccbc0a098ae5bfaf0e9f6d4e5c83",
   "regions": [
     {
       "id": "region_001_meadow_springs",
@@ -1839,7 +1839,7 @@
         },
         {
           "type": "coins",
-          "value": 225
+          "value": 220
         },
         {
           "type": "noRevive"
@@ -1872,7 +1872,7 @@
         },
         {
           "type": "coins",
-          "value": 255
+          "value": 245
         },
         {
           "type": "noRevive"
@@ -1905,7 +1905,7 @@
         },
         {
           "type": "coins",
-          "value": 310
+          "value": 300
         },
         {
           "type": "noRevive"
@@ -2355,7 +2355,7 @@
         },
         {
           "type": "coins",
-          "value": 205
+          "value": 200
         },
         {
           "type": "noRevive"
@@ -2388,7 +2388,7 @@
         },
         {
           "type": "coins",
-          "value": 240
+          "value": 235
         },
         {
           "type": "noRevive"
@@ -2421,7 +2421,7 @@
         },
         {
           "type": "coins",
-          "value": 305
+          "value": 280
         },
         {
           "type": "noRevive"
@@ -2937,7 +2937,7 @@
         },
         {
           "type": "coins",
-          "value": 325
+          "value": 310
         },
         {
           "type": "noRevive"
@@ -3453,7 +3453,7 @@
         },
         {
           "type": "coins",
-          "value": 330
+          "value": 315
         },
         {
           "type": "noRevive"

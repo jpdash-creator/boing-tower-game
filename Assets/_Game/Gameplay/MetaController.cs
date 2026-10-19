@@ -196,9 +196,7 @@ namespace BoingTower.Gameplay
             Image img = b.GetComponent<Image>();
             img.preserveAspect = true;
 
-            Text num = UiKit.AddText(rt, "Num", region.Index.ToString(), 90, UiKit.ButtonInk);
-            DropOutline(num);
-            UiKit.Stretch((RectTransform)num.transform);
+            // No number on the node: the node art and the name label identify the region (owner, 2026-10-19).
 
             string label = playable ? region.Name + "\n" + stars + " / " + region.Levels.Count * 3 + " stars" : "Coming soon";
             Image backing = UiKit.AddImage(rt, "NameBacking", null, new Color(0f, 0f, 0f, 0.75f));

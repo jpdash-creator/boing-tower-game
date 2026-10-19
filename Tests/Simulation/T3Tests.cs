@@ -663,8 +663,9 @@ namespace BoingTower.Simulation.Tests
         {
             SimState s = sim.NewState();
             s.Row = row;
+            s.StartTick = 0;   // the screen scrolls once the run has started (first jump)
             Fx before = s.KillY;
-            for (int i = 0; i < 120; i++) sim.Step(ref s, 0);
+            for (int i = 0; i < 60; i++) sim.Step(ref s, 0);
             return s.KillY.Raw - before.Raw;
         }
 

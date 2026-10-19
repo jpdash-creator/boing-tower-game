@@ -423,7 +423,7 @@
       },
       {
         "type": "coins",
-        "value": 225
+        "value": 220
       },
       {
         "type": "noRevive"
@@ -456,7 +456,7 @@
       },
       {
         "type": "coins",
-        "value": 255
+        "value": 245
       },
       {
         "type": "noRevive"
@@ -489,7 +489,7 @@
       },
       {
         "type": "coins",
-        "value": 310
+        "value": 300
       },
       {
         "type": "noRevive"

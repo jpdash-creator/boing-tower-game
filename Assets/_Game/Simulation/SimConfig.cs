@@ -41,6 +41,12 @@ namespace BoingTower.Simulation
         public int ScrollStartRow = 3;
         /// <summary>Kill zone never trails further than this below the highest point reached.</summary>
         public Fx KillDistance = Fx.FromInt(10);
+        /// <summary>Distance below the start platform of the bottom edge (danger line) before the first jump.</summary>
+        public Fx StartKillDistance = Fx.FromInt(5);
+        /// <summary>Scroll speed steps up by ScrollStepPercent every ScrollStepSeconds after the first jump, up to ScrollStepCapPercent.</summary>
+        public int ScrollStepSeconds = 5;
+        public int ScrollStepPercent = 4;
+        public int ScrollStepCapPercent = 50;
 
         // Endless speed ramp (doc 08 section 2)
         public int RampFloors = 25;
@@ -148,7 +154,7 @@ namespace BoingTower.Simulation
         public Fx HiddenGemHeight = Fx.One;
 
         // Revive (minimal): see Sim.Revive
-        public Fx ReviveKillDistance = Fx.FromInt(10);
+        public Fx ReviveKillDistance = Fx.FromInt(6);
         public int ReviveInvulnTicks = 120;
 
         /// <summary>Jump launch speed (per tick) for a given horizontal speed magnitude.</summary>

@@ -87,7 +87,7 @@ namespace BoingTower.Gameplay
             lastUiKey = key;
             seq++;
             if (parts.Count == 0) parts.Add("");
-            // logcat truncates long lines, so the tree is sent in parts of at most about 2.5 kB and re-assembled by the harness.
+            // logcat truncates long lines, so the tree is sent in parts of at most about 700 bytes (this device cuts long log lines at about 1000) and re-assembled by the harness.
             for (int i = 0; i < parts.Count; i++)
                 Debug.Log("BTUI {\"seq\":" + seq + ",\"part\":" + i + ",\"parts\":" + parts.Count + ",\"w\":" + Screen.width + ",\"h\":" + Screen.height + ",\"items\":[" + parts[i] + "]}");
         }
@@ -96,7 +96,7 @@ namespace BoingTower.Gameplay
 
         static void Flush(StringBuilder items, System.Collections.Generic.List<string> parts, ref int count)
         {
-            if (items.Length < 2200) return;
+            if (items.Length < 600) return;
             parts.Add(items.ToString());
             items.Length = 0;
             count = 0;

@@ -54,7 +54,7 @@ namespace BoingTower.Gameplay
         Sprite white;
 
         float camHalfH, camHalfW, camY, designHalfH;
-        float prevX, prevY, curX, curY;
+        float prevX, prevY, curX, curY, prevKill, curKill;
         bool wasGrounded = true;
         float squash;   // 0..1 landing squash timer
         bool reduced;   // reduced-motion setting, read once per run
@@ -119,12 +119,12 @@ namespace BoingTower.Gameplay
             BuildPickups();
             BuildHazards();
             BuildPlayer();
-            BuildKillZone();
             for (int i = 0; i < pops.Length; i++) pops[i] = MakePop();
 
             curX = prevX = s.State.X.F();
             curY = prevY = s.State.Y.F();
-            camY = curY + camHalfH * 0.55f;
+            prevKill = curKill = s.State.KillY.F();
+            camY = curKill + camHalfH;
             ApplyCamera();
         }
 
@@ -368,6 +368,23 @@ namespace BoingTower.Gameplay
             }
         }
 
+        /// <summary>Draw height of a pickup: a pickup that would overlap a platform slab is lifted to rest on top of it; others stay in clear air.</summary>
+        float PickupVisualY(Pickup pk)
+        {
+            float px = pk.X.F(), py = pk.Y.F();
+            Platform[] plats = session.Data.Platforms;
+            for (int i = 0; i < plats.Length; i++)
+            {
+                float halfW = plats[i].Width.F() * 0.5f + 0.2f;
+                float x = plats[i].X.F();
+                if (Mathf.Abs(px - x) > halfW + 1.5f) continue;   // moving platforms drift; keep a margin
+                float top = plats[i].Y.F();
+                float r = VisualDiameter(pk.Kind) * 0.5f;
+                if (py > top - 0.7f - r && py < top + 0.45f + r) return top + 0.12f + r;
+            }
+            return py;
+        }
+
         void BuildPickups()
         {
             Pickup[] picks = session.Data.Pickups;
@@ -391,7 +408,7 @@ namespace BoingTower.Gameplay
                 }
                 else sr.transform.localScale = new Vector3(diameter, diameter, 1f);
                 if (pk.Kind == PickupKind.HiddenGem) sr.color = new Color(1f, 0.6f, 1f, 1f);
-                sr.transform.position = new Vector3(pk.X.F(), pk.Y.F(), 0f);
+                sr.transform.position = new Vector3(pk.X.F(), PickupVisualY(pk), 0f);
                 pickupSr[i] = sr;
             }
         }
@@ -463,6 +480,8 @@ namespace BoingTower.Gameplay
         public void OnTick(bool coinTaken, float coinX, float coinY)
         {
             prevX = curX;
+            prevKill = curKill;
+            curKill = session.State.KillY.F();
             prevY = curY;
             curX = session.State.X.F();
             curY = session.State.Y.F();
@@ -586,10 +605,9 @@ namespace BoingTower.Gameplay
                 p.Tf.localScale *= 1f + deltaTime * 2.5f;
             }
 
-            UpdateCamera(py, s.KillY.F());
+            UpdateCamera(Mathf.Lerp(prevKill, curKill, alpha));
             UpdateBackground();
             UpdateWalls();
-            UpdateKillZone(s.KillY.F());
         }
 
         /// <summary>Fits the view width to the screen width for the current aspect (called every frame: rotation, split screen, tests).</summary>
@@ -604,14 +622,14 @@ namespace BoingTower.Gameplay
             }
         }
 
-        void UpdateCamera(float playerY, float killY)
+        /// <summary>
+        /// The bottom edge of the screen IS the danger line of the simulation (owner rules, 2026-10-19): the screen scrolls up after the first jump,
+        /// platforms slide down, and anything below the edge is gone. The line is interpolated between ticks for smooth motion at any frame rate.
+        /// </summary>
+        void UpdateCamera(float killY)
         {
             FitCamera();
-            float target = playerY + camHalfH * 0.2f;   // the player sits in the lower-middle, above the control pad
-            // Time-based smoothing so the follow feels the same at 30, 60 and 120 fps (CUX-1).
-            if (target > camY) camY += (target - camY) * (1f - Mathf.Exp(-camSmoothing * frameDt));
-            float minCam = killY - 1f + camHalfH;      // the danger line never leaves the bottom of the screen
-            if (camY < minCam) camY = minCam;
+            camY = killY + camHalfH;
             ApplyCamera();
         }
 

@@ -23,6 +23,8 @@ namespace BoingTower.Simulation
         public int Row;
         public int Combo, BestCombo, Score, WallBounces;
         public Fx KillY, MaxY;
+        /// <summary>Tick of the first jump of the run, or -1 before it. The screen starts scrolling then (owner, 2026-10-19).</summary>
+        public int StartTick;
         public bool Dead;
         /// <summary>Per platform: tick of first landing on a crumble platform, or -1.</summary>
         public int[] CrumbleTick;
@@ -116,7 +118,8 @@ namespace BoingTower.Simulation
             s.BestGroundId = 0;
             s.Coyote = Cfg.CoyoteTicks;
             s.MaxY = start.Y;
-            s.KillY = start.Y - Cfg.KillDistance;
+            s.StartTick = -1;
+            s.KillY = start.Y - Cfg.StartKillDistance;
             s.CrumbleTick = new int[Platforms.Length];
             for (int i = 0; i < s.CrumbleTick.Length; i++) s.CrumbleTick[i] = -1;
             s.PickupTaken = new bool[Pickups.Length];
@@ -143,6 +146,7 @@ namespace BoingTower.Simulation
             s.JumpStartRow = p.Row;
             s.MaxY = p.Y;
             s.KillY = p.Y - Cfg.ReviveKillDistance;
+            if (s.StartTick < 0) s.StartTick = s.Tick;
             s.Invuln = Cfg.ReviveInvulnTicks;
             s.Combo = 0;
             s.RevivesUsed++;
@@ -254,6 +258,7 @@ namespace BoingTower.Simulation
                 s.Coyote = 0;
                 s.JumpBuffer = 0;
                 s.JumpStartRow = Platforms[s.GroundId].Row;
+                if (s.StartTick < 0) s.StartTick = tick;
             }
 
             // --- movement ---
@@ -323,9 +328,14 @@ namespace BoingTower.Simulation
 
             // --- scroll pressure and death ---
             if (s.Y > s.MaxY) s.MaxY = s.Y;
-            if (s.Row >= Cfg.ScrollStartRow)
+            if (s.StartTick >= 0)
             {
                 Fx scroll = scrollPerTick;
+                // The scroll speed steps up every ScrollStepSeconds of play (Cfg.ScrollStepPercent each, capped).
+                int steps = (tick - s.StartTick) / (Cfg.ScrollStepSeconds * SimConfig.TicksPerSecond);
+                int stepPct = steps * Cfg.ScrollStepPercent;
+                if (stepPct > Cfg.ScrollStepCapPercent) stepPct = Cfg.ScrollStepCapPercent;
+                scroll = scroll * (100 + stepPct) / 100;
                 if (Endless)
                 {
                     scroll = scroll * (100 + Cfg.RampPercentAt(s.Row)) / 100;
