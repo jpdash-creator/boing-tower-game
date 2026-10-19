@@ -106,9 +106,9 @@
     {
       "id": "T10",
       "task": "Audio placeholders: SFX and music loops",
-      "status": "blocked",
+      "status": "pending",
       "minutes": 45,
-      "blocker": "Owner decision: audio source (OpenArt has no audio models; licensing)",
+      "blocker": "Owner chose free CC0 libraries; owner approves the packs before download",
       "depends": []
     },
     {
@@ -116,7 +116,7 @@
       "task": "Android build, install and device smoke test",
       "status": "blocked",
       "minutes": 60,
-      "blocker": "Owner: Android phone with USB debugging (or emulator) and signing choice",
+      "blocker": "Owner has an Android phone (USB debugging + cable); needs a playable build first",
       "depends": [
         "T5",
         "T6",
@@ -141,6 +141,27 @@
       "status": "pending",
       "minutes": 60,
       "blocker": "optional; needs T5",
+      "depends": [
+        "T5"
+      ]
+    },
+    {
+      "id": "T14",
+      "task": "Apply owner decisions: relax speedrun time goals (normal gaps), raise coin-star targets (bot-proven), hidden gem first-clear reward, regenerate content/manifest/golden hashes",
+      "status": "active",
+      "minutes": 60,
+      "blocker": "background agent (dotnet only) then Unity manifest rebuild by main session",
+      "depends": [
+        "T3",
+        "T8"
+      ]
+    },
+    {
+      "id": "T15",
+      "task": "Regenerate Sunny Beach and Bamboo Temple tilesets (after seen in game)",
+      "status": "blocked",
+      "minutes": 20,
+      "blocker": "Needs owner approval packet and credits (about 120)",
       "depends": [
         "T5"
       ]
