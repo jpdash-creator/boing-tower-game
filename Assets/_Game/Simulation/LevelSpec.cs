@@ -147,6 +147,7 @@ namespace BoingTower.Simulation
                     case GoalType.ReachFloor:
                     case GoalType.Speedrun:
                     case GoalType.BossChase:
+                    case GoalType.NoWallBounce:
                         rows = Goal.Value > 0 ? Goal.Value : DefaultRows;
                         break;
                     default:

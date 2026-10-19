@@ -190,8 +190,8 @@
     {
       "id": "T18",
       "task": "Device feedback fixes: on-screen Left/Right/Jump buttons, auto-scroll death line at screen bottom, real-aspect platforms with feet aligned, remove timer goal and time star",
-      "status": "active",
-      "minutes": 240,
+      "status": "done",
+      "minutes": 0,
       "blocker": "",
       "depends": [
         "T11"
@@ -201,8 +201,8 @@
       "id": "T19",
       "task": "Android test kit: adb harness (install, launch, tap, screenshot, logcat asserts) plus in-game UI-tree dump; run on the OnePlus 13",
       "status": "active",
-      "minutes": 120,
-      "blocker": "",
+      "minutes": 60,
+      "blocker": "Harness works on the phone; needs install taps (OnePlus asks each time)",
       "depends": [
         "T11"
       ]
@@ -220,8 +220,8 @@
     {
       "id": "T21",
       "task": "Typography: pick and import free OFL fonts (3 pairings sampled), apply to every screen, fix number centering in nodes, remove map-node numbers",
-      "status": "active",
-      "minutes": 120,
+      "status": "done",
+      "minutes": 0,
       "blocker": "",
       "depends": [
         "T18"
@@ -240,8 +240,8 @@
     {
       "id": "T23",
       "task": "Generator v2: longer levels, dense patches of small platforms (some crumble), first platforms fixed then pattern reseeded every 15 s; keep bot-solvability",
-      "status": "pending",
-      "minutes": 300,
+      "status": "done",
+      "minutes": 0,
       "blocker": "",
       "depends": [
         "T22"
@@ -250,8 +250,8 @@
     {
       "id": "T24",
       "task": "Galaxy portal goal at the top: reach it to clear the level; coin placement rule (on platform top or clear air)",
-      "status": "pending",
-      "minutes": 120,
+      "status": "done",
+      "minutes": 0,
       "blocker": "",
       "depends": [
         "T22"
@@ -261,8 +261,8 @@
       "id": "T25",
       "task": "Thin on-style platform art: region 1 pilot approved (30 credits, pick pending), test end to end, then regions 2-5 in the same style (120 credits, needs a new approval)",
       "status": "active",
-      "minutes": 120,
-      "blocker": "owner verifies region 1 pick; new approval for regions 2-5",
+      "minutes": 90,
+      "blocker": "Owner verifies region 1 platform pick; then OpenArt packet for regions 2-5 (120 credits)",
       "depends": [
         "T20"
       ]
@@ -272,9 +272,39 @@
       "task": "AltTester SDK + Desktop on E: (owner approved the install); keep Tools/android_test as the lightweight kit",
       "status": "pending",
       "minutes": 90,
-      "blocker": "",
+      "blocker": "After T23/T24 (owner approved install)",
       "depends": [
         "T19"
+      ]
+    },
+    {
+      "id": "T27",
+      "task": "Issue list 4: region labels redesign (no translucent boxes), scroll speed +30% with A/B speed variants, text-vs-image overlap tests, popup art 9-sliced (not stretched) with a working normal-size X, revive cost 2 or 5 gems, feet and coins sit ON the platform surface",
+      "status": "active",
+      "minutes": 60,
+      "blocker": "Verify on the phone",
+      "depends": [
+        "T18"
+      ]
+    },
+    {
+      "id": "T28",
+      "task": "New popup frame art via OpenArt (clean 9-slice frame, no ribbon, no X); approval packet first; code-drawn panel with real X as stopgap",
+      "status": "active",
+      "minutes": 20,
+      "blocker": "Frame wired in (pick 2 default); owner verifies",
+      "depends": [
+        "T27"
+      ]
+    },
+    {
+      "id": "T29",
+      "task": "Difficulty setting (5 levels: scroll +5/10/15/20/25 percent per 5 s, base +20 percent) with gem-in-place-of-coin chance 5/5/7/9/10 percent; economy check of gem inflow",
+      "status": "active",
+      "minutes": 45,
+      "blocker": "Economy check of gem inflow pending",
+      "depends": [
+        "T23"
       ]
     }
   ]

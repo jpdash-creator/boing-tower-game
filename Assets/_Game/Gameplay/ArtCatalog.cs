@@ -64,6 +64,8 @@ namespace BoingTower.Gameplay
         public Sprite[] Trail = new Sprite[0];
 
         public Sprite MapBackground, LoadingArt, AppIcon;
+        /// <summary>Clean 9-slice popup frame (OpenArt, T28). Null = the code-drawn panel.</summary>
+        public Sprite PopupFrame;
 
         public RegionArt ForRegion(int index)
         {

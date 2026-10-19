@@ -199,12 +199,32 @@ namespace BoingTower.Tests
             var rc = Object.FindFirstObjectByType<RunController>();
             rc.Hud.SkipIntro();
             rc.Session.State.Row = rc.Session.Spec.TargetRow();   // fabricate the climb
-            for (int i = 0; i < 10; i++) yield return null;
+            for (int i = 0; i < 30; i++) yield return null;
+            yield return Shot("23a_warp_into_galaxy");
+            for (int i = 0; i < 60; i++) yield return null;   // the warp takes one second before the results show
             Assert.IsTrue(rc.Session.GoalReached);
             Assert.IsTrue(rc.Hud.OverlayOpen);
             Assert.IsTrue(GameSession.Progress.IsLevelCleared("lvl_001_01"));
             Assert.IsNotNull(GameSession.LastResult);
             yield return Shot("23_run_results");
+        }
+
+        [UnityTest]
+        public IEnumerator GalaxyPortalHangsAboveTheLastPlatform()
+        {
+            GameSession.CurrentLevelId = "lvl_001_01";
+            yield return Load("Run");
+            var rc = Object.FindFirstObjectByType<RunController>();
+            rc.Hud.SkipIntro();
+            Platform top = rc.Session.Data.Platforms[rc.Session.Data.Platforms.Length - 1];
+            rc.Session.State.X = top.X;
+            rc.Session.State.Y = top.Y;
+            rc.Session.State.MaxY = top.Y;
+            rc.Session.State.KillY = top.Y - Fx.FromInt(6);
+            rc.Session.State.Row = top.Row - 1;   // not yet at the goal row
+            for (int i = 0; i < 5; i++) yield return null;
+            yield return Shot("23b_galaxy_portal");
+            Assert.IsNotNull(GameObject.Find("Portal"), "the portal exists");
         }
 
         [UnityTest]

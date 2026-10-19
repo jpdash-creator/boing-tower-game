@@ -21,3 +21,13 @@ Verbatim themes (10 points) and the answers given via AskUserQuestion. Wording a
 5. Coins must not sit inside a platform: on a platform top or in clear air. DECIDED.
 6. Galaxy portal at the top: the goal; Momo jumps into it to clear the level. DECIDED.
 7. Platform count x5: DECIDED as longer levels plus dense patches of SMALLER platforms (jump choice matters, some can fall/crumble); first few platforms fixed, then a randomizer changes the pattern every 15 s. Smaller platform art: use code-drawn slabs first, OpenArt only if needed (approval packet first).
+
+## Issue list 4 (same day) and decisions
+1. Map region names: ribbon banner art under each node, no translucent black boxes. DECIDED.
+2. Scroll speed: base +20% over the current speed, 5 selectable difficulty levels in Settings (dropdown) with growth per 5 s of 5, 10, 15, 20, 25 percent. DECIDED by the owner.
+   Gem chance in place of a coin: 5% default (levels 5% and 10%), 7% at 15%, 9% at 20%, 10% at 25% (max 10%). Later in-app purchases may sell extra gem chance (recorded with purchases).
+   RISK TO REVIEW: 5-10% of coins becoming gems is a large hard-currency inflow (about 10 gems per level) versus doc 08/09 where gems are scarce and monetised; needs an economy check (per-level gem cap or coin-count scaling) before launch.
+3. Text overlapping images: add automated text-vs-image overlap tests everywhere.
+4. Popups (you fell, level clear, pause, level info) look stretched and the painted X does not work. DECIDED: new clean popup frame via OpenArt (needs an approval packet; nothing generated yet). Until then the code-drawn panel with a real X button is the stopgap.
+5. Revive cost: 2 gems the first time, 5 gems the second (max 2 revives per run). DECIDED.
+6. Feet and coins must stand ON the platform surface, not on the glow line: per-piece surface offset (walkable line is the top of the grass, not the neon rim).

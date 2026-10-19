@@ -62,11 +62,11 @@ namespace BoingTower.Simulation.Tests
             }
             if (dMilli == 50)
             {
-                for (int i = 1; i < plats.Length; i++) Assert.True(plats[i].Width >= Fx.FromRatio(48, 10), "easy platforms are wide (6.0 x 0.85 jitter at d = 0.05 is about 4.9)");
+                for (int i = 1; i < plats.Length; i++) if (plats[i].Row <= LevelGenerator.FixedRows) Assert.True(plats[i].Width >= Fx.FromRatio(48, 10), "the fixed first rows are wide (6.0 x 0.85 jitter at d = 0.05 is about 4.9); later patterns vary (dense patches, zigzag)");
             }
             if (dMilli == 1000)
             {
-                for (int i = 1; i < plats.Length; i++) Assert.True(plats[i].Width <= Fx.FromRatio(28, 10), "hard platforms are narrow");
+                for (int i = 1; i < plats.Length; i++) Assert.True(plats[i].Width <= Fx.FromRatio(46, 10), "hard platforms are narrow (zigzag rows up to 4.0 x jitter)");
             }
         }
 
@@ -75,7 +75,7 @@ namespace BoingTower.Simulation.Tests
         {
             SimConfig cfg = new SimConfig();
             foreach (Platform p in LevelGenerator.Generate(cfg, Params(5, 1000, 100)))
-                Assert.Equal(PlatformKind.Normal, p.Kind);
+                Assert.True(p.Kind == PlatformKind.Normal || p.Kind == PlatformKind.Crumble, "only Normal, or Crumble extras in dense patches");
         }
 
         [Fact]

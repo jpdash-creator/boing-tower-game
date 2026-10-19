@@ -52,21 +52,21 @@ SPEEDRUN_TIME_SEC = 75
 
 # index -> (class, d, goal)
 LEVELS = {
-    1: ("simple", 0.05, {"type": "reachFloor", "value": 30}),
-    2: ("simple", 0.10, {"type": "reachFloor", "value": 45}),
-    3: ("simple", 0.15, {"type": "reachFloor", "value": 60}),
+    1: ("simple", 0.05, {"type": "reachFloor", "value": 60}),
+    2: ("simple", 0.10, {"type": "reachFloor", "value": 90}),
+    3: ("simple", 0.15, {"type": "reachFloor", "value": 120}),
     4: ("simple", 0.22, {"type": "collectCoins", "count": 15}),
     5: ("complex", 0.40, {"type": "comboChain", "value": 3, "count": 2}),
-    6: ("medium", 0.35, {"type": "reachFloor", "value": 80}),
-    7: ("medium", 0.42, {"type": "noWallBounce", "value": 60}),
+    6: ("medium", 0.35, {"type": "reachFloor", "value": 160}),
+    7: ("medium", 0.42, {"type": "noWallBounce", "value": 120}),
     8: ("medium", 0.50, {"type": "findHiddenGem"}),
-    9: ("medium", 0.58, {"type": "reachFloor", "value": 90}),
+    9: ("medium", 0.58, {"type": "reachFloor", "value": 180}),
     10: ("complex", 0.70, {"type": "surviveWave"}),
     11: ("hard", 0.62, {"type": "comboChain", "value": 6, "count": 1}),
-    12: ("hard", 0.70, {"type": "reachFloor", "value": 100}),
-    13: ("hard", 0.78, {"type": "reachFloor", "value": 120}),
-    14: ("hard", 0.86, {"type": "reachFloor", "value": 140}),
-    15: ("highly_complex", 1.00, {"type": "bossChase", "value": 150}),
+    12: ("hard", 0.70, {"type": "reachFloor", "value": 200}),
+    13: ("hard", 0.78, {"type": "reachFloor", "value": 220}),
+    14: ("hard", 0.86, {"type": "reachFloor", "value": 240}),
+    15: ("highly_complex", 1.00, {"type": "bossChase", "value": 250}),
 }
 NORMAL_LEVELS = [1, 2, 3, 4, 6, 7, 8, 9, 11, 12, 13, 14]
 

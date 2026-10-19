@@ -37,6 +37,16 @@ namespace ProjectBootstrap
             ti.spriteImportMode = SpriteImportMode.Single;
             ti.spritePixelsPerUnit = 256f;
             ApplyPlatformSet(ti);
+            if (assetPath.Contains("ui_popup_frame"))
+            {
+                // 9-slice popup frame: 200 px corners (rounded corner plus rim), the flat middle stretches.
+                ti.spritePixelsPerUnit = 100f;
+                ti.spriteBorder = new Vector4(200f, 200f, 200f, 200f);
+                var fs = new TextureImporterSettings();
+                ti.ReadTextureSettings(fs);
+                fs.spriteMeshType = SpriteMeshType.FullRect;
+                ti.SetTextureSettings(fs);
+            }
             ti.mipmapEnabled = false;
             ti.filterMode = UnityEngine.FilterMode.Bilinear;
             ti.alphaIsTransparency = true;

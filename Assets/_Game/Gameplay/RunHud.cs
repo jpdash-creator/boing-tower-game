@@ -146,15 +146,7 @@ namespace BoingTower.Gameplay
             UiKit.Stretch(overlay);
             var dim = overlay.gameObject.AddComponent<Image>();
             dim.color = new Color(0f, 0f, 0f, 0.62f);
-            Sprite panel = art != null ? ArtCatalog.Pick(art.Popup, 0) ?? ArtCatalog.Pick(art.Panels, 0) : null;
-            Image frame = UiKit.AddImage(overlay, "Panel", panel, panel != null ? Color.white : new Color(0.1f, 0.12f, 0.2f, 0.95f));
-            frame.preserveAspect = false;
-            UiKit.Place(frame.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0f, 0f), new Vector2(860f, 1180f));
-            frame.rectTransform.pivot = new Vector2(0.5f, 0.5f);
-            Text t = UiKit.AddText(frame.transform, "Title", title, 80, Color.white);
-            UiKit.Place((RectTransform)t.transform, new Vector2(0.5f, 1f), new Vector2(0f, -60f), new Vector2(560f, 120f));
-            // The panel art has a close mark baked into its top-right corner: make it a real control.
-            UiKit.AddHitArea(frame.transform, "CloseMark", "Close", new Vector2(1f, 1f), new Vector2(-10f, 10f), new Vector2(140f, 140f), () => { if (OnClose != null) OnClose(); });
+            UiKit.BuildPopupFrame(overlay, title, art, new Vector2(860f, 1180f), () => { if (OnClose != null) OnClose(); });
         }
 
         public void CloseOverlay()
@@ -190,7 +182,7 @@ namespace BoingTower.Gameplay
             UiKit.OnPanel(sub);
             UiKit.Place((RectTransform)sub.transform, new Vector2(0.5f, 1f), new Vector2(0f, -220f), new Vector2(760f, 80f));
             Sprite b = art != null ? ArtCatalog.Pick(art.Buttons, 1) : null;
-            Button revive = OverlayButton("Revive  (" + RunSession.ReviveGemCost + " gems)", b, canAffordRevive ? Color.white : new Color(0.5f, 0.5f, 0.5f, 0.8f), 640f, () => { if (OnRevive != null) OnRevive(); });
+            Button revive = OverlayButton("Revive  (" + s.NextReviveCost + " gems)", b, canAffordRevive ? Color.white : new Color(0.5f, 0.5f, 0.5f, 0.8f), 640f, () => { if (OnRevive != null) OnRevive(); });
             revive.interactable = canAffordRevive;
             Sprite b2 = art != null ? ArtCatalog.Pick(art.Buttons, 0) : null;
             OverlayButton("Try again", b2, Color.white, 480f, () => { if (OnRetry != null) OnRetry(); });

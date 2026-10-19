@@ -63,3 +63,6 @@ Open items waiting on the owner are logged in `.claude/pendingdecisions/` (asset
 
 ## Conventions
 C# 9+, assembly definitions per module, DI via VContainer or a small service locator plus an event bus, no scattered singletons. Tests: EditMode for pure logic, a Simulation suite with golden replays. Art follows `Art/<Class>/<id>_<layer>.png`, lowercase snake_case, prompts and seeds logged in `assets_log.csv`.
+
+## Device testing (Android)
+`Tools/unity_tests.ps1 -Platform PlayMode|EditMode` runs the Unity tests and prints failures. `Assets/Editor/Build/AndroidBuild.cs` builds the development APK (`-executeMethod BoingTower.Editor.Build.AndroidBuild.BuildFromCommandLine`, output `E:/Unity/builds/boingtower.apk`). `python Tools/android_test/smoke_test.py` installs it on the connected phone (the phone asks to confirm each install), walks every screen, plays, and checks layout and frame time through the in-game TestBridge (development builds only). Owner feedback and decisions: `.claude/pendingdecisions/device-feedback-2026-10-19.md`.

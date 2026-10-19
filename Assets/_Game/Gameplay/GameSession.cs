@@ -31,6 +31,15 @@ namespace BoingTower.Gameplay
         public static ArtCatalog Art { get; private set; }
         public static readonly SimConfig Cfg = new SimConfig();
 
+        /// <summary>Copies the player's difficulty setting into the simulation config (scroll growth per 5 s and gem chance).</summary>
+        public static void ApplyDifficulty()
+        {
+            int d = GameSettings.Difficulty;
+            Cfg.ScrollStepPercent = GameSettings.DifficultyStepPercent[d];
+            Cfg.GemInsteadOfCoinPercent = GameSettings.DifficultyGemPercent[d];
+            Cfg.ScrollStepCapPercent = 400;
+        }
+
         public static string CurrentLevelId;
         /// <summary>Meta opens the level select of this region when it loads (set by the Run scene on exit).</summary>
         public static string PendingRegionId;
@@ -40,6 +49,7 @@ namespace BoingTower.Gameplay
         {
             if (Initialized) return;
             PerformanceSettings.Apply();
+            ApplyDifficulty();
             GameSettings.ApplyTextScale();
             Repo = ContentRepository.LoadFromResources();
             Progress = new ProgressService(Repo, new FileSaveStore(Path.Combine(Application.persistentDataPath, "save.json")), PlayableRegions);

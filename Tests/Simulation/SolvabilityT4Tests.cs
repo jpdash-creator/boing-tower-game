@@ -31,6 +31,8 @@ namespace BoingTower.Simulation.Tests
     public class SolvabilityT4Tests
     {
         public const int NodeBudget = 20000;
+        // Longer levels need a proportionally larger search (60 rows = the base budget).
+        private static int Budget(LevelSpec spec) { return NodeBudget * System.Math.Max(1, spec.RowsFor() / 60); }
         public const int CoinBeamWidth = 10;
 
         private readonly ITestOutputHelper output;
@@ -58,7 +60,7 @@ namespace BoingTower.Simulation.Tests
                     o.HazardCount = data.Hazards.Length;
                     o.PlatformCount = data.Platforms.Length;
                     Sim sim = new Sim(cfg, data, ll.Spec);
-                    o.Solve = new LevelBot(sim, ll.Spec, data, NodeBudget).Solve();
+                    o.Solve = new LevelBot(sim, ll.Spec, data, Budget(ll.Spec)).Solve();
 
                     for (int i = 0; i < ll.Spec.Stars.Length; i++)
                     {
@@ -80,17 +82,17 @@ namespace BoingTower.Simulation.Tests
                         if (EndsBeforeTop(gt))
                         {
                             bestRun = o.Solve; have = true;
-                            BotResult atGoal = new LevelBot(sim, ll.Spec, data, NodeBudget).MaxCoinsAtGoal(CoinBeamWidth);
+                            BotResult atGoal = new LevelBot(sim, ll.Spec, data, Budget(ll.Spec)).MaxCoinsAtGoal(CoinBeamWidth);
                             if (atGoal.Solved && atGoal.Coins > bestRun.Coins) bestRun = atGoal;
                         }
                         else
                         {
                             if (o.Solve.Final.Row >= top) { bestRun = o.Solve; have = true; }
-                            BotResult scratch = new LevelBot(sim, ll.Spec, data, NodeBudget).MaxCoins(CoinBeamWidth);
+                            BotResult scratch = new LevelBot(sim, ll.Spec, data, Budget(ll.Spec)).MaxCoins(CoinBeamWidth);
                             if (scratch.Solved && (!have || scratch.Coins > bestRun.Coins)) { bestRun = scratch; have = true; }
                             if (o.Solve.Final.Row < top)
                             {
-                                BotResult cont = new LevelBot(sim, ll.Spec, data, NodeBudget).MaxCoinsFrom(o.Solve.Final, CoinBeamWidth);
+                                BotResult cont = new LevelBot(sim, ll.Spec, data, Budget(ll.Spec)).MaxCoinsFrom(o.Solve.Final, CoinBeamWidth);
                                 if (cont.Solved && (!have || cont.Coins > bestRun.Coins)) { bestRun = cont; have = true; }
                             }
                         }
@@ -252,7 +254,7 @@ namespace BoingTower.Simulation.Tests
                 LevelData d = LevelBuilder.Build(cfg, ll.Spec);
                 int index = ll.Spec.LevelIndex;
                 int special = 0;
-                for (int i = 0; i < d.Platforms.Length; i++) if (d.Platforms[i].Kind != PlatformKind.Normal) special++;
+                for (int i = 0; i < d.Platforms.Length; i++) if (d.Platforms[i].Kind != PlatformKind.Normal && d.Platforms[i].Kind != PlatformKind.Crumble) special++;
                 if (index <= 2)
                 {
                     Assert.Equal(0, special);
@@ -296,7 +298,7 @@ namespace BoingTower.Simulation.Tests
             Assert.Equal(75, all.Count);
             LoadedLevel l15 = all.Find(x => x.Id == "lvl_005_15");
             Assert.Equal(GoalType.BossChase, l15.Spec.Goal.Type);
-            Assert.Equal(150, l15.Spec.Goal.Value);
+            Assert.Equal(250, l15.Spec.Goal.Value);
             Assert.True(l15.Spec.Ramp);
             Assert.Equal(SignatureKind.SwingingGongs, l15.Spec.Signature);
             Assert.Equal(4, l15.Spec.Class);
@@ -306,7 +308,7 @@ namespace BoingTower.Simulation.Tests
             Assert.True(l15.Spec.Stars[1].Value >= 95); // raised targets (coin_star_targets.json)
             LoadedLevel l9 = all.Find(x => x.Id == "lvl_001_09");
             Assert.Equal(GoalType.ReachFloor, l9.Spec.Goal.Type); // the timed goal was removed (owner, 2026-10-19)
-            Assert.Equal(90, l9.Spec.Goal.Value);
+            Assert.Equal(180, l9.Spec.Goal.Value);
             Assert.Equal(SignatureKind.BounceFlowers, l9.Spec.Signature);
             // effective difficulty applies the region offset: d + offset (1 - d)
             LoadedLevel l1 = all.Find(x => x.Id == "lvl_005_01");

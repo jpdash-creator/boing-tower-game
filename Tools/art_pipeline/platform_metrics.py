@@ -115,6 +115,9 @@ def process_set(d):
         if not os.path.exists(f):
             continue
         m = measure(f)
+        # Feet stand inside the grass, a little below its tips (not on the neon rim): the walking line is 28 percent down the body.
+        top = m["surfaceY"] - 0.12 * (m["bodyBottom"] - m["surfaceY"]) / 0.88
+        m["surfaceY"] = int(top + 0.28 * (m["bodyBottom"] - top))
         bw = m["bodyRight"] - m["bodyLeft"]
         m.update({"kind": kind, "file": os.path.basename(f),
                   "ppu": round((m["bodyBottom"] - m["surfaceY"]) / THICKNESS_WORLD, 2),

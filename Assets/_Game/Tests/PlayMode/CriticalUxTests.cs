@@ -35,7 +35,7 @@ namespace BoingTower.Tests
             new Aspect("3x4", 720, 960),
         };
 
-        sealed class Item { public RectTransform Rt; public Rect Box; public string Name; public bool IsButton; }
+        sealed class Item { public RectTransform Rt; public Rect Box; public string Name; public bool IsButton; public bool IsImage; }
 
         [SetUp]
         public void SetUp()
@@ -114,6 +114,18 @@ namespace BoingTower.Tests
                         problems.Add(screen + ": text below 16 sp (" + t.fontSize + "): " + Path(t.transform));
                 }
 
+                // Decorative images (icons, stars, badges): text must not run over them unless the image is the text's own backing.
+                foreach (Image img in canvas.GetComponentsInChildren<Image>(false))
+                {
+                    if (img.sprite == null || img.color.a < 0.3f || !img.gameObject.activeInHierarchy) continue;
+                    if (img.GetComponent<Button>() != null) continue;          // buttons are audited as buttons
+                    string n = img.name;
+                    if (n == "Bg" || n == "Fill" || n == "Panel" || n == "Ribbon" || n == "WalletPanel" || n == "StarPill" || n == "RowsBacking" || n == "TopBacking" || n == "NameBacking") continue;
+                    Rect ib = ToCanvasUnits(img.rectTransform, cam, scale);
+                    if (ib.width * ib.height > 0.35f * (a.W / scale) * (a.H / scale)) continue;   // full-screen art
+                    items.Add(new Item { Rt = img.rectTransform, Box = ib, Name = Path(img.transform) + " [image]", IsImage = true });
+                }
+
                 foreach (Button b in canvas.GetComponentsInChildren<Button>(false))
                 {
                     if (!b.gameObject.activeInHierarchy) continue;
@@ -133,6 +145,7 @@ namespace BoingTower.Tests
                 var sa = new Rect(safe.x * cw, safe.y * ch, safe.width * cw, safe.height * ch);
                 foreach (Item it in items)
                 {
+                    if (it.IsImage) continue;
                     const float tol = 2f;
                     if (it.Box.xMin < sa.xMin - tol || it.Box.xMax > sa.xMax + tol || it.Box.yMin < sa.yMin - tol || it.Box.yMax > sa.yMax + tol)
                         problems.Add(screen + ": outside the safe area: " + it.Name + " " + it.Box + " safe " + sa);
@@ -146,6 +159,13 @@ namespace BoingTower.Tests
                 {
                     Item p = items[i], q = items[j];
                     if (IsDescendant(p.Rt, q.Rt) || IsDescendant(q.Rt, p.Rt)) continue;
+                    if (p.IsImage != q.IsImage)
+                    {
+                        // image vs text only; an image next to a button is fine
+                        Item other = p.IsImage ? q : p;
+                        if (other.IsButton) continue;
+                    }
+                    else if (p.IsImage && q.IsImage) continue;
                     if (!p.Box.Overlaps(q.Box)) continue;
                     float ox = Mathf.Min(p.Box.xMax, q.Box.xMax) - Mathf.Max(p.Box.xMin, q.Box.xMin);
                     float oy = Mathf.Min(p.Box.yMax, q.Box.yMax) - Mathf.Max(p.Box.yMin, q.Box.yMin);

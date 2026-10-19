@@ -167,6 +167,7 @@ namespace BoingTower.Simulation
             bool hiddenGemPlaced = false;
 
             int rowNo = 1;
+            int pattern = 0, patternLeft = 0;
             while (rowNo <= rows)
             {
                 // ---------- combo ladder ----------
@@ -247,6 +248,15 @@ namespace BoingTower.Simulation
 
                 // ---------- generated row ----------
                 int row = rowNo;
+                // Owner rules (2026-10-19): fixed easy ladder for the first rows, then the layout pattern changes every 6 to 10 rows
+                // (about 15 seconds of climbing): ladder, dense patches of small platforms (some crumble), or a zigzag of mid-size ones.
+                if (row > LevelGenerator.FixedRows && patternLeft <= 0)
+                {
+                    pattern = rng.Next(3);
+                    patternLeft = rng.Range(6, 11);
+                }
+                patternLeft--;
+                int rowPattern = row > LevelGenerator.FixedRows ? pattern : 0;
                 Fx gap = rng.Range(Fx.Lerp(gapEasyLo, gapHardLo, d), Fx.Lerp(gapEasyHi, gapHardHi, d));
                 gap = Fx.Min(gap, maxGap);
                 if (prevKind == PlatformKind.Sticky) gap = Fx.Min(gap, cfg.StickyNextGapMax);
@@ -262,6 +272,8 @@ namespace BoingTower.Simulation
 
                 Fx w = rng.Range(Fx.Lerp(widthEasyLo, widthHardLo, d), Fx.Lerp(widthEasyHi, widthHardHi, d));
                 w = w * rng.Range(jitterLo, jitterHi);
+                if (rowPattern == 1) w = rng.Range(Fx.Lerp(Fx.FromRatio(26, 10), Fx.FromRatio(15, 10), d), Fx.Lerp(Fx.FromRatio(32, 10), Fx.FromRatio(24, 10), d));
+                else if (rowPattern == 2) w = rng.Range(Fx.FromRatio(28, 10), Fx.FromRatio(40, 10));
                 w = Fx.Clamp(w, minWidth, maxWidth);
                 if (kind == PlatformKind.Moving && w > cfg.DriftMaxWidth) w = cfg.DriftMaxWidth;
                 if (row == gemRow && w > Fx.FromRatio(35, 10)) w = Fx.FromRatio(35, 10);
@@ -275,6 +287,13 @@ namespace BoingTower.Simulation
 
                 int dir = rng.Next(2) == 0 ? -1 : 1;
                 Fx lo = w / 2, hi = screen - w / 2;
+                if (rowPattern == 2)
+                {
+                    // Zigzag: sweep to the far side each row; the reach limit still bounds the distance.
+                    dir = prevX < screen / 2 ? 1 : -1;
+                    dx = Fx.Max(dx, screen / 3);
+                    dx = Fx.Min(dx, dxLimit);
+                }
                 Fx x = prevX + dx * dir;
                 if (x < lo || x > hi) x = prevX - dx * dir;
                 x = Fx.Clamp(x, lo, hi);
@@ -327,6 +346,33 @@ namespace BoingTower.Simulation
                     data.HiddenGemRow = row;
                     data.HiddenGemX = hiddenGemX;
                 }
+                else if (rowPattern == 1)
+                {
+                    // Dense patch: 1 to 3 extra small platforms on the same row. The spine platform above stays reachable; these are
+                    // choices, and about one in four crumbles, so the player has to read each jump.
+                    int extras = 1 + rng.Next(3);
+                    Fx[] usedX = new Fx[4];
+                    Fx[] usedW = new Fx[4];
+                    usedX[0] = x; usedW[0] = w;
+                    int nUsed = 1;
+                    for (int e = 0; e < extras; e++)
+                    {
+                        Fx w2 = rng.Range(Fx.FromRatio(15, 10), Fx.FromRatio(26, 10));
+                        Fx x2 = rng.Range(w2 / 2, screen - w2 / 2);
+                        bool free = true;
+                        for (int u = 0; u < nUsed; u++) if (Fx.Abs(x2 - usedX[u]) < (w2 + usedW[u]) / 2 + Fx.FromRatio(6, 10)) free = false;
+                        if (!free) continue;
+                        Platform ex = new Platform();
+                        ex.Id = ctx.Plats.Count;
+                        ex.Row = row;
+                        ex.X = x2;
+                        ex.Y = y;
+                        ex.Width = w2;
+                        ex.Kind = rng.Next(100) < 25 ? PlatformKind.Crumble : PlatformKind.Normal;
+                        ctx.Plats.Add(ex);
+                        usedX[nUsed] = x2; usedW[nUsed] = w2; nUsed++;
+                    }
+                }
                 else
                 {
                     // Optional second platform on the same row (easy levels give more choices), as in LevelGenerator.
@@ -375,6 +421,7 @@ namespace BoingTower.Simulation
             bool hiddenGem, Fx hgx, Fx hgy)
         {
             Rng r = new Rng(spec.Seed ^ 0x2F1A7C35);
+            Rng gemRng = new Rng(spec.Seed ^ 0x1B3A5E77);   // separate stream: the gem chance never shifts the coin layout
             Fx screen = cfg.ScreenWidth;
             int cls = spec.Class < 0 ? 0 : (spec.Class > 4 ? 4 : spec.Class);
             int classPct = cfg.ClassCoinPercent[cls];
@@ -399,7 +446,7 @@ namespace BoingTower.Simulation
                     Fx t = Fx.FromRatio(k + 1, n + 1);
                     Fx px = Fx.Lerp(ctx.X[row - 1], ctx.X[row], t);
                     Fx py = Fx.Lerp(ctx.Y[row - 1], ctx.Y[row], t) + Fx.FromRatio(12, 10);
-                    list.Add(MakeCoin(cfg, PickupKind.Coin, px, py));
+                    list.Add(MakeCoin(cfg, gemRng.Next(100) < cfg.GemInsteadOfCoinPercent ? PickupKind.Gem : PickupKind.Coin, px, py));
                 }
                 if (r.Next(100) < riskyPct)
                 {
@@ -410,7 +457,7 @@ namespace BoingTower.Simulation
                     {
                         Fx hx = Fx.Lerp(ctx.X[row - 1], ctx.X[row], Fx.FromRatio(6, 10));
                         Fx hy = ctx.Y[row] + Fx.FromRatio(18, 10);
-                        list.Add(MakeCoin(cfg, PickupKind.Coin, Fx.Clamp(hx, wallMin, wallMax), hy));
+                        list.Add(MakeCoin(cfg, gemRng.Next(100) < cfg.GemInsteadOfCoinPercent ? PickupKind.Gem : PickupKind.Coin, Fx.Clamp(hx, wallMin, wallMax), hy));
                         if (pair) list.Add(MakeCoin(cfg, PickupKind.Coin, Fx.Clamp(hx, wallMin, wallMax), hy + Fx.FromRatio(9, 10)));
                     }
                 }

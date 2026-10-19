@@ -227,6 +227,52 @@ namespace BoingTower.Gameplay
             return img;
         }
 
+        /// <summary>
+        /// Clean popup frame drawn in code (never stretched): dark rim, cream body, the game's pink ribbon with the title, and a real round X.
+        /// Returns the panel (named "Panel"); callers add their content under it. The close handler may be null (no X).
+        /// </summary>
+        public static RectTransform BuildPopupFrame(Transform parent, string title, ArtCatalog art, Vector2 size, Action onClose)
+        {
+            Image rim;
+            if (art != null && art.PopupFrame != null)
+            {
+                // On-style 9-slice frame from the art set: corners keep their shape, only the flat middle stretches.
+                rim = AddImage(parent, "Panel", art.PopupFrame, Color.white);
+                rim.type = Image.Type.Sliced;
+                rim.preserveAspect = false;
+                rim.pixelsPerUnitMultiplier = 3.3f;   // 200 px corners are drawn about 60 units wide
+                Place(rim.rectTransform, new Vector2(0.5f, 0.5f), Vector2.zero, size);
+                rim.rectTransform.pivot = new Vector2(0.5f, 0.5f);
+            }
+            else
+            {
+                rim = AddPanel(parent, "Panel", new Color(0.20f, 0.10f, 0.16f, 1f));
+                Place(rim.rectTransform, new Vector2(0.5f, 0.5f), Vector2.zero, size);
+                rim.rectTransform.pivot = new Vector2(0.5f, 0.5f);
+                Image fill = AddPanel(rim.transform, "Fill", new Color(0.99f, 0.94f, 0.84f, 1f));
+                Stretch(fill.rectTransform);
+                fill.rectTransform.offsetMin = new Vector2(10f, 10f);
+                fill.rectTransform.offsetMax = new Vector2(-10f, -10f);
+            }
+
+            Sprite ribbon = art != null ? ArtCatalog.Pick(art.Ribbons, 1) : null;
+            float rw = 600f, rh = 210f;
+            if (ribbon != null) { Vector2 rs = ribbon.bounds.size; rh = rw * rs.y / rs.x; }
+            Image rib = AddImage(rim.transform, "Ribbon", ribbon, ribbon != null ? Color.white : new Color(0.95f, 0.45f, 0.65f, 1f));
+            Place(rib.rectTransform, new Vector2(0.5f, 1f), new Vector2(0f, 80f), new Vector2(rw, rh));
+            Text t = AddText(rim.transform, "Title", title, 64, Color.white);
+            Place((RectTransform)t.transform, new Vector2(0.5f, 1f), new Vector2(0f, 80f - rh * 0.5f + 55f), new Vector2(520f, 120f));
+
+            if (onClose != null)
+            {
+                Button x = AddButton(rim.transform, "CloseX", "X", PillSprite, new Color(0.96f, 0.80f, 0.55f, 1f), new Vector2(130f, 130f), onClose, 64);
+                x.GetComponent<Image>().type = Image.Type.Sliced;
+                x.GetComponent<A11yLabel>().Text = "Close";
+                Place((RectTransform)x.transform, new Vector2(1f, 1f), new Vector2(-18f, -18f), new Vector2(130f, 130f));
+            }
+            return rim.rectTransform;
+        }
+
         public static readonly Color PanelInk = new Color(0.20f, 0.11f, 0.16f, 1f);
 
         /// <summary>Dark ink for text on the light cream popup panels (white text there fails the 4.5:1 contrast rule).</summary>

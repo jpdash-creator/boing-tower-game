@@ -72,6 +72,95 @@ namespace BoingTower.Gameplay
         public float CameraY { get { return camY; } }
         public Camera Camera { get { return cam; } }
 
+        // ---------------- galaxy portal (the goal) ----------------
+        // A glowing galaxy swirl hangs above the last platform of the level. Reaching the goal row sends Momo spinning into it
+        // (PlayWarp), then the results appear. Purely visual: the simulation still ends the run on the goal row.
+        SpriteRenderer portal, portalGlow;
+        Transform portalTf;
+        Vector3 portalPos;
+        float warpStart = -1f;
+
+        static Sprite MakeGalaxy()
+        {
+            const int n = 192;
+            var tex = new Texture2D(n, n, TextureFormat.RGBA32, false) { filterMode = FilterMode.Bilinear, wrapMode = TextureWrapMode.Clamp };
+            var px = new Color32[n * n];
+            for (int y = 0; y < n; y++)
+            {
+                for (int x = 0; x < n; x++)
+                {
+                    float dx = (x + 0.5f) / n * 2f - 1f, dy = (y + 0.5f) / n * 2f - 1f;
+                    float r = Mathf.Sqrt(dx * dx + dy * dy);
+                    if (r >= 1f) { px[y * n + x] = new Color32(0, 0, 0, 0); continue; }
+                    float ang = Mathf.Atan2(dy, dx);
+                    // two logarithmic spiral arms
+                    float arm = Mathf.Cos(2f * (ang - 3.2f * Mathf.Log(r + 0.08f)));
+                    float arms = Mathf.Clamp01(arm * 0.5f + 0.5f);
+                    float core = Mathf.Clamp01(1f - r * 1.6f);
+                    float edge = Mathf.Clamp01((1f - r) * 4f);
+                    Color c = Color.Lerp(new Color(0.18f, 0.10f, 0.45f), new Color(0.85f, 0.45f, 0.95f), arms * (1f - r * 0.5f));
+                    c = Color.Lerp(c, new Color(0.45f, 0.85f, 1f), Mathf.Pow(arms, 4f) * 0.6f);
+                    c = Color.Lerp(c, Color.white, core * core);
+                    float a = Mathf.Clamp01((0.35f + arms * 0.65f + core) * edge);
+                    px[y * n + x] = new Color(c.r, c.g, c.b, a);
+                }
+            }
+            tex.SetPixels32(px);
+            tex.Apply();
+            return Sprite.Create(tex, new Rect(0, 0, n, n), new Vector2(0.5f, 0.5f), 64f);
+        }
+
+        void BuildPortal()
+        {
+            int target = session.Spec.TargetRow();
+            Platform[] plats = session.Data.Platforms;
+            float topY = 0f;
+            for (int i = 0; i < plats.Length; i++) if (plats[i].Row == target) topY = Mathf.Max(topY, plats[i].Y.F());
+            if (topY <= 0f) for (int i = 0; i < plats.Length; i++) topY = Mathf.Max(topY, plats[i].Y.F());
+            portalPos = new Vector3(camHalfW, topY + 4.2f, 0f);
+            Sprite g = MakeGalaxy();
+            portalGlow = NewSprite("PortalGlow", g, -50);
+            portalGlow.color = new Color(0.6f, 0.4f, 1f, 0.35f);
+            portalGlow.transform.position = portalPos;
+            portalGlow.transform.localScale = Vector3.one * 5.2f;
+            portal = NewSprite("Portal", g, -49);
+            portal.transform.position = portalPos;
+            portal.transform.localScale = Vector3.one * 3.6f;
+            portalTf = portal.transform;
+        }
+
+        void UpdatePortal(float dt)
+        {
+            if (portalTf == null) return;
+            if (!reduced) portalTf.Rotate(0f, 0f, -22f * dt);
+            if (warpStart >= 0f)
+            {
+                float t = Mathf.Clamp01((Time.time - warpStart) / WarpSeconds);
+                float e = t * t * (3f - 2f * t);
+                // Momo spirals into the galaxy: moves to its centre, shrinks and turns.
+                player.position = Vector3.Lerp(warpFrom, portalPos, e);
+                player.localScale = warpScale * (1f - 0.9f * e);
+                player.rotation = Quaternion.Euler(0f, 0f, reduced ? 0f : e * 540f);
+                if (!reduced) portalTf.localScale = Vector3.one * (3.6f + 1.6f * e);
+            }
+        }
+
+        public const float WarpSeconds = 1.0f;
+        Vector3 warpFrom, warpScale;
+
+        /// <summary>Starts the goal animation: Momo flies into the galaxy portal. Call once; WarpDone tells when to show the results.</summary>
+        public void PlayWarp()
+        {
+            if (warpStart >= 0f || player == null) return;
+            warpStart = Time.time;
+            warpFrom = player.position;
+            warpScale = player.localScale;
+        }
+
+        public bool WarpActive { get { return warpStart >= 0f; } }
+        public bool WarpDone { get { return warpStart >= 0f && Time.time - warpStart >= WarpSeconds; } }
+
+
         /// <summary>Debug/test hook: hides the parallax layers so the gameplay objects can be inspected on their own.</summary>
         public void SetBackgroundVisible(bool visible)
         {
@@ -120,6 +209,7 @@ namespace BoingTower.Gameplay
             BuildPickups();
             BuildHazards();
             BuildPlayer();
+            BuildPortal();
             for (int i = 0; i < pops.Length; i++) pops[i] = MakePop();
 
             curX = prevX = s.State.X.F();
@@ -362,7 +452,7 @@ namespace BoingTower.Gameplay
                     sr.size = new Vector2((width / s) * (m.W / (m.BodyRight - m.BodyLeft)), m.H / ppu);
                     sr.transform.localScale = new Vector3(s, s, 1f);
                     platformBaseScaleX[i] = s;
-                    platformOffY[i] = (m.H * 0.5f - m.SurfaceY) / ppu * s;
+                    platformOffY[i] = -(m.H * 0.5f - m.SurfaceY) / ppu * s;   // the sprite centre sits (H/2 - surface) below the walking line
                 }
                 else if (region != null && region.PlatSide.a > 0f)
                 {
@@ -649,6 +739,7 @@ namespace BoingTower.Gameplay
                 p.Tf.localScale *= 1f + deltaTime * 2.5f;
             }
 
+            UpdatePortal(deltaTime);
             UpdateCamera(Mathf.Lerp(prevKill, curKill, alpha));
             UpdateBackground();
             UpdateWalls();

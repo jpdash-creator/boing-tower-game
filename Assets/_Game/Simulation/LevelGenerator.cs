@@ -26,6 +26,9 @@ namespace BoingTower.Simulation
     public static class LevelGenerator
     {
         private static readonly Fx Eight = Fx.FromInt(8);
+        private const int PatternLadder = 0, PatternDense = 1, PatternZigzag = 2;
+        /// <summary>Rows at the start that always use the easy ladder (owner: the first few platforms are fixed).</summary>
+        public const int FixedRows = 4;
 
         public static Fx DifficultyAt(GeneratorParams p, int row)
         {
@@ -70,9 +73,20 @@ namespace BoingTower.Simulation
             Fx minWidth = Fx.FromRatio(14, 10);
             Fx maxWidth = Fx.FromRatio(95, 10);
 
+            // Owner rules (2026-10-19): the first rows are a fixed easy ladder; after that the layout pattern changes every few rows
+            // (about 15 seconds of climbing): ladder, dense patches of small platforms (some of them crumble), or a zigzag of mid-size ones.
+            int pattern = PatternLadder, patternLeft = 0;
+
             for (int row = 1; row <= p.Rows; row++)
             {
                 Fx d = DifficultyAt(p, row);
+                if (row > FixedRows && patternLeft <= 0)
+                {
+                    pattern = rng.Next(3);
+                    patternLeft = rng.Range(6, 11);
+                }
+                patternLeft--;
+                int rowPattern = row > FixedRows ? pattern : PatternLadder;
 
                 Fx gap = rng.Range(Fx.Lerp(gapEasyLo, gapHardLo, d), Fx.Lerp(gapEasyHi, gapHardHi, d));
                 gap = Fx.Min(gap, maxGap);
@@ -80,6 +94,8 @@ namespace BoingTower.Simulation
 
                 Fx w = rng.Range(Fx.Lerp(widthEasyLo, widthHardLo, d), Fx.Lerp(widthEasyHi, widthHardHi, d));
                 w = w * rng.Range(jitterLo, jitterHi);
+                if (rowPattern == PatternDense) w = rng.Range(Fx.Lerp(Fx.FromRatio(26, 10), Fx.FromRatio(15, 10), d), Fx.Lerp(Fx.FromRatio(32, 10), Fx.FromRatio(24, 10), d));
+                else if (rowPattern == PatternZigzag) w = rng.Range(Fx.FromRatio(28, 10), Fx.FromRatio(40, 10));
                 w = Fx.Clamp(w, minWidth, maxWidth);
 
                 Fx offFrac = rng.Range(Fx.Lerp(offEasyLo, offHardLo, d), Fx.Lerp(offEasyHi, offHardHi, d));
@@ -90,6 +106,13 @@ namespace BoingTower.Simulation
 
                 int dir = rng.Next(2) == 0 ? -1 : 1;
                 Fx lo = w / 2, hi = screen - w / 2;
+                if (rowPattern == PatternZigzag)
+                {
+                    // Sweep to the far side each row; the reach limit above still bounds the distance.
+                    dir = prevX < screen / 2 ? 1 : -1;
+                    dx = Fx.Max(dx, screen / 3);
+                    dx = Fx.Min(dx, dxLimit);
+                }
                 Fx x = prevX + dx * dir;
                 if (x < lo || x > hi) x = prevX - dx * dir;
                 x = Fx.Clamp(x, lo, hi);
@@ -136,6 +159,35 @@ namespace BoingTower.Simulation
                         extra.Y = y;
                         extra.Width = w;
                         list.Add(extra);
+                    }
+                }
+
+                if (rowPattern == PatternDense)
+                {
+                    // 1 to 3 extra small platforms on the same row; the main path platform above stays reachable, these are choices (some crumble).
+                    int extras = 1 + rng.Next(3);
+                    Fx[] used = new Fx[4];
+                    Fx[] usedW = new Fx[4];
+                    used[0] = x; usedW[0] = w;
+                    int nUsed = 1;
+                    for (int e = 0; e < extras; e++)
+                    {
+                        Fx w2 = rng.Range(Fx.FromRatio(15, 10), Fx.FromRatio(26, 10));
+                        Fx lo2 = w2 / 2, hi2 = screen - w2 / 2;
+                        Fx x2 = rng.Range(lo2, hi2);
+                        bool free = true;
+                        for (int u = 0; u < nUsed; u++) if (Fx.Abs(x2 - used[u]) < (w2 + usedW[u]) / 2 + Fx.FromRatio(6, 10)) free = false;
+                        if (!free) continue;
+                        Platform ex = new Platform();
+                        ex.Id = list.Count;
+                        ex.Row = row;
+                        ex.X = x2;
+                        ex.Y = y;
+                        ex.Width = w2;
+                        int roll = rng.Next(100);
+                        ex.Kind = roll < 25 ? PlatformKind.Crumble : PlatformKind.Normal;
+                        list.Add(ex);
+                        used[nUsed] = x2; usedW[nUsed] = w2; nUsed++;
                     }
                 }
 

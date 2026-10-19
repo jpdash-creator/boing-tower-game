@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "contentHash": "2673c3fe49ba75912851d0992c1cf9b76809ccbc0a098ae5bfaf0e9f6d4e5c83",
+  "contentHash": "5a06e191cdeb88ff839c81054a60a0a230757d2a84c53617de297ee3d057b8e1",
   "regions": [
     {
       "id": "region_001_meadow_springs",
@@ -1424,7 +1424,7 @@
       "difficulty": 0.05,
       "goal": {
         "type": "reachFloor",
-        "value": 30
+        "value": 60
       },
       "stars": [
         {
@@ -1432,7 +1432,7 @@
         },
         {
           "type": "coins",
-          "value": 60
+          "value": 115
         },
         {
           "type": "noRevive"
@@ -1457,7 +1457,7 @@
       "difficulty": 0.1,
       "goal": {
         "type": "reachFloor",
-        "value": 45
+        "value": 90
       },
       "stars": [
         {
@@ -1465,7 +1465,7 @@
         },
         {
           "type": "coins",
-          "value": 90
+          "value": 165
         },
         {
           "type": "noRevive"
@@ -1490,7 +1490,7 @@
       "difficulty": 0.15,
       "goal": {
         "type": "reachFloor",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -1498,7 +1498,7 @@
         },
         {
           "type": "coins",
-          "value": 115
+          "value": 225
         },
         {
           "type": "noRevive"
@@ -1565,7 +1565,7 @@
         },
         {
           "type": "coins",
-          "value": 65
+          "value": 60
         },
         {
           "type": "noRevive"
@@ -1595,7 +1595,7 @@
       "difficulty": 0.35,
       "goal": {
         "type": "reachFloor",
-        "value": 80
+        "value": 160
       },
       "stars": [
         {
@@ -1603,7 +1603,7 @@
         },
         {
           "type": "coins",
-          "value": 155
+          "value": 290
         },
         {
           "type": "noRevive"
@@ -1628,7 +1628,7 @@
       "difficulty": 0.42,
       "goal": {
         "type": "noWallBounce",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -1636,7 +1636,7 @@
         },
         {
           "type": "coins",
-          "value": 120
+          "value": 235
         },
         {
           "type": "noRevive"
@@ -1668,7 +1668,7 @@
         },
         {
           "type": "coins",
-          "value": 60
+          "value": 50
         },
         {
           "type": "noRevive"
@@ -1693,7 +1693,7 @@
       "difficulty": 0.58,
       "goal": {
         "type": "reachFloor",
-        "value": 90
+        "value": 180
       },
       "stars": [
         {
@@ -1701,7 +1701,7 @@
         },
         {
           "type": "coins",
-          "value": 190
+          "value": 285
         },
         {
           "type": "noRevive"
@@ -1733,7 +1733,7 @@
         },
         {
           "type": "coins",
-          "value": 165
+          "value": 160
         },
         {
           "type": "noRevive"
@@ -1773,7 +1773,7 @@
         },
         {
           "type": "coins",
-          "value": 60
+          "value": 55
         },
         {
           "type": "noRevive"
@@ -1798,7 +1798,7 @@
       "difficulty": 0.7,
       "goal": {
         "type": "reachFloor",
-        "value": 100
+        "value": 200
       },
       "stars": [
         {
@@ -1806,7 +1806,7 @@
         },
         {
           "type": "coins",
-          "value": 170
+          "value": 310
         },
         {
           "type": "noRevive"
@@ -1831,7 +1831,7 @@
       "difficulty": 0.78,
       "goal": {
         "type": "reachFloor",
-        "value": 120
+        "value": 220
       },
       "stars": [
         {
@@ -1839,7 +1839,7 @@
         },
         {
           "type": "coins",
-          "value": 220
+          "value": 380
         },
         {
           "type": "noRevive"
@@ -1864,7 +1864,7 @@
       "difficulty": 0.86,
       "goal": {
         "type": "reachFloor",
-        "value": 140
+        "value": 240
       },
       "stars": [
         {
@@ -1872,7 +1872,7 @@
         },
         {
           "type": "coins",
-          "value": 245
+          "value": 400
         },
         {
           "type": "noRevive"
@@ -1897,7 +1897,7 @@
       "difficulty": 1.0,
       "goal": {
         "type": "bossChase",
-        "value": 150
+        "value": 250
       },
       "stars": [
         {
@@ -1905,7 +1905,7 @@
         },
         {
           "type": "coins",
-          "value": 300
+          "value": 475
         },
         {
           "type": "noRevive"
@@ -1940,7 +1940,7 @@
       "difficulty": 0.05,
       "goal": {
         "type": "reachFloor",
-        "value": 30
+        "value": 60
       },
       "stars": [
         {
@@ -1948,7 +1948,7 @@
         },
         {
           "type": "coins",
-          "value": 55
+          "value": 120
         },
         {
           "type": "noRevive"
@@ -1973,7 +1973,7 @@
       "difficulty": 0.1,
       "goal": {
         "type": "reachFloor",
-        "value": 45
+        "value": 90
       },
       "stars": [
         {
@@ -1981,7 +1981,7 @@
         },
         {
           "type": "coins",
-          "value": 90
+          "value": 170
         },
         {
           "type": "noRevive"
@@ -2006,7 +2006,7 @@
       "difficulty": 0.15,
       "goal": {
         "type": "reachFloor",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -2014,7 +2014,7 @@
         },
         {
           "type": "coins",
-          "value": 115
+          "value": 225
         },
         {
           "type": "noRevive"
@@ -2111,7 +2111,7 @@
       "difficulty": 0.35,
       "goal": {
         "type": "reachFloor",
-        "value": 80
+        "value": 160
       },
       "stars": [
         {
@@ -2119,7 +2119,7 @@
         },
         {
           "type": "coins",
-          "value": 155
+          "value": 315
         },
         {
           "type": "noRevive"
@@ -2144,7 +2144,7 @@
       "difficulty": 0.42,
       "goal": {
         "type": "noWallBounce",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -2152,7 +2152,7 @@
         },
         {
           "type": "coins",
-          "value": 120
+          "value": 235
         },
         {
           "type": "noRevive"
@@ -2184,7 +2184,7 @@
         },
         {
           "type": "coins",
-          "value": 60
+          "value": 55
         },
         {
           "type": "noRevive"
@@ -2209,7 +2209,7 @@
       "difficulty": 0.58,
       "goal": {
         "type": "reachFloor",
-        "value": 90
+        "value": 180
       },
       "stars": [
         {
@@ -2217,7 +2217,7 @@
         },
         {
           "type": "coins",
-          "value": 180
+          "value": 345
         },
         {
           "type": "noRevive"
@@ -2249,7 +2249,7 @@
         },
         {
           "type": "coins",
-          "value": 170
+          "value": 165
         },
         {
           "type": "noRevive"
@@ -2314,7 +2314,7 @@
       "difficulty": 0.7,
       "goal": {
         "type": "reachFloor",
-        "value": 100
+        "value": 200
       },
       "stars": [
         {
@@ -2322,7 +2322,7 @@
         },
         {
           "type": "coins",
-          "value": 200
+          "value": 300
         },
         {
           "type": "noRevive"
@@ -2347,7 +2347,7 @@
       "difficulty": 0.78,
       "goal": {
         "type": "reachFloor",
-        "value": 120
+        "value": 220
       },
       "stars": [
         {
@@ -2355,7 +2355,7 @@
         },
         {
           "type": "coins",
-          "value": 200
+          "value": 345
         },
         {
           "type": "noRevive"
@@ -2380,7 +2380,7 @@
       "difficulty": 0.86,
       "goal": {
         "type": "reachFloor",
-        "value": 140
+        "value": 240
       },
       "stars": [
         {
@@ -2388,7 +2388,7 @@
         },
         {
           "type": "coins",
-          "value": 235
+          "value": 390
         },
         {
           "type": "noRevive"
@@ -2413,7 +2413,7 @@
       "difficulty": 1.0,
       "goal": {
         "type": "bossChase",
-        "value": 150
+        "value": 250
       },
       "stars": [
         {
@@ -2421,7 +2421,7 @@
         },
         {
           "type": "coins",
-          "value": 280
+          "value": 485
         },
         {
           "type": "noRevive"
@@ -2456,7 +2456,7 @@
       "difficulty": 0.05,
       "goal": {
         "type": "reachFloor",
-        "value": 30
+        "value": 60
       },
       "stars": [
         {
@@ -2464,7 +2464,7 @@
         },
         {
           "type": "coins",
-          "value": 60
+          "value": 110
         },
         {
           "type": "noRevive"
@@ -2489,7 +2489,7 @@
       "difficulty": 0.1,
       "goal": {
         "type": "reachFloor",
-        "value": 45
+        "value": 90
       },
       "stars": [
         {
@@ -2497,7 +2497,7 @@
         },
         {
           "type": "coins",
-          "value": 85
+          "value": 175
         },
         {
           "type": "noRevive"
@@ -2522,7 +2522,7 @@
       "difficulty": 0.15,
       "goal": {
         "type": "reachFloor",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -2530,7 +2530,7 @@
         },
         {
           "type": "coins",
-          "value": 105
+          "value": 225
         },
         {
           "type": "noRevive"
@@ -2627,7 +2627,7 @@
       "difficulty": 0.35,
       "goal": {
         "type": "reachFloor",
-        "value": 80
+        "value": 160
       },
       "stars": [
         {
@@ -2635,7 +2635,7 @@
         },
         {
           "type": "coins",
-          "value": 155
+          "value": 315
         },
         {
           "type": "noRevive"
@@ -2660,7 +2660,7 @@
       "difficulty": 0.42,
       "goal": {
         "type": "noWallBounce",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -2668,7 +2668,7 @@
         },
         {
           "type": "coins",
-          "value": 120
+          "value": 235
         },
         {
           "type": "noRevive"
@@ -2700,7 +2700,7 @@
         },
         {
           "type": "coins",
-          "value": 60
+          "value": 55
         },
         {
           "type": "noRevive"
@@ -2725,7 +2725,7 @@
       "difficulty": 0.58,
       "goal": {
         "type": "reachFloor",
-        "value": 90
+        "value": 180
       },
       "stars": [
         {
@@ -2733,7 +2733,7 @@
         },
         {
           "type": "coins",
-          "value": 185
+          "value": 365
         },
         {
           "type": "noRevive"
@@ -2765,7 +2765,7 @@
         },
         {
           "type": "coins",
-          "value": 170
+          "value": 165
         },
         {
           "type": "noRevive"
@@ -2805,7 +2805,7 @@
         },
         {
           "type": "coins",
-          "value": 70
+          "value": 65
         },
         {
           "type": "noRevive"
@@ -2830,7 +2830,7 @@
       "difficulty": 0.7,
       "goal": {
         "type": "reachFloor",
-        "value": 100
+        "value": 200
       },
       "stars": [
         {
@@ -2838,7 +2838,7 @@
         },
         {
           "type": "coins",
-          "value": 200
+          "value": 425
         },
         {
           "type": "noRevive"
@@ -2863,7 +2863,7 @@
       "difficulty": 0.78,
       "goal": {
         "type": "reachFloor",
-        "value": 120
+        "value": 220
       },
       "stars": [
         {
@@ -2871,7 +2871,7 @@
         },
         {
           "type": "coins",
-          "value": 255
+          "value": 470
         },
         {
           "type": "noRevive"
@@ -2896,7 +2896,7 @@
       "difficulty": 0.86,
       "goal": {
         "type": "reachFloor",
-        "value": 140
+        "value": 240
       },
       "stars": [
         {
@@ -2904,7 +2904,7 @@
         },
         {
           "type": "coins",
-          "value": 320
+          "value": 525
         },
         {
           "type": "noRevive"
@@ -2929,7 +2929,7 @@
       "difficulty": 1.0,
       "goal": {
         "type": "bossChase",
-        "value": 150
+        "value": 250
       },
       "stars": [
         {
@@ -2937,7 +2937,7 @@
         },
         {
           "type": "coins",
-          "value": 310
+          "value": 490
         },
         {
           "type": "noRevive"
@@ -2972,7 +2972,7 @@
       "difficulty": 0.05,
       "goal": {
         "type": "reachFloor",
-        "value": 30
+        "value": 60
       },
       "stars": [
         {
@@ -2980,7 +2980,7 @@
         },
         {
           "type": "coins",
-          "value": 55
+          "value": 120
         },
         {
           "type": "noRevive"
@@ -3005,7 +3005,7 @@
       "difficulty": 0.1,
       "goal": {
         "type": "reachFloor",
-        "value": 45
+        "value": 90
       },
       "stars": [
         {
@@ -3013,7 +3013,7 @@
         },
         {
           "type": "coins",
-          "value": 85
+          "value": 170
         },
         {
           "type": "noRevive"
@@ -3038,7 +3038,7 @@
       "difficulty": 0.15,
       "goal": {
         "type": "reachFloor",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -3046,7 +3046,7 @@
         },
         {
           "type": "coins",
-          "value": 115
+          "value": 225
         },
         {
           "type": "noRevive"
@@ -3143,7 +3143,7 @@
       "difficulty": 0.35,
       "goal": {
         "type": "reachFloor",
-        "value": 80
+        "value": 160
       },
       "stars": [
         {
@@ -3151,7 +3151,7 @@
         },
         {
           "type": "coins",
-          "value": 150
+          "value": 310
         },
         {
           "type": "noRevive"
@@ -3176,7 +3176,7 @@
       "difficulty": 0.42,
       "goal": {
         "type": "noWallBounce",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -3184,7 +3184,7 @@
         },
         {
           "type": "coins",
-          "value": 125
+          "value": 240
         },
         {
           "type": "noRevive"
@@ -3216,7 +3216,7 @@
         },
         {
           "type": "coins",
-          "value": 65
+          "value": 60
         },
         {
           "type": "noRevive"
@@ -3241,7 +3241,7 @@
       "difficulty": 0.58,
       "goal": {
         "type": "reachFloor",
-        "value": 90
+        "value": 180
       },
       "stars": [
         {
@@ -3249,7 +3249,7 @@
         },
         {
           "type": "coins",
-          "value": 185
+          "value": 380
         },
         {
           "type": "noRevive"
@@ -3281,7 +3281,7 @@
         },
         {
           "type": "coins",
-          "value": 165
+          "value": 160
         },
         {
           "type": "noRevive"
@@ -3346,7 +3346,7 @@
       "difficulty": 0.7,
       "goal": {
         "type": "reachFloor",
-        "value": 100
+        "value": 200
       },
       "stars": [
         {
@@ -3354,7 +3354,7 @@
         },
         {
           "type": "coins",
-          "value": 225
+          "value": 440
         },
         {
           "type": "noRevive"
@@ -3379,7 +3379,7 @@
       "difficulty": 0.78,
       "goal": {
         "type": "reachFloor",
-        "value": 120
+        "value": 220
       },
       "stars": [
         {
@@ -3387,7 +3387,7 @@
         },
         {
           "type": "coins",
-          "value": 260
+          "value": 455
         },
         {
           "type": "noRevive"
@@ -3412,7 +3412,7 @@
       "difficulty": 0.86,
       "goal": {
         "type": "reachFloor",
-        "value": 140
+        "value": 240
       },
       "stars": [
         {
@@ -3420,7 +3420,7 @@
         },
         {
           "type": "coins",
-          "value": 300
+          "value": 510
         },
         {
           "type": "noRevive"
@@ -3445,7 +3445,7 @@
       "difficulty": 1.0,
       "goal": {
         "type": "bossChase",
-        "value": 150
+        "value": 250
       },
       "stars": [
         {
@@ -3453,7 +3453,7 @@
         },
         {
           "type": "coins",
-          "value": 315
+          "value": 510
         },
         {
           "type": "noRevive"
@@ -3488,7 +3488,7 @@
       "difficulty": 0.05,
       "goal": {
         "type": "reachFloor",
-        "value": 30
+        "value": 60
       },
       "stars": [
         {
@@ -3496,7 +3496,7 @@
         },
         {
           "type": "coins",
-          "value": 55
+          "value": 110
         },
         {
           "type": "noRevive"
@@ -3521,7 +3521,7 @@
       "difficulty": 0.1,
       "goal": {
         "type": "reachFloor",
-        "value": 45
+        "value": 90
       },
       "stars": [
         {
@@ -3529,7 +3529,7 @@
         },
         {
           "type": "coins",
-          "value": 90
+          "value": 175
         },
         {
           "type": "noRevive"
@@ -3554,7 +3554,7 @@
       "difficulty": 0.15,
       "goal": {
         "type": "reachFloor",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -3562,7 +3562,7 @@
         },
         {
           "type": "coins",
-          "value": 115
+          "value": 225
         },
         {
           "type": "noRevive"
@@ -3629,7 +3629,7 @@
         },
         {
           "type": "coins",
-          "value": 60
+          "value": 55
         },
         {
           "type": "noRevive"
@@ -3659,7 +3659,7 @@
       "difficulty": 0.35,
       "goal": {
         "type": "reachFloor",
-        "value": 80
+        "value": 160
       },
       "stars": [
         {
@@ -3667,7 +3667,7 @@
         },
         {
           "type": "coins",
-          "value": 150
+          "value": 315
         },
         {
           "type": "noRevive"
@@ -3692,7 +3692,7 @@
       "difficulty": 0.42,
       "goal": {
         "type": "noWallBounce",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -3700,7 +3700,7 @@
         },
         {
           "type": "coins",
-          "value": 125
+          "value": 245
         },
         {
           "type": "noRevive"
@@ -3757,7 +3757,7 @@
       "difficulty": 0.58,
       "goal": {
         "type": "reachFloor",
-        "value": 90
+        "value": 180
       },
       "stars": [
         {
@@ -3765,7 +3765,7 @@
         },
         {
           "type": "coins",
-          "value": 185
+          "value": 360
         },
         {
           "type": "noRevive"
@@ -3797,7 +3797,7 @@
         },
         {
           "type": "coins",
-          "value": 175
+          "value": 170
         },
         {
           "type": "noRevive"
@@ -3862,7 +3862,7 @@
       "difficulty": 0.7,
       "goal": {
         "type": "reachFloor",
-        "value": 100
+        "value": 200
       },
       "stars": [
         {
@@ -3870,7 +3870,7 @@
         },
         {
           "type": "coins",
-          "value": 215
+          "value": 425
         },
         {
           "type": "noRevive"
@@ -3895,7 +3895,7 @@
       "difficulty": 0.78,
       "goal": {
         "type": "reachFloor",
-        "value": 120
+        "value": 220
       },
       "stars": [
         {
@@ -3903,7 +3903,7 @@
         },
         {
           "type": "coins",
-          "value": 265
+          "value": 450
         },
         {
           "type": "noRevive"
@@ -3928,7 +3928,7 @@
       "difficulty": 0.86,
       "goal": {
         "type": "reachFloor",
-        "value": 140
+        "value": 240
       },
       "stars": [
         {
@@ -3936,7 +3936,7 @@
         },
         {
           "type": "coins",
-          "value": 310
+          "value": 525
         },
         {
           "type": "noRevive"
@@ -3961,7 +3961,7 @@
       "difficulty": 1.0,
       "goal": {
         "type": "bossChase",
-        "value": 150
+        "value": 250
       },
       "stars": [
         {
@@ -3969,7 +3969,7 @@
         },
         {
           "type": "coins",
-          "value": 330
+          "value": 510
         },
         {
           "type": "noRevive"
@@ -4004,7 +4004,7 @@
       "difficulty": 0.05,
       "goal": {
         "type": "reachFloor",
-        "value": 30
+        "value": 60
       },
       "stars": [
         {
@@ -4037,7 +4037,7 @@
       "difficulty": 0.1,
       "goal": {
         "type": "reachFloor",
-        "value": 45
+        "value": 90
       },
       "stars": [
         {
@@ -4070,7 +4070,7 @@
       "difficulty": 0.15,
       "goal": {
         "type": "reachFloor",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -4175,7 +4175,7 @@
       "difficulty": 0.35,
       "goal": {
         "type": "reachFloor",
-        "value": 80
+        "value": 160
       },
       "stars": [
         {
@@ -4208,7 +4208,7 @@
       "difficulty": 0.42,
       "goal": {
         "type": "noWallBounce",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -4273,7 +4273,7 @@
       "difficulty": 0.58,
       "goal": {
         "type": "reachFloor",
-        "value": 90
+        "value": 180
       },
       "stars": [
         {
@@ -4378,7 +4378,7 @@
       "difficulty": 0.7,
       "goal": {
         "type": "reachFloor",
-        "value": 100
+        "value": 200
       },
       "stars": [
         {
@@ -4411,7 +4411,7 @@
       "difficulty": 0.78,
       "goal": {
         "type": "reachFloor",
-        "value": 120
+        "value": 220
       },
       "stars": [
         {
@@ -4444,7 +4444,7 @@
       "difficulty": 0.86,
       "goal": {
         "type": "reachFloor",
-        "value": 140
+        "value": 240
       },
       "stars": [
         {
@@ -4477,7 +4477,7 @@
       "difficulty": 1.0,
       "goal": {
         "type": "bossChase",
-        "value": 150
+        "value": 250
       },
       "stars": [
         {
@@ -4520,7 +4520,7 @@
       "difficulty": 0.05,
       "goal": {
         "type": "reachFloor",
-        "value": 30
+        "value": 60
       },
       "stars": [
         {
@@ -4553,7 +4553,7 @@
       "difficulty": 0.1,
       "goal": {
         "type": "reachFloor",
-        "value": 45
+        "value": 90
       },
       "stars": [
         {
@@ -4586,7 +4586,7 @@
       "difficulty": 0.15,
       "goal": {
         "type": "reachFloor",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -4691,7 +4691,7 @@
       "difficulty": 0.35,
       "goal": {
         "type": "reachFloor",
-        "value": 80
+        "value": 160
       },
       "stars": [
         {
@@ -4724,7 +4724,7 @@
       "difficulty": 0.42,
       "goal": {
         "type": "noWallBounce",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -4789,7 +4789,7 @@
       "difficulty": 0.58,
       "goal": {
         "type": "reachFloor",
-        "value": 90
+        "value": 180
       },
       "stars": [
         {
@@ -4894,7 +4894,7 @@
       "difficulty": 0.7,
       "goal": {
         "type": "reachFloor",
-        "value": 100
+        "value": 200
       },
       "stars": [
         {
@@ -4927,7 +4927,7 @@
       "difficulty": 0.78,
       "goal": {
         "type": "reachFloor",
-        "value": 120
+        "value": 220
       },
       "stars": [
         {
@@ -4960,7 +4960,7 @@
       "difficulty": 0.86,
       "goal": {
         "type": "reachFloor",
-        "value": 140
+        "value": 240
       },
       "stars": [
         {
@@ -4993,7 +4993,7 @@
       "difficulty": 1.0,
       "goal": {
         "type": "bossChase",
-        "value": 150
+        "value": 250
       },
       "stars": [
         {
@@ -5036,7 +5036,7 @@
       "difficulty": 0.05,
       "goal": {
         "type": "reachFloor",
-        "value": 30
+        "value": 60
       },
       "stars": [
         {
@@ -5069,7 +5069,7 @@
       "difficulty": 0.1,
       "goal": {
         "type": "reachFloor",
-        "value": 45
+        "value": 90
       },
       "stars": [
         {
@@ -5102,7 +5102,7 @@
       "difficulty": 0.15,
       "goal": {
         "type": "reachFloor",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -5207,7 +5207,7 @@
       "difficulty": 0.35,
       "goal": {
         "type": "reachFloor",
-        "value": 80
+        "value": 160
       },
       "stars": [
         {
@@ -5240,7 +5240,7 @@
       "difficulty": 0.42,
       "goal": {
         "type": "noWallBounce",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -5305,7 +5305,7 @@
       "difficulty": 0.58,
       "goal": {
         "type": "reachFloor",
-        "value": 90
+        "value": 180
       },
       "stars": [
         {
@@ -5410,7 +5410,7 @@
       "difficulty": 0.7,
       "goal": {
         "type": "reachFloor",
-        "value": 100
+        "value": 200
       },
       "stars": [
         {
@@ -5443,7 +5443,7 @@
       "difficulty": 0.78,
       "goal": {
         "type": "reachFloor",
-        "value": 120
+        "value": 220
       },
       "stars": [
         {
@@ -5476,7 +5476,7 @@
       "difficulty": 0.86,
       "goal": {
         "type": "reachFloor",
-        "value": 140
+        "value": 240
       },
       "stars": [
         {
@@ -5509,7 +5509,7 @@
       "difficulty": 1.0,
       "goal": {
         "type": "bossChase",
-        "value": 150
+        "value": 250
       },
       "stars": [
         {
@@ -5552,7 +5552,7 @@
       "difficulty": 0.05,
       "goal": {
         "type": "reachFloor",
-        "value": 30
+        "value": 60
       },
       "stars": [
         {
@@ -5585,7 +5585,7 @@
       "difficulty": 0.1,
       "goal": {
         "type": "reachFloor",
-        "value": 45
+        "value": 90
       },
       "stars": [
         {
@@ -5618,7 +5618,7 @@
       "difficulty": 0.15,
       "goal": {
         "type": "reachFloor",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -5723,7 +5723,7 @@
       "difficulty": 0.35,
       "goal": {
         "type": "reachFloor",
-        "value": 80
+        "value": 160
       },
       "stars": [
         {
@@ -5756,7 +5756,7 @@
       "difficulty": 0.42,
       "goal": {
         "type": "noWallBounce",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -5821,7 +5821,7 @@
       "difficulty": 0.58,
       "goal": {
         "type": "reachFloor",
-        "value": 90
+        "value": 180
       },
       "stars": [
         {
@@ -5926,7 +5926,7 @@
       "difficulty": 0.7,
       "goal": {
         "type": "reachFloor",
-        "value": 100
+        "value": 200
       },
       "stars": [
         {
@@ -5959,7 +5959,7 @@
       "difficulty": 0.78,
       "goal": {
         "type": "reachFloor",
-        "value": 120
+        "value": 220
       },
       "stars": [
         {
@@ -5992,7 +5992,7 @@
       "difficulty": 0.86,
       "goal": {
         "type": "reachFloor",
-        "value": 140
+        "value": 240
       },
       "stars": [
         {
@@ -6025,7 +6025,7 @@
       "difficulty": 1.0,
       "goal": {
         "type": "bossChase",
-        "value": 150
+        "value": 250
       },
       "stars": [
         {
@@ -6068,7 +6068,7 @@
       "difficulty": 0.05,
       "goal": {
         "type": "reachFloor",
-        "value": 30
+        "value": 60
       },
       "stars": [
         {
@@ -6101,7 +6101,7 @@
       "difficulty": 0.1,
       "goal": {
         "type": "reachFloor",
-        "value": 45
+        "value": 90
       },
       "stars": [
         {
@@ -6134,7 +6134,7 @@
       "difficulty": 0.15,
       "goal": {
         "type": "reachFloor",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -6239,7 +6239,7 @@
       "difficulty": 0.35,
       "goal": {
         "type": "reachFloor",
-        "value": 80
+        "value": 160
       },
       "stars": [
         {
@@ -6272,7 +6272,7 @@
       "difficulty": 0.42,
       "goal": {
         "type": "noWallBounce",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -6337,7 +6337,7 @@
       "difficulty": 0.58,
       "goal": {
         "type": "reachFloor",
-        "value": 90
+        "value": 180
       },
       "stars": [
         {
@@ -6442,7 +6442,7 @@
       "difficulty": 0.7,
       "goal": {
         "type": "reachFloor",
-        "value": 100
+        "value": 200
       },
       "stars": [
         {
@@ -6475,7 +6475,7 @@
       "difficulty": 0.78,
       "goal": {
         "type": "reachFloor",
-        "value": 120
+        "value": 220
       },
       "stars": [
         {
@@ -6508,7 +6508,7 @@
       "difficulty": 0.86,
       "goal": {
         "type": "reachFloor",
-        "value": 140
+        "value": 240
       },
       "stars": [
         {
@@ -6541,7 +6541,7 @@
       "difficulty": 1.0,
       "goal": {
         "type": "bossChase",
-        "value": 150
+        "value": 250
       },
       "stars": [
         {
@@ -6584,7 +6584,7 @@
       "difficulty": 0.05,
       "goal": {
         "type": "reachFloor",
-        "value": 30
+        "value": 60
       },
       "stars": [
         {
@@ -6617,7 +6617,7 @@
       "difficulty": 0.1,
       "goal": {
         "type": "reachFloor",
-        "value": 45
+        "value": 90
       },
       "stars": [
         {
@@ -6650,7 +6650,7 @@
       "difficulty": 0.15,
       "goal": {
         "type": "reachFloor",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -6755,7 +6755,7 @@
       "difficulty": 0.35,
       "goal": {
         "type": "reachFloor",
-        "value": 80
+        "value": 160
       },
       "stars": [
         {
@@ -6788,7 +6788,7 @@
       "difficulty": 0.42,
       "goal": {
         "type": "noWallBounce",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -6853,7 +6853,7 @@
       "difficulty": 0.58,
       "goal": {
         "type": "reachFloor",
-        "value": 90
+        "value": 180
       },
       "stars": [
         {
@@ -6958,7 +6958,7 @@
       "difficulty": 0.7,
       "goal": {
         "type": "reachFloor",
-        "value": 100
+        "value": 200
       },
       "stars": [
         {
@@ -6991,7 +6991,7 @@
       "difficulty": 0.78,
       "goal": {
         "type": "reachFloor",
-        "value": 120
+        "value": 220
       },
       "stars": [
         {
@@ -7024,7 +7024,7 @@
       "difficulty": 0.86,
       "goal": {
         "type": "reachFloor",
-        "value": 140
+        "value": 240
       },
       "stars": [
         {
@@ -7057,7 +7057,7 @@
       "difficulty": 1.0,
       "goal": {
         "type": "bossChase",
-        "value": 150
+        "value": 250
       },
       "stars": [
         {
@@ -7100,7 +7100,7 @@
       "difficulty": 0.05,
       "goal": {
         "type": "reachFloor",
-        "value": 30
+        "value": 60
       },
       "stars": [
         {
@@ -7133,7 +7133,7 @@
       "difficulty": 0.1,
       "goal": {
         "type": "reachFloor",
-        "value": 45
+        "value": 90
       },
       "stars": [
         {
@@ -7166,7 +7166,7 @@
       "difficulty": 0.15,
       "goal": {
         "type": "reachFloor",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -7271,7 +7271,7 @@
       "difficulty": 0.35,
       "goal": {
         "type": "reachFloor",
-        "value": 80
+        "value": 160
       },
       "stars": [
         {
@@ -7304,7 +7304,7 @@
       "difficulty": 0.42,
       "goal": {
         "type": "noWallBounce",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -7369,7 +7369,7 @@
       "difficulty": 0.58,
       "goal": {
         "type": "reachFloor",
-        "value": 90
+        "value": 180
       },
       "stars": [
         {
@@ -7474,7 +7474,7 @@
       "difficulty": 0.7,
       "goal": {
         "type": "reachFloor",
-        "value": 100
+        "value": 200
       },
       "stars": [
         {
@@ -7507,7 +7507,7 @@
       "difficulty": 0.78,
       "goal": {
         "type": "reachFloor",
-        "value": 120
+        "value": 220
       },
       "stars": [
         {
@@ -7540,7 +7540,7 @@
       "difficulty": 0.86,
       "goal": {
         "type": "reachFloor",
-        "value": 140
+        "value": 240
       },
       "stars": [
         {
@@ -7573,7 +7573,7 @@
       "difficulty": 1.0,
       "goal": {
         "type": "bossChase",
-        "value": 150
+        "value": 250
       },
       "stars": [
         {
@@ -7616,7 +7616,7 @@
       "difficulty": 0.05,
       "goal": {
         "type": "reachFloor",
-        "value": 30
+        "value": 60
       },
       "stars": [
         {
@@ -7649,7 +7649,7 @@
       "difficulty": 0.1,
       "goal": {
         "type": "reachFloor",
-        "value": 45
+        "value": 90
       },
       "stars": [
         {
@@ -7682,7 +7682,7 @@
       "difficulty": 0.15,
       "goal": {
         "type": "reachFloor",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -7787,7 +7787,7 @@
       "difficulty": 0.35,
       "goal": {
         "type": "reachFloor",
-        "value": 80
+        "value": 160
       },
       "stars": [
         {
@@ -7820,7 +7820,7 @@
       "difficulty": 0.42,
       "goal": {
         "type": "noWallBounce",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -7885,7 +7885,7 @@
       "difficulty": 0.58,
       "goal": {
         "type": "reachFloor",
-        "value": 90
+        "value": 180
       },
       "stars": [
         {
@@ -7990,7 +7990,7 @@
       "difficulty": 0.7,
       "goal": {
         "type": "reachFloor",
-        "value": 100
+        "value": 200
       },
       "stars": [
         {
@@ -8023,7 +8023,7 @@
       "difficulty": 0.78,
       "goal": {
         "type": "reachFloor",
-        "value": 120
+        "value": 220
       },
       "stars": [
         {
@@ -8056,7 +8056,7 @@
       "difficulty": 0.86,
       "goal": {
         "type": "reachFloor",
-        "value": 140
+        "value": 240
       },
       "stars": [
         {
@@ -8089,7 +8089,7 @@
       "difficulty": 1.0,
       "goal": {
         "type": "bossChase",
-        "value": 150
+        "value": 250
       },
       "stars": [
         {
@@ -8132,7 +8132,7 @@
       "difficulty": 0.05,
       "goal": {
         "type": "reachFloor",
-        "value": 30
+        "value": 60
       },
       "stars": [
         {
@@ -8165,7 +8165,7 @@
       "difficulty": 0.1,
       "goal": {
         "type": "reachFloor",
-        "value": 45
+        "value": 90
       },
       "stars": [
         {
@@ -8198,7 +8198,7 @@
       "difficulty": 0.15,
       "goal": {
         "type": "reachFloor",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -8303,7 +8303,7 @@
       "difficulty": 0.35,
       "goal": {
         "type": "reachFloor",
-        "value": 80
+        "value": 160
       },
       "stars": [
         {
@@ -8336,7 +8336,7 @@
       "difficulty": 0.42,
       "goal": {
         "type": "noWallBounce",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -8401,7 +8401,7 @@
       "difficulty": 0.58,
       "goal": {
         "type": "reachFloor",
-        "value": 90
+        "value": 180
       },
       "stars": [
         {
@@ -8506,7 +8506,7 @@
       "difficulty": 0.7,
       "goal": {
         "type": "reachFloor",
-        "value": 100
+        "value": 200
       },
       "stars": [
         {
@@ -8539,7 +8539,7 @@
       "difficulty": 0.78,
       "goal": {
         "type": "reachFloor",
-        "value": 120
+        "value": 220
       },
       "stars": [
         {
@@ -8572,7 +8572,7 @@
       "difficulty": 0.86,
       "goal": {
         "type": "reachFloor",
-        "value": 140
+        "value": 240
       },
       "stars": [
         {
@@ -8605,7 +8605,7 @@
       "difficulty": 1.0,
       "goal": {
         "type": "bossChase",
-        "value": 150
+        "value": 250
       },
       "stars": [
         {
@@ -8648,7 +8648,7 @@
       "difficulty": 0.05,
       "goal": {
         "type": "reachFloor",
-        "value": 30
+        "value": 60
       },
       "stars": [
         {
@@ -8681,7 +8681,7 @@
       "difficulty": 0.1,
       "goal": {
         "type": "reachFloor",
-        "value": 45
+        "value": 90
       },
       "stars": [
         {
@@ -8714,7 +8714,7 @@
       "difficulty": 0.15,
       "goal": {
         "type": "reachFloor",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -8819,7 +8819,7 @@
       "difficulty": 0.35,
       "goal": {
         "type": "reachFloor",
-        "value": 80
+        "value": 160
       },
       "stars": [
         {
@@ -8852,7 +8852,7 @@
       "difficulty": 0.42,
       "goal": {
         "type": "noWallBounce",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -8917,7 +8917,7 @@
       "difficulty": 0.58,
       "goal": {
         "type": "reachFloor",
-        "value": 90
+        "value": 180
       },
       "stars": [
         {
@@ -9022,7 +9022,7 @@
       "difficulty": 0.7,
       "goal": {
         "type": "reachFloor",
-        "value": 100
+        "value": 200
       },
       "stars": [
         {
@@ -9055,7 +9055,7 @@
       "difficulty": 0.78,
       "goal": {
         "type": "reachFloor",
-        "value": 120
+        "value": 220
       },
       "stars": [
         {
@@ -9088,7 +9088,7 @@
       "difficulty": 0.86,
       "goal": {
         "type": "reachFloor",
-        "value": 140
+        "value": 240
       },
       "stars": [
         {
@@ -9121,7 +9121,7 @@
       "difficulty": 1.0,
       "goal": {
         "type": "bossChase",
-        "value": 150
+        "value": 250
       },
       "stars": [
         {
@@ -9164,7 +9164,7 @@
       "difficulty": 0.05,
       "goal": {
         "type": "reachFloor",
-        "value": 30
+        "value": 60
       },
       "stars": [
         {
@@ -9197,7 +9197,7 @@
       "difficulty": 0.1,
       "goal": {
         "type": "reachFloor",
-        "value": 45
+        "value": 90
       },
       "stars": [
         {
@@ -9230,7 +9230,7 @@
       "difficulty": 0.15,
       "goal": {
         "type": "reachFloor",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -9335,7 +9335,7 @@
       "difficulty": 0.35,
       "goal": {
         "type": "reachFloor",
-        "value": 80
+        "value": 160
       },
       "stars": [
         {
@@ -9368,7 +9368,7 @@
       "difficulty": 0.42,
       "goal": {
         "type": "noWallBounce",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -9433,7 +9433,7 @@
       "difficulty": 0.58,
       "goal": {
         "type": "reachFloor",
-        "value": 90
+        "value": 180
       },
       "stars": [
         {
@@ -9538,7 +9538,7 @@
       "difficulty": 0.7,
       "goal": {
         "type": "reachFloor",
-        "value": 100
+        "value": 200
       },
       "stars": [
         {
@@ -9571,7 +9571,7 @@
       "difficulty": 0.78,
       "goal": {
         "type": "reachFloor",
-        "value": 120
+        "value": 220
       },
       "stars": [
         {
@@ -9604,7 +9604,7 @@
       "difficulty": 0.86,
       "goal": {
         "type": "reachFloor",
-        "value": 140
+        "value": 240
       },
       "stars": [
         {
@@ -9637,7 +9637,7 @@
       "difficulty": 1.0,
       "goal": {
         "type": "bossChase",
-        "value": 150
+        "value": 250
       },
       "stars": [
         {
@@ -9680,7 +9680,7 @@
       "difficulty": 0.05,
       "goal": {
         "type": "reachFloor",
-        "value": 30
+        "value": 60
       },
       "stars": [
         {
@@ -9713,7 +9713,7 @@
       "difficulty": 0.1,
       "goal": {
         "type": "reachFloor",
-        "value": 45
+        "value": 90
       },
       "stars": [
         {
@@ -9746,7 +9746,7 @@
       "difficulty": 0.15,
       "goal": {
         "type": "reachFloor",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -9851,7 +9851,7 @@
       "difficulty": 0.35,
       "goal": {
         "type": "reachFloor",
-        "value": 80
+        "value": 160
       },
       "stars": [
         {
@@ -9884,7 +9884,7 @@
       "difficulty": 0.42,
       "goal": {
         "type": "noWallBounce",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -9949,7 +9949,7 @@
       "difficulty": 0.58,
       "goal": {
         "type": "reachFloor",
-        "value": 90
+        "value": 180
       },
       "stars": [
         {
@@ -10054,7 +10054,7 @@
       "difficulty": 0.7,
       "goal": {
         "type": "reachFloor",
-        "value": 100
+        "value": 200
       },
       "stars": [
         {
@@ -10087,7 +10087,7 @@
       "difficulty": 0.78,
       "goal": {
         "type": "reachFloor",
-        "value": 120
+        "value": 220
       },
       "stars": [
         {
@@ -10120,7 +10120,7 @@
       "difficulty": 0.86,
       "goal": {
         "type": "reachFloor",
-        "value": 140
+        "value": 240
       },
       "stars": [
         {
@@ -10153,7 +10153,7 @@
       "difficulty": 1.0,
       "goal": {
         "type": "bossChase",
-        "value": 150
+        "value": 250
       },
       "stars": [
         {
@@ -10196,7 +10196,7 @@
       "difficulty": 0.05,
       "goal": {
         "type": "reachFloor",
-        "value": 30
+        "value": 60
       },
       "stars": [
         {
@@ -10229,7 +10229,7 @@
       "difficulty": 0.1,
       "goal": {
         "type": "reachFloor",
-        "value": 45
+        "value": 90
       },
       "stars": [
         {
@@ -10262,7 +10262,7 @@
       "difficulty": 0.15,
       "goal": {
         "type": "reachFloor",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -10367,7 +10367,7 @@
       "difficulty": 0.35,
       "goal": {
         "type": "reachFloor",
-        "value": 80
+        "value": 160
       },
       "stars": [
         {
@@ -10400,7 +10400,7 @@
       "difficulty": 0.42,
       "goal": {
         "type": "noWallBounce",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -10465,7 +10465,7 @@
       "difficulty": 0.58,
       "goal": {
         "type": "reachFloor",
-        "value": 90
+        "value": 180
       },
       "stars": [
         {
@@ -10570,7 +10570,7 @@
       "difficulty": 0.7,
       "goal": {
         "type": "reachFloor",
-        "value": 100
+        "value": 200
       },
       "stars": [
         {
@@ -10603,7 +10603,7 @@
       "difficulty": 0.78,
       "goal": {
         "type": "reachFloor",
-        "value": 120
+        "value": 220
       },
       "stars": [
         {
@@ -10636,7 +10636,7 @@
       "difficulty": 0.86,
       "goal": {
         "type": "reachFloor",
-        "value": 140
+        "value": 240
       },
       "stars": [
         {
@@ -10669,7 +10669,7 @@
       "difficulty": 1.0,
       "goal": {
         "type": "bossChase",
-        "value": 150
+        "value": 250
       },
       "stars": [
         {
@@ -10712,7 +10712,7 @@
       "difficulty": 0.05,
       "goal": {
         "type": "reachFloor",
-        "value": 30
+        "value": 60
       },
       "stars": [
         {
@@ -10745,7 +10745,7 @@
       "difficulty": 0.1,
       "goal": {
         "type": "reachFloor",
-        "value": 45
+        "value": 90
       },
       "stars": [
         {
@@ -10778,7 +10778,7 @@
       "difficulty": 0.15,
       "goal": {
         "type": "reachFloor",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -10883,7 +10883,7 @@
       "difficulty": 0.35,
       "goal": {
         "type": "reachFloor",
-        "value": 80
+        "value": 160
       },
       "stars": [
         {
@@ -10916,7 +10916,7 @@
       "difficulty": 0.42,
       "goal": {
         "type": "noWallBounce",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -10981,7 +10981,7 @@
       "difficulty": 0.58,
       "goal": {
         "type": "reachFloor",
-        "value": 90
+        "value": 180
       },
       "stars": [
         {
@@ -11086,7 +11086,7 @@
       "difficulty": 0.7,
       "goal": {
         "type": "reachFloor",
-        "value": 100
+        "value": 200
       },
       "stars": [
         {
@@ -11119,7 +11119,7 @@
       "difficulty": 0.78,
       "goal": {
         "type": "reachFloor",
-        "value": 120
+        "value": 220
       },
       "stars": [
         {
@@ -11152,7 +11152,7 @@
       "difficulty": 0.86,
       "goal": {
         "type": "reachFloor",
-        "value": 140
+        "value": 240
       },
       "stars": [
         {
@@ -11185,7 +11185,7 @@
       "difficulty": 1.0,
       "goal": {
         "type": "bossChase",
-        "value": 150
+        "value": 250
       },
       "stars": [
         {
@@ -11228,7 +11228,7 @@
       "difficulty": 0.05,
       "goal": {
         "type": "reachFloor",
-        "value": 30
+        "value": 60
       },
       "stars": [
         {
@@ -11261,7 +11261,7 @@
       "difficulty": 0.1,
       "goal": {
         "type": "reachFloor",
-        "value": 45
+        "value": 90
       },
       "stars": [
         {
@@ -11294,7 +11294,7 @@
       "difficulty": 0.15,
       "goal": {
         "type": "reachFloor",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -11399,7 +11399,7 @@
       "difficulty": 0.35,
       "goal": {
         "type": "reachFloor",
-        "value": 80
+        "value": 160
       },
       "stars": [
         {
@@ -11432,7 +11432,7 @@
       "difficulty": 0.42,
       "goal": {
         "type": "noWallBounce",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -11497,7 +11497,7 @@
       "difficulty": 0.58,
       "goal": {
         "type": "reachFloor",
-        "value": 90
+        "value": 180
       },
       "stars": [
         {
@@ -11602,7 +11602,7 @@
       "difficulty": 0.7,
       "goal": {
         "type": "reachFloor",
-        "value": 100
+        "value": 200
       },
       "stars": [
         {
@@ -11635,7 +11635,7 @@
       "difficulty": 0.78,
       "goal": {
         "type": "reachFloor",
-        "value": 120
+        "value": 220
       },
       "stars": [
         {
@@ -11668,7 +11668,7 @@
       "difficulty": 0.86,
       "goal": {
         "type": "reachFloor",
-        "value": 140
+        "value": 240
       },
       "stars": [
         {
@@ -11701,7 +11701,7 @@
       "difficulty": 1.0,
       "goal": {
         "type": "bossChase",
-        "value": 150
+        "value": 250
       },
       "stars": [
         {
@@ -11744,7 +11744,7 @@
       "difficulty": 0.05,
       "goal": {
         "type": "reachFloor",
-        "value": 30
+        "value": 60
       },
       "stars": [
         {
@@ -11777,7 +11777,7 @@
       "difficulty": 0.1,
       "goal": {
         "type": "reachFloor",
-        "value": 45
+        "value": 90
       },
       "stars": [
         {
@@ -11810,7 +11810,7 @@
       "difficulty": 0.15,
       "goal": {
         "type": "reachFloor",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -11915,7 +11915,7 @@
       "difficulty": 0.35,
       "goal": {
         "type": "reachFloor",
-        "value": 80
+        "value": 160
       },
       "stars": [
         {
@@ -11948,7 +11948,7 @@
       "difficulty": 0.42,
       "goal": {
         "type": "noWallBounce",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -12013,7 +12013,7 @@
       "difficulty": 0.58,
       "goal": {
         "type": "reachFloor",
-        "value": 90
+        "value": 180
       },
       "stars": [
         {
@@ -12118,7 +12118,7 @@
       "difficulty": 0.7,
       "goal": {
         "type": "reachFloor",
-        "value": 100
+        "value": 200
       },
       "stars": [
         {
@@ -12151,7 +12151,7 @@
       "difficulty": 0.78,
       "goal": {
         "type": "reachFloor",
-        "value": 120
+        "value": 220
       },
       "stars": [
         {
@@ -12184,7 +12184,7 @@
       "difficulty": 0.86,
       "goal": {
         "type": "reachFloor",
-        "value": 140
+        "value": 240
       },
       "stars": [
         {
@@ -12217,7 +12217,7 @@
       "difficulty": 1.0,
       "goal": {
         "type": "bossChase",
-        "value": 150
+        "value": 250
       },
       "stars": [
         {
@@ -12260,7 +12260,7 @@
       "difficulty": 0.05,
       "goal": {
         "type": "reachFloor",
-        "value": 30
+        "value": 60
       },
       "stars": [
         {
@@ -12293,7 +12293,7 @@
       "difficulty": 0.1,
       "goal": {
         "type": "reachFloor",
-        "value": 45
+        "value": 90
       },
       "stars": [
         {
@@ -12326,7 +12326,7 @@
       "difficulty": 0.15,
       "goal": {
         "type": "reachFloor",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -12431,7 +12431,7 @@
       "difficulty": 0.35,
       "goal": {
         "type": "reachFloor",
-        "value": 80
+        "value": 160
       },
       "stars": [
         {
@@ -12464,7 +12464,7 @@
       "difficulty": 0.42,
       "goal": {
         "type": "noWallBounce",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -12529,7 +12529,7 @@
       "difficulty": 0.58,
       "goal": {
         "type": "reachFloor",
-        "value": 90
+        "value": 180
       },
       "stars": [
         {
@@ -12634,7 +12634,7 @@
       "difficulty": 0.7,
       "goal": {
         "type": "reachFloor",
-        "value": 100
+        "value": 200
       },
       "stars": [
         {
@@ -12667,7 +12667,7 @@
       "difficulty": 0.78,
       "goal": {
         "type": "reachFloor",
-        "value": 120
+        "value": 220
       },
       "stars": [
         {
@@ -12700,7 +12700,7 @@
       "difficulty": 0.86,
       "goal": {
         "type": "reachFloor",
-        "value": 140
+        "value": 240
       },
       "stars": [
         {
@@ -12733,7 +12733,7 @@
       "difficulty": 1.0,
       "goal": {
         "type": "bossChase",
-        "value": 150
+        "value": 250
       },
       "stars": [
         {
@@ -12776,7 +12776,7 @@
       "difficulty": 0.05,
       "goal": {
         "type": "reachFloor",
-        "value": 30
+        "value": 60
       },
       "stars": [
         {
@@ -12809,7 +12809,7 @@
       "difficulty": 0.1,
       "goal": {
         "type": "reachFloor",
-        "value": 45
+        "value": 90
       },
       "stars": [
         {
@@ -12842,7 +12842,7 @@
       "difficulty": 0.15,
       "goal": {
         "type": "reachFloor",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -12947,7 +12947,7 @@
       "difficulty": 0.35,
       "goal": {
         "type": "reachFloor",
-        "value": 80
+        "value": 160
       },
       "stars": [
         {
@@ -12980,7 +12980,7 @@
       "difficulty": 0.42,
       "goal": {
         "type": "noWallBounce",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -13045,7 +13045,7 @@
       "difficulty": 0.58,
       "goal": {
         "type": "reachFloor",
-        "value": 90
+        "value": 180
       },
       "stars": [
         {
@@ -13150,7 +13150,7 @@
       "difficulty": 0.7,
       "goal": {
         "type": "reachFloor",
-        "value": 100
+        "value": 200
       },
       "stars": [
         {
@@ -13183,7 +13183,7 @@
       "difficulty": 0.78,
       "goal": {
         "type": "reachFloor",
-        "value": 120
+        "value": 220
       },
       "stars": [
         {
@@ -13216,7 +13216,7 @@
       "difficulty": 0.86,
       "goal": {
         "type": "reachFloor",
-        "value": 140
+        "value": 240
       },
       "stars": [
         {
@@ -13249,7 +13249,7 @@
       "difficulty": 1.0,
       "goal": {
         "type": "bossChase",
-        "value": 150
+        "value": 250
       },
       "stars": [
         {
@@ -13292,7 +13292,7 @@
       "difficulty": 0.05,
       "goal": {
         "type": "reachFloor",
-        "value": 30
+        "value": 60
       },
       "stars": [
         {
@@ -13325,7 +13325,7 @@
       "difficulty": 0.1,
       "goal": {
         "type": "reachFloor",
-        "value": 45
+        "value": 90
       },
       "stars": [
         {
@@ -13358,7 +13358,7 @@
       "difficulty": 0.15,
       "goal": {
         "type": "reachFloor",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -13463,7 +13463,7 @@
       "difficulty": 0.35,
       "goal": {
         "type": "reachFloor",
-        "value": 80
+        "value": 160
       },
       "stars": [
         {
@@ -13496,7 +13496,7 @@
       "difficulty": 0.42,
       "goal": {
         "type": "noWallBounce",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -13561,7 +13561,7 @@
       "difficulty": 0.58,
       "goal": {
         "type": "reachFloor",
-        "value": 90
+        "value": 180
       },
       "stars": [
         {
@@ -13666,7 +13666,7 @@
       "difficulty": 0.7,
       "goal": {
         "type": "reachFloor",
-        "value": 100
+        "value": 200
       },
       "stars": [
         {
@@ -13699,7 +13699,7 @@
       "difficulty": 0.78,
       "goal": {
         "type": "reachFloor",
-        "value": 120
+        "value": 220
       },
       "stars": [
         {
@@ -13732,7 +13732,7 @@
       "difficulty": 0.86,
       "goal": {
         "type": "reachFloor",
-        "value": 140
+        "value": 240
       },
       "stars": [
         {
@@ -13765,7 +13765,7 @@
       "difficulty": 1.0,
       "goal": {
         "type": "bossChase",
-        "value": 150
+        "value": 250
       },
       "stars": [
         {
@@ -13808,7 +13808,7 @@
       "difficulty": 0.05,
       "goal": {
         "type": "reachFloor",
-        "value": 30
+        "value": 60
       },
       "stars": [
         {
@@ -13841,7 +13841,7 @@
       "difficulty": 0.1,
       "goal": {
         "type": "reachFloor",
-        "value": 45
+        "value": 90
       },
       "stars": [
         {
@@ -13874,7 +13874,7 @@
       "difficulty": 0.15,
       "goal": {
         "type": "reachFloor",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -13979,7 +13979,7 @@
       "difficulty": 0.35,
       "goal": {
         "type": "reachFloor",
-        "value": 80
+        "value": 160
       },
       "stars": [
         {
@@ -14012,7 +14012,7 @@
       "difficulty": 0.42,
       "goal": {
         "type": "noWallBounce",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -14077,7 +14077,7 @@
       "difficulty": 0.58,
       "goal": {
         "type": "reachFloor",
-        "value": 90
+        "value": 180
       },
       "stars": [
         {
@@ -14182,7 +14182,7 @@
       "difficulty": 0.7,
       "goal": {
         "type": "reachFloor",
-        "value": 100
+        "value": 200
       },
       "stars": [
         {
@@ -14215,7 +14215,7 @@
       "difficulty": 0.78,
       "goal": {
         "type": "reachFloor",
-        "value": 120
+        "value": 220
       },
       "stars": [
         {
@@ -14248,7 +14248,7 @@
       "difficulty": 0.86,
       "goal": {
         "type": "reachFloor",
-        "value": 140
+        "value": 240
       },
       "stars": [
         {
@@ -14281,7 +14281,7 @@
       "difficulty": 1.0,
       "goal": {
         "type": "bossChase",
-        "value": 150
+        "value": 250
       },
       "stars": [
         {
@@ -14324,7 +14324,7 @@
       "difficulty": 0.05,
       "goal": {
         "type": "reachFloor",
-        "value": 30
+        "value": 60
       },
       "stars": [
         {
@@ -14357,7 +14357,7 @@
       "difficulty": 0.1,
       "goal": {
         "type": "reachFloor",
-        "value": 45
+        "value": 90
       },
       "stars": [
         {
@@ -14390,7 +14390,7 @@
       "difficulty": 0.15,
       "goal": {
         "type": "reachFloor",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -14495,7 +14495,7 @@
       "difficulty": 0.35,
       "goal": {
         "type": "reachFloor",
-        "value": 80
+        "value": 160
       },
       "stars": [
         {
@@ -14528,7 +14528,7 @@
       "difficulty": 0.42,
       "goal": {
         "type": "noWallBounce",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -14593,7 +14593,7 @@
       "difficulty": 0.58,
       "goal": {
         "type": "reachFloor",
-        "value": 90
+        "value": 180
       },
       "stars": [
         {
@@ -14698,7 +14698,7 @@
       "difficulty": 0.7,
       "goal": {
         "type": "reachFloor",
-        "value": 100
+        "value": 200
       },
       "stars": [
         {
@@ -14731,7 +14731,7 @@
       "difficulty": 0.78,
       "goal": {
         "type": "reachFloor",
-        "value": 120
+        "value": 220
       },
       "stars": [
         {
@@ -14764,7 +14764,7 @@
       "difficulty": 0.86,
       "goal": {
         "type": "reachFloor",
-        "value": 140
+        "value": 240
       },
       "stars": [
         {
@@ -14797,7 +14797,7 @@
       "difficulty": 1.0,
       "goal": {
         "type": "bossChase",
-        "value": 150
+        "value": 250
       },
       "stars": [
         {
@@ -14840,7 +14840,7 @@
       "difficulty": 0.05,
       "goal": {
         "type": "reachFloor",
-        "value": 30
+        "value": 60
       },
       "stars": [
         {
@@ -14873,7 +14873,7 @@
       "difficulty": 0.1,
       "goal": {
         "type": "reachFloor",
-        "value": 45
+        "value": 90
       },
       "stars": [
         {
@@ -14906,7 +14906,7 @@
       "difficulty": 0.15,
       "goal": {
         "type": "reachFloor",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -15011,7 +15011,7 @@
       "difficulty": 0.35,
       "goal": {
         "type": "reachFloor",
-        "value": 80
+        "value": 160
       },
       "stars": [
         {
@@ -15044,7 +15044,7 @@
       "difficulty": 0.42,
       "goal": {
         "type": "noWallBounce",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -15109,7 +15109,7 @@
       "difficulty": 0.58,
       "goal": {
         "type": "reachFloor",
-        "value": 90
+        "value": 180
       },
       "stars": [
         {
@@ -15214,7 +15214,7 @@
       "difficulty": 0.7,
       "goal": {
         "type": "reachFloor",
-        "value": 100
+        "value": 200
       },
       "stars": [
         {
@@ -15247,7 +15247,7 @@
       "difficulty": 0.78,
       "goal": {
         "type": "reachFloor",
-        "value": 120
+        "value": 220
       },
       "stars": [
         {
@@ -15280,7 +15280,7 @@
       "difficulty": 0.86,
       "goal": {
         "type": "reachFloor",
-        "value": 140
+        "value": 240
       },
       "stars": [
         {
@@ -15313,7 +15313,7 @@
       "difficulty": 1.0,
       "goal": {
         "type": "bossChase",
-        "value": 150
+        "value": 250
       },
       "stars": [
         {
@@ -15356,7 +15356,7 @@
       "difficulty": 0.05,
       "goal": {
         "type": "reachFloor",
-        "value": 30
+        "value": 60
       },
       "stars": [
         {
@@ -15389,7 +15389,7 @@
       "difficulty": 0.1,
       "goal": {
         "type": "reachFloor",
-        "value": 45
+        "value": 90
       },
       "stars": [
         {
@@ -15422,7 +15422,7 @@
       "difficulty": 0.15,
       "goal": {
         "type": "reachFloor",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -15527,7 +15527,7 @@
       "difficulty": 0.35,
       "goal": {
         "type": "reachFloor",
-        "value": 80
+        "value": 160
       },
       "stars": [
         {
@@ -15560,7 +15560,7 @@
       "difficulty": 0.42,
       "goal": {
         "type": "noWallBounce",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -15625,7 +15625,7 @@
       "difficulty": 0.58,
       "goal": {
         "type": "reachFloor",
-        "value": 90
+        "value": 180
       },
       "stars": [
         {
@@ -15730,7 +15730,7 @@
       "difficulty": 0.7,
       "goal": {
         "type": "reachFloor",
-        "value": 100
+        "value": 200
       },
       "stars": [
         {
@@ -15763,7 +15763,7 @@
       "difficulty": 0.78,
       "goal": {
         "type": "reachFloor",
-        "value": 120
+        "value": 220
       },
       "stars": [
         {
@@ -15796,7 +15796,7 @@
       "difficulty": 0.86,
       "goal": {
         "type": "reachFloor",
-        "value": 140
+        "value": 240
       },
       "stars": [
         {
@@ -15829,7 +15829,7 @@
       "difficulty": 1.0,
       "goal": {
         "type": "bossChase",
-        "value": 150
+        "value": 250
       },
       "stars": [
         {
@@ -15872,7 +15872,7 @@
       "difficulty": 0.05,
       "goal": {
         "type": "reachFloor",
-        "value": 30
+        "value": 60
       },
       "stars": [
         {
@@ -15905,7 +15905,7 @@
       "difficulty": 0.1,
       "goal": {
         "type": "reachFloor",
-        "value": 45
+        "value": 90
       },
       "stars": [
         {
@@ -15938,7 +15938,7 @@
       "difficulty": 0.15,
       "goal": {
         "type": "reachFloor",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -16043,7 +16043,7 @@
       "difficulty": 0.35,
       "goal": {
         "type": "reachFloor",
-        "value": 80
+        "value": 160
       },
       "stars": [
         {
@@ -16076,7 +16076,7 @@
       "difficulty": 0.42,
       "goal": {
         "type": "noWallBounce",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -16141,7 +16141,7 @@
       "difficulty": 0.58,
       "goal": {
         "type": "reachFloor",
-        "value": 90
+        "value": 180
       },
       "stars": [
         {
@@ -16246,7 +16246,7 @@
       "difficulty": 0.7,
       "goal": {
         "type": "reachFloor",
-        "value": 100
+        "value": 200
       },
       "stars": [
         {
@@ -16279,7 +16279,7 @@
       "difficulty": 0.78,
       "goal": {
         "type": "reachFloor",
-        "value": 120
+        "value": 220
       },
       "stars": [
         {
@@ -16312,7 +16312,7 @@
       "difficulty": 0.86,
       "goal": {
         "type": "reachFloor",
-        "value": 140
+        "value": 240
       },
       "stars": [
         {
@@ -16345,7 +16345,7 @@
       "difficulty": 1.0,
       "goal": {
         "type": "bossChase",
-        "value": 150
+        "value": 250
       },
       "stars": [
         {
@@ -16388,7 +16388,7 @@
       "difficulty": 0.05,
       "goal": {
         "type": "reachFloor",
-        "value": 30
+        "value": 60
       },
       "stars": [
         {
@@ -16421,7 +16421,7 @@
       "difficulty": 0.1,
       "goal": {
         "type": "reachFloor",
-        "value": 45
+        "value": 90
       },
       "stars": [
         {
@@ -16454,7 +16454,7 @@
       "difficulty": 0.15,
       "goal": {
         "type": "reachFloor",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -16559,7 +16559,7 @@
       "difficulty": 0.35,
       "goal": {
         "type": "reachFloor",
-        "value": 80
+        "value": 160
       },
       "stars": [
         {
@@ -16592,7 +16592,7 @@
       "difficulty": 0.42,
       "goal": {
         "type": "noWallBounce",
-        "value": 60
+        "value": 120
       },
       "stars": [
         {
@@ -16657,7 +16657,7 @@
       "difficulty": 0.58,
       "goal": {
         "type": "reachFloor",
-        "value": 90
+        "value": 180
       },
       "stars": [
         {
@@ -16762,7 +16762,7 @@
       "difficulty": 0.7,
       "goal": {
         "type": "reachFloor",
-        "value": 100
+        "value": 200
       },
       "stars": [
         {
@@ -16795,7 +16795,7 @@
       "difficulty": 0.78,
       "goal": {
         "type": "reachFloor",
-        "value": 120
+        "value": 220
       },
       "stars": [
         {
@@ -16828,7 +16828,7 @@
       "difficulty": 0.86,
       "goal": {
         "type": "reachFloor",
-        "value": 140
+        "value": 240
       },
       "stars": [
         {
@@ -16861,7 +16861,7 @@
       "difficulty": 1.0,
       "goal": {
         "type": "bossChase",
-        "value": 150
+        "value": 250
       },
       "stars": [
         {

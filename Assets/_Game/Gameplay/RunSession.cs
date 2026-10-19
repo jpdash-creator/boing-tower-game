@@ -11,7 +11,11 @@ namespace BoingTower.Gameplay
     /// </summary>
     public sealed class RunSession
     {
-        public const int ReviveGemCost = 20;   // doc 08 section 8
+        /// <summary>Owner decision 2026-10-19: 2 gems for the first revive of a run, 5 for the second, never more than two.</summary>
+        public const int MaxRevives = 2;
+        public static int ReviveCostFor(int revivesUsed) { return revivesUsed <= 0 ? 2 : 5; }
+        public int NextReviveCost { get { return ReviveCostFor(State.RevivesUsed); } }
+        public bool CanRevive { get { return State.RevivesUsed < MaxRevives; } }
 
         public readonly SimConfig Cfg;
         public readonly LevelDef Level;
@@ -47,8 +51,8 @@ namespace BoingTower.Gameplay
         /// <summary>Pays the revive price from the wallet and puts the player back on the highest landed platform.</summary>
         public bool TryRevive(ProgressService progress)
         {
-            if (!State.Dead || GoalReached) return false;
-            if (!progress.TrySpendGems(ReviveGemCost)) return false;
+            if (!State.Dead || GoalReached || !CanRevive) return false;
+            if (!progress.TrySpendGems(NextReviveCost)) return false;
             Sim.Revive(ref State);
             return true;
         }

@@ -44,6 +44,10 @@ namespace BoingTower.Simulation
         /// <summary>Distance below the start platform of the bottom edge (danger line) before the first jump.</summary>
         public Fx StartKillDistance = Fx.FromInt(5);
         /// <summary>Scroll speed steps up by ScrollStepPercent every ScrollStepSeconds after the first jump, up to ScrollStepCapPercent.</summary>
+        /// <summary>Base scroll speed as a percent of the difficulty-blended speed (owner, 2026-10-19: +20 percent).</summary>
+        public int ScrollBasePercent = 120;
+        /// <summary>Chance, in percent, that a coin spot is a gem instead (difficulty setting: 5, 5, 7, 9, 10).</summary>
+        public int GemInsteadOfCoinPercent = 5;
         public int ScrollStepSeconds = 5;
         public int ScrollStepPercent = 4;
         public int ScrollStepCapPercent = 50;

@@ -115,8 +115,8 @@ namespace BoingTower.Simulation.Tests
             LevelSpec b = T3.Spec(777, 700, 10, SignatureKind.SwingingGongs, GoalType.SurviveWave);
             b.FixedChunks = new string[] { "chunk_complex_a" };
             b.Class = 3;
-            Assert.Equal(-8476446540477427345L, LevelBuilder.Build(cfg, a).ComputeHash());
-            Assert.Equal(-6064397512732441580L, LevelBuilder.Build(cfg, b).ComputeHash());
+            Assert.Equal(1968675610309853494L, LevelBuilder.Build(cfg, a).ComputeHash());
+            Assert.Equal(-3247576078165943773L, LevelBuilder.Build(cfg, b).ComputeHash());
         }
 
         [Fact]
@@ -127,7 +127,7 @@ namespace BoingTower.Simulation.Tests
             Assert.Equal(90, T3.Spec(1, 100, 1, SignatureKind.None, GoalType.Speedrun, 90, 0, 45).RowsFor());
             Assert.Equal(150, T3.Spec(1, 100, 1, SignatureKind.None, GoalType.BossChase, 150).RowsFor());
             Assert.Equal(60, T3.Spec(1, 100, 1, SignatureKind.None, GoalType.CollectCoins, 0, 15).RowsFor());
-            Assert.Equal(60, T3.Spec(1, 100, 1, SignatureKind.None, GoalType.NoWallBounce, 40).RowsFor());
+            Assert.Equal(40, T3.Spec(1, 100, 1, SignatureKind.None, GoalType.NoWallBounce, 40).RowsFor());
             Assert.Equal(60, T3.Spec(1, 100, 1, SignatureKind.None, GoalType.SurviveWave).RowsFor());
             Assert.Equal(30, T3.Spec(1, 100, 1, SignatureKind.None, GoalType.ReachFloor, 10).RowsFor()); // minimum is 30
             LevelSpec explicitRows = T3.Spec(1, 100, 1, SignatureKind.None, GoalType.CollectCoins, 0, 15);
@@ -164,7 +164,7 @@ namespace BoingTower.Simulation.Tests
                 foreach (int level in new int[] { 1, 2 })
                 {
                     LevelData none = LevelBuilder.Build(cfg, T3.Spec(seed * 977, 300, level, sig, GoalType.ReachFloor, 60));
-                    for (int i = 0; i < none.Platforms.Length; i++) Assert.Equal(PlatformKind.Normal, none.Platforms[i].Kind);
+                    for (int i = 0; i < none.Platforms.Length; i++) Assert.True(none.Platforms[i].Kind == PlatformKind.Normal || none.Platforms[i].Kind == PlatformKind.Crumble);
                     Assert.Empty(none.Hazards);
                 }
                 l3 += T3.Count(LevelBuilder.Build(cfg, T3.Spec(seed * 977, 150, 3, sig, GoalType.ReachFloor, 60)), kind);
@@ -173,7 +173,7 @@ namespace BoingTower.Simulation.Tests
                 // no other special kinds ever appear
                 LevelData any = LevelBuilder.Build(cfg, T3.Spec(seed * 977, 700, 12, sig, GoalType.ReachFloor, 60));
                 for (int i = 0; i < any.Platforms.Length; i++)
-                    Assert.True(any.Platforms[i].Kind == PlatformKind.Normal || any.Platforms[i].Kind == kind);
+                    Assert.True(any.Platforms[i].Kind == PlatformKind.Normal || any.Platforms[i].Kind == PlatformKind.Crumble || any.Platforms[i].Kind == kind);
             }
             Assert.True(l3 > 0, "level 3 introduces the signature");
             Assert.True(l6 > l3, "level 4+ has the normal (larger) share: " + l3 + " vs " + l6);
@@ -187,7 +187,7 @@ namespace BoingTower.Simulation.Tests
         {
             SimConfig cfg = new SimConfig();
             LevelData d = LevelBuilder.Build(cfg, T3.Spec(5, 800, 9, SignatureKind.None, GoalType.ReachFloor, 60));
-            for (int i = 0; i < d.Platforms.Length; i++) Assert.Equal(PlatformKind.Normal, d.Platforms[i].Kind);
+            for (int i = 0; i < d.Platforms.Length; i++) Assert.True(d.Platforms[i].Kind == PlatformKind.Normal || d.Platforms[i].Kind == PlatformKind.Crumble);
             Assert.Empty(d.Hazards);
         }
 
@@ -413,6 +413,7 @@ namespace BoingTower.Simulation.Tests
         public void GemChanceIsAboutThreePercent()
         {
             SimConfig cfg = new SimConfig();
+            cfg.GemInsteadOfCoinPercent = 0;   // this test is about the rare level gem, not the difficulty setting's gem-for-coin chance
             int levels = 0, withGem = 0;
             for (int seed = 1; seed <= 500; seed++)
             {

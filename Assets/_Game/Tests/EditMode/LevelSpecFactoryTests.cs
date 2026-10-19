@@ -51,7 +51,7 @@ namespace BoingTower.Tests
             var repo = ContentRepository.LoadFromResources();
             var l15 = LevelSpecFactory.Build(repo, "lvl_005_15");
             Assert.AreEqual(GoalType.BossChase, l15.Goal.Type);
-            Assert.AreEqual(150, l15.Goal.Value);
+            Assert.AreEqual(250, l15.Goal.Value);
             Assert.AreEqual(4, l15.Class);
             Assert.IsTrue(l15.Ramp);
             CollectionAssert.AreEqual(new[] { "chunk_gauntlet_a" }, l15.FixedChunks);

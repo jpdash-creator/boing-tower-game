@@ -37,37 +37,37 @@ MonoBehaviour:
       H: 248
       BodyLeft: 14
       BodyRight: 769
-      SurfaceY: 59
+      SurfaceY: 89
       BodyBottom: 227
     - W: 584
       H: 185
       BodyLeft: 15
       BodyRight: 567
-      SurfaceY: 51
+      SurfaceY: 72
       BodyBottom: 168
     - W: 547
       H: 192
       BodyLeft: 13
       BodyRight: 531
-      SurfaceY: 51
+      SurfaceY: 72
       BodyBottom: 171
     - W: 813
       H: 388
       BodyLeft: 14
       BodyRight: 797
-      SurfaceY: 57
+      SurfaceY: 84
       BodyBottom: 209
     - W: 704
       H: 256
       BodyLeft: 17
       BodyRight: 685
-      SurfaceY: 56
+      SurfaceY: 83
       BodyBottom: 207
     - W: 539
       H: 379
       BodyLeft: 12
       BodyRight: 526
-      SurfaceY: 49
+      SurfaceY: 69
       BodyBottom: 160
     WallTileL: {fileID: 21300000, guid: 4ac2f7f0d37fdef4a954ac099dba5680, type: 3}
     WallTileR: {fileID: 21300000, guid: 1ab090affd2130e499e998621191fdbb, type: 3}
@@ -524,3 +524,4 @@ MonoBehaviour:
   MapBackground: {fileID: 21300000, guid: 16c45d363cee9014fb42c40def6a8ed5, type: 3}
   LoadingArt: {fileID: 21300000, guid: ed49c6161d3ffad4cba51053b6e12e8e, type: 3}
   AppIcon: {fileID: 21300000, guid: 097f27dc56274424babe092e76b0468a, type: 3}
+  PopupFrame: {fileID: 21300000, guid: 121bfbf9c76b1284b807e0c08bf963cc, type: 3}

@@ -41,6 +41,7 @@ namespace BoingTower.Gameplay
             if (Hud != null) Destroy(Hud.gameObject);
 
             GameSession.CurrentLevelId = levelId;
+            GameSession.ApplyDifficulty();
             Session = new RunSession(GameSession.Repo, GameSession.Cfg, levelId);
             acc = 0f;
             endHandled = false;
@@ -123,7 +124,15 @@ namespace BoingTower.Gameplay
             View.Render(Mathf.Clamp01(acc / StepSeconds), dt);
             Hud.Refresh(Session, dt);
 
-            if (Session.Over && !endHandled) HandleEnd();
+            if (Session.Over && !endHandled)
+            {
+                if (Session.GoalReached && !GameSettings.ReducedMotion)
+                {
+                    View.PlayWarp();                       // Momo flies into the galaxy portal first
+                    if (View.WarpDone) HandleEnd();
+                }
+                else HandleEnd();
+            }
         }
 
         void HandleEnd()
@@ -139,7 +148,7 @@ namespace BoingTower.Gameplay
             else
             {
                 Haptics.Pulse();
-                Hud.ShowFailed(Session, GameSession.Progress.Gems >= RunSession.ReviveGemCost);
+                Hud.ShowFailed(Session, Session.CanRevive && GameSession.Progress.Gems >= Session.NextReviveCost);
             }
         }
 

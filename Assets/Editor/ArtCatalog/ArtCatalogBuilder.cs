@@ -60,6 +60,7 @@ namespace BoingTower.Editor
             catalog.Trail = Folder(Art + "/Items/trail/trl_rainbow_ribbon");
             catalog.MapBackground = One(Art + "/Map/map_world_v1.png");
             catalog.LoadingArt = One(Art + "/UI/ui_loading_screen_art.png");
+            catalog.PopupFrame = OptionalSprite(Art + "/UI/ui_popup_frame/ui_popup_frame_01.png");
             catalog.AppIcon = One(Art + "/Marketing/icon/app_icon_concept_v1.png");
 
             EditorUtility.SetDirty(catalog);
@@ -168,6 +169,11 @@ namespace BoingTower.Editor
             ra.Props = Folder(regionDir + "/props/reg00" + r + "_props");
             ra.Signature = Folder(regionDir + "/hazards/reg00" + r + "_signature");
             return ra;
+        }
+
+        static Sprite OptionalSprite(string path)
+        {
+            return File.Exists(path) ? AssetDatabase.LoadAssetAtPath<Sprite>(path) : null;
         }
 
         static Sprite Idx(Sprite[] list, int oneBased)

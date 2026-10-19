@@ -101,7 +101,7 @@ namespace BoingTower.Simulation
             Pickups = level.Pickups;
             Endless = endless;
             CampaignRamp = campaignRamp;
-            scrollPerTick = Fx.Lerp(cfg.ScrollSpeedEasy, cfg.ScrollSpeedHard, difficulty) / SimConfig.TicksPerSecond;
+            scrollPerTick = Fx.Lerp(cfg.ScrollSpeedEasy, cfg.ScrollSpeedHard, difficulty) * cfg.ScrollBasePercent / 100 / SimConfig.TicksPerSecond;
             Fx maxR = Fx.Zero;
             for (int i = 0; i < Pickups.Length; i++) if (Pickups[i].Radius > maxR) maxR = Pickups[i].Radius;
             maxPickupRadius = maxR;
@@ -333,7 +333,7 @@ namespace BoingTower.Simulation
                 Fx scroll = scrollPerTick;
                 // The scroll speed steps up every ScrollStepSeconds of play (Cfg.ScrollStepPercent each, capped).
                 int steps = (tick - s.StartTick) / (Cfg.ScrollStepSeconds * SimConfig.TicksPerSecond);
-                int stepPct = steps * Cfg.ScrollStepPercent;
+                int stepPct = CampaignRamp ? 0 : steps * Cfg.ScrollStepPercent;   // boss levels already ramp with the row
                 if (stepPct > Cfg.ScrollStepCapPercent) stepPct = Cfg.ScrollStepCapPercent;
                 scroll = scroll * (100 + stepPct) / 100;
                 if (Endless)
