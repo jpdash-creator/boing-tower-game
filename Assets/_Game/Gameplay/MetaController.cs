@@ -112,7 +112,7 @@ namespace BoingTower.Gameplay
         void AddWallet()
         {
             const float rowH = 84f, panelW = 330f;
-            Image panel = UiKit.AddPanel(screen, "WalletPanel", new Color(0.05f, 0.07f, 0.16f, 0.78f));
+            Image panel = UiKit.AddPanel(screen, "WalletPanel", new Color(0.05f, 0.07f, 0.16f, 0.92f));
             UiKit.Place(panel.rectTransform, new Vector2(1f, 1f), new Vector2(-20f, -20f), new Vector2(panelW, rowH * 3f + 30f));
             coinText = WalletRow(panel.transform, 0, art != null ? art.CoinIcon : null, Color.white);
             gemText = WalletRow(panel.transform, 1, art != null ? art.GemIcon : null, new Color(0.75f, 0.92f, 1f));

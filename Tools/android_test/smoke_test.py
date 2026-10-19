@@ -76,8 +76,10 @@ def play_level():
     d.screenshot("06_run_start")
     d.assert_touch_targets()
     for _ in range(4):
-        d.multitouch_hold_and_tap("PadRight", "PadJump", hold_ms=1400, taps=3)
-        d.multitouch_hold_and_tap("PadLeft", "PadJump", hold_ms=1400, taps=3)
+        for pad in ("PadRight", "PadLeft"):
+            if d.state.get("over"):
+                break          # the run ended (a fall is expected with random taps); the end overlay is checked in the next step
+            d.multitouch_hold_and_tap(pad, "PadJump", hold_ms=1400, taps=3)
     d.screenshot("07_run_playing")
     d.assert_no_crash()
     s = dict(d.state)

@@ -61,11 +61,20 @@ namespace BoingTower.Gameplay
             var parts = new System.Collections.Generic.List<string>();
             var items = new StringBuilder(2048);
             int count = 0, total = 0;
+            // A modal popup / overlay hides everything behind it: only its elements are reported (they are the only ones a player can touch).
+            Transform modal = null;
+            foreach (Canvas c0 in FindObjectsByType<Canvas>(FindObjectsSortMode.None))
+            {
+                if (!c0.isActiveAndEnabled) continue;
+                foreach (Transform ch in c0.transform)
+                    if (ch.gameObject.activeInHierarchy && (ch.name == "Popup" || ch.name == "Overlay")) modal = ch;
+            }
             foreach (Canvas c in FindObjectsByType<Canvas>(FindObjectsSortMode.None))
             {
                 if (!c.isActiveAndEnabled) continue;
                 foreach (Button b in c.GetComponentsInChildren<Button>(false))
                 {
+                    if (modal != null && !b.transform.IsChildOf(modal)) continue;
                     var rt = (RectTransform)b.transform;
                     var lab = b.GetComponent<A11yLabel>();
                     Append(items, "button", rt, lab != null ? lab.Text : b.name, b.interactable, ref count);
@@ -74,6 +83,7 @@ namespace BoingTower.Gameplay
                 foreach (Text tx in c.GetComponentsInChildren<Text>(false))
                 {
                     if (string.IsNullOrEmpty(tx.text)) continue;
+                    if (modal != null && !tx.transform.IsChildOf(modal)) continue;
                     Append(items, "text", (RectTransform)tx.transform, tx.text, true, ref count);
                     Flush(items, parts, ref count);
                 }
