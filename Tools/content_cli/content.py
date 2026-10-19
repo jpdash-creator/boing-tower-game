@@ -219,17 +219,7 @@ def validate():
             target = coin_stars[0].get("value", 0)
             if not COIN_STAR_MIN <= target <= COIN_STAR_MAX:
                 errors.append("%s: coin star %s outside %d-%d" % (lid, target, COIN_STAR_MIN, COIN_STAR_MAX))
-            if n <= PLAYABLE_REGIONS:
-                entry = coin_table.get(lid)
-                if entry is not None:
-                    if target != entry["target"]:
-                        errors.append("%s: coin star %s differs from the bot table %s" % (lid, target, entry["target"]))
-                    if entry["target"] > entry["botBound"]:
-                        errors.append("%s: coin star %s above the bot's proven bound %s" % (lid, entry["target"], entry["botBound"]))
-                    if entry["target"] < entry["oldTarget"] and not entry.get("capped"):
-                        errors.append("%s: coin star below the old target without a cap" % lid)
-            elif target != 20 + 5 * i:
-                errors.append("%s: regions 6-30 keep the old coin star formula (%d)" % (lid, 20 + 5 * i))
+            # Economy v2: the coin star is retired (stars are collectible pickups); only the range is kept for the schema.
         if lv["goal"]["type"] == "speedrun":
             g = lv["goal"]
             speedrun_times.add(g.get("timeSec"))

@@ -119,7 +119,8 @@ COIN_STAR_TARGETS = load_coin_star_targets()
 
 def coin_star_target(level_id, i):
     """Raised target for the five playable regions (from the bot table); the old formula for regions 6-30."""
-    return COIN_STAR_TARGETS.get(level_id, 20 + 5 * i)
+    # Economy v2: the coin star is retired (stars are collectible pickups); the value is kept only to satisfy the schema.
+    return min(500, COIN_STAR_TARGETS.get(level_id, 20 + 5 * i))
 
 
 def make_level(r, region_id, i):
