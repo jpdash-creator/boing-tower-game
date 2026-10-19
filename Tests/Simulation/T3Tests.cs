@@ -312,12 +312,35 @@ namespace BoingTower.Simulation.Tests
         }
 
         [Fact]
-        public void SpeedrunLevelsAreDenser()
+        public void SpeedrunLevelsUseNormalGaps()
         {
+            // Owner decision 2026-10-19: speedrun levels keep the normal vertical gaps (the time goal was relaxed instead).
             SimConfig cfg = new SimConfig();
             LevelData fast = LevelBuilder.Build(cfg, T3.Spec(3, 580, 9, SignatureKind.None, GoalType.Speedrun, 90, 0, 45));
             LevelData plain = LevelBuilder.Build(cfg, T3.Spec(3, 580, 9, SignatureKind.None, GoalType.ReachFloor, 90));
-            Assert.True(T3.OnRow(fast, 90).Y * 10 < T3.OnRow(plain, 90).Y * 7);
+            Assert.Equal(T3.OnRow(plain, 90).Y, T3.OnRow(fast, 90).Y);
+            Assert.Equal(plain.ComputeHash(), fast.ComputeHash());
+        }
+
+        [Fact]
+        public void HiddenGemCountsAsHiddenGemNotAsGemAndCompletesTheGoal()
+        {
+            // Economy contract (NOTES.md): FindHiddenGem completes with SimState.HiddenGems >= 1; Gems stays 0.
+            SimConfig cfg = new SimConfig();
+            Pickup[] pk = new Pickup[] { T3.Pk(PickupKind.HiddenGem, 5, 1.5, 0.9) };
+            LevelData d = T3.World(cfg, pk, null);
+            LevelSpec spec = T3.Spec(8, 500, 8, SignatureKind.None, GoalType.FindHiddenGem);
+            Sim sim = new Sim(cfg, d, Fx.Zero, false, false);
+            SimState s = sim.NewState();
+            Assert.False(GoalEvaluator.IsComplete(spec, s));
+            for (int round = 0; round < 3 && s.HiddenGems == 0; round++)
+            {
+                sim.Step(ref s, SimInput.Jump);
+                T3.RunTicks(sim, ref s, 80, 0);
+            }
+            Assert.Equal(1, s.HiddenGems);
+            Assert.Equal(0, s.Gems);
+            Assert.True(GoalEvaluator.IsComplete(spec, s));
         }
 
         // ---------------- pickups ----------------

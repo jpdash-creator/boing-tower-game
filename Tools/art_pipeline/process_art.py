@@ -45,7 +45,12 @@ def mode_of(asset_id):
     return "sheet"
 
 
-def key_image(rgb):
+# Glow-style sheets: every pixel near the key colour is background, also enclosed ones (the grey disc inside a ring).
+GLOBAL_KEY_PREFIXES = ("vfx_",)
+GLOBAL_KEY = {"ui_hud_icons"}
+
+
+def key_image(rgb, global_key=False):
     """Returns RGBA uint8 with the background removed, plus the key colour."""
     arr = rgb.astype(np.float32)
     h, w, _ = arr.shape
@@ -57,12 +62,12 @@ def key_image(rgb):
     lab, _ = ndi.label(near)
     edge_labels = np.unique(np.concatenate([lab[0], lab[-1], lab[:, 0], lab[:, -1]]))
     edge_labels = edge_labels[edge_labels != 0]
-    bgmask = np.isin(lab, edge_labels)
+    bgmask = near.copy() if global_key else np.isin(lab, edge_labels)
 
     d_to_bg = ndi.distance_transform_edt(~bgmask)
     alpha = np.ones((h, w), dtype=np.float32)
     alpha[bgmask] = 0.0
-    band = (~bgmask) & (d_to_bg <= BAND_PX)
+    band = (~bgmask) & ((d_to_bg <= BAND_PX) | global_key)
     t = np.clip((dist - KEY_TOL) / GLOW_SOFT, 0.0, 1.0)
     soft = t * t * (3 - 2 * t)  # smoothstep
     alpha[band] = np.minimum(alpha[band], soft[band])
@@ -82,7 +87,11 @@ def split_sheet(rgba):
     sprites = []
     for i, sl in enumerate(objs, start=1):
         comp = (lab[sl] == i)
-        if int((solid[sl] & comp).sum()) < area_min:
+        solid_count = int((solid[sl] & comp).sum())
+        if solid_count < area_min:
+            continue
+        bbox_area = (sl[0].stop - sl[0].start) * (sl[1].stop - sl[1].start)
+        if solid_count < 0.02 * bbox_area:   # hairline debris spanning a big box (guide lines, crosshairs): not a sprite
             continue
         y0 = max(0, sl[0].start - PAD)
         y1 = min(rgba.shape[0], sl[0].stop + PAD)
@@ -163,7 +172,7 @@ def process(asset_id, entry):
         return report
 
     rgb = np.asarray(Image.open(cand).convert("RGB"))
-    rgba, bg = key_image(rgb)
+    rgba, bg = key_image(rgb, asset_id in GLOBAL_KEY or asset_id.startswith(GLOBAL_KEY_PREFIXES))
     report["keyColour"] = [int(round(c)) for c in bg]
     os.makedirs(outdir, exist_ok=True)
     for f in os.listdir(outdir):

@@ -370,5 +370,19 @@ namespace BoingTower.Tests
             svc.ApplyRun("lvl_001_01", Won(starMask: 2)); // earned only star 2 this time
             Assert.AreEqual(2, svc.GetProgress("lvl_001_01").Stars);
         }
+
+        [Test]
+        public void HiddenGemPaysOneGemOnTheFirstClearOnly()
+        {
+            var svc = NewService();
+            RunOutcome run = Won();
+            run.HiddenGems = 1;
+            RewardResult first = svc.ApplyRun("lvl_001_01", run);
+            Assert.AreEqual(1, first.HiddenGemReward);
+            Assert.AreEqual(1, svc.Gems);
+            RewardResult replay = svc.ApplyRun("lvl_001_01", run);
+            Assert.AreEqual(0, replay.HiddenGemReward);
+            Assert.AreEqual(1, svc.Gems);
+        }
     }
 }

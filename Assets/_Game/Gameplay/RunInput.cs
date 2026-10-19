@@ -1,0 +1,156 @@
+using System.Collections.Generic;
+using BoingTower.Simulation;
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+namespace BoingTower.Gameplay
+{
+    public enum TouchPhaseKind { Began, Held, Ended }
+
+    public struct TouchSample
+    {
+        public int Id;
+        public TouchPhaseKind Phase;
+        public float X;
+        public float Time;
+    }
+
+    /// <summary>
+    /// Pure touch rules (doc 02 section 3): the oldest finger that is held moves the player by screen half (left half = left,
+    /// right half = right); a second finger touching down while another is held jumps; a short single tap also jumps.
+    /// Kept free of Unity types so it can be unit-tested with synthetic samples.
+    /// </summary>
+    public sealed class TouchControlLogic
+    {
+        public const float TapMaxSeconds = 0.20f;
+
+        sealed class Finger { public int Id; public float StartTime; public float X; public bool Secondary; }
+
+        readonly List<Finger> held = new List<Finger>();
+
+        /// <summary>Movement bits (SimInput.Left / Right) for the oldest held finger; 0 when nothing is held.</summary>
+        public int Move { get; private set; }
+
+        /// <summary>Feeds this frame's touch samples. Returns true when a jump was triggered this frame.</summary>
+        public bool Update(IList<TouchSample> samples, float screenWidth)
+        {
+            bool jump = false;
+            for (int i = 0; i < samples.Count; i++)
+            {
+                TouchSample s = samples[i];
+                Finger f = Find(s.Id);
+                switch (s.Phase)
+                {
+                    case TouchPhaseKind.Began:
+                        if (f == null)
+                        {
+                            f = new Finger { Id = s.Id, StartTime = s.Time, X = s.X, Secondary = held.Count > 0 };
+                            if (f.Secondary) jump = true;   // second finger = jump
+                            held.Add(f);
+                        }
+                        break;
+                    case TouchPhaseKind.Held:
+                        if (f != null) f.X = s.X;
+                        break;
+                    case TouchPhaseKind.Ended:
+                        if (f != null)
+                        {
+                            // A quick single tap (the only finger of its gesture) is a jump.
+                            if (!f.Secondary && held.Count == 1 && s.Time - f.StartTime <= TapMaxSeconds) jump = true;
+                            held.Remove(f);
+                        }
+                        break;
+                }
+            }
+            Move = 0;
+            if (held.Count > 0) Move = held[0].X < screenWidth * 0.5f ? SimInput.Left : SimInput.Right;
+            return jump;
+        }
+
+        Finger Find(int id)
+        {
+            for (int i = 0; i < held.Count; i++) if (held[i].Id == id) return held[i];
+            return null;
+        }
+
+        public void Clear() { held.Clear(); Move = 0; }
+    }
+
+    /// <summary>
+    /// Reads touch (and keyboard / mouse for editor testing) every frame and hands the simulation one input word per tick.
+    /// Jump presses are latched until the next tick so no tap is lost between fixed steps.
+    /// </summary>
+    public sealed class RunInputReader
+    {
+        readonly TouchControlLogic touch = new TouchControlLogic();
+        readonly List<TouchSample> samples = new List<TouchSample>(8);
+        bool jumpLatched;
+        int keyboardMove;
+
+        /// <summary>Optional override for tests: when set, Update() uses it instead of the devices.</summary>
+        public System.Func<int> ScriptedMove;
+        public System.Func<bool> ScriptedJump;
+
+        public void Update()
+        {
+            if (ScriptedMove != null || ScriptedJump != null)
+            {
+                keyboardMove = ScriptedMove != null ? ScriptedMove() : 0;
+                if (ScriptedJump != null && ScriptedJump()) jumpLatched = true;
+                return;
+            }
+
+            samples.Clear();
+            Touchscreen ts = Touchscreen.current;
+            float time = Time.unscaledTime;
+            if (ts != null)
+            {
+                foreach (var t in ts.touches)
+                {
+                    var press = t.press;
+                    if (press.wasPressedThisFrame) samples.Add(new TouchSample { Id = t.touchId.ReadValue(), Phase = TouchPhaseKind.Began, X = t.position.ReadValue().x, Time = time });
+                    else if (press.wasReleasedThisFrame) samples.Add(new TouchSample { Id = t.touchId.ReadValue(), Phase = TouchPhaseKind.Ended, X = t.position.ReadValue().x, Time = time });
+                    else if (press.isPressed) samples.Add(new TouchSample { Id = t.touchId.ReadValue(), Phase = TouchPhaseKind.Held, X = t.position.ReadValue().x, Time = time });
+                }
+            }
+            if (touch.Update(samples, Screen.width)) jumpLatched = true;
+
+            keyboardMove = 0;
+            Keyboard kb = Keyboard.current;
+            if (kb != null)
+            {
+                if (kb.aKey.isPressed || kb.leftArrowKey.isPressed) keyboardMove |= SimInput.Left;
+                if (kb.dKey.isPressed || kb.rightArrowKey.isPressed) keyboardMove |= SimInput.Right;
+                if (kb.spaceKey.wasPressedThisFrame || kb.upArrowKey.wasPressedThisFrame || kb.wKey.wasPressedThisFrame) jumpLatched = true;
+            }
+
+            Mouse mouse = Mouse.current;
+            if (mouse != null && ts == null)
+            {
+                if (mouse.leftButton.isPressed) keyboardMove |= mouse.position.ReadValue().x < Screen.width * 0.5f ? SimInput.Left : SimInput.Right;
+                if (mouse.rightButton.wasPressedThisFrame) jumpLatched = true;
+            }
+        }
+
+        /// <summary>Input word for the next simulation tick (movement bits plus the Jump edge, which is then cleared).</summary>
+        public int ReadTick()
+        {
+            int move = touch.Move | keyboardMove;
+            if ((move & SimInput.Left) != 0 && (move & SimInput.Right) != 0) move = 0;   // both pressed cancels
+            int bits = move;
+            if (jumpLatched)
+            {
+                bits |= SimInput.Jump;
+                jumpLatched = false;
+            }
+            return bits;
+        }
+
+        public void Clear()
+        {
+            touch.Clear();
+            jumpLatched = false;
+            keyboardMove = 0;
+        }
+    }
+}

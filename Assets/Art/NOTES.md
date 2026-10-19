@@ -20,3 +20,12 @@ Each sheet has its own flat blue-grey background (NOT #808080): the key colour i
 3. Parallax mid and near backgrounds are opaque full images: the model did not produce transparent skies or centres, so they cannot be overlaid as separate layers without extra masking. Use them as stacked or crossfaded layers for now.
 4. Momo is one flat sprite (no paper-doll layers). Animation is procedural (squash and stretch) until a rig exists.
 5. UI sheets are sliced into elements but 9-slice borders are not defined yet (panels, buttons): do that when the UI is built (T7).
+
+## Art QA (CUX-9) - `Tools/art_pipeline/qa_art.py`
+Run after `process_art.py` (`PYTHONPATH=E:/pylibs`). It writes `Assets/Art/QA_REPORT.md` and one contact sheet per sheet to `E:/Unity/qa` and exits 1 on clipped or grey-halo sprites.
+Fixed on 2026-10-19: glow sheets (`vfx_*`, `ui_hud_icons`) are keyed globally so the grey disc inside rings disappears; hairline debris (crosshairs) is no longer cut as a sprite.
+Known issues kept on purpose (none is used by the 5-region build):
+- `vfx_coin_burst`: grey square backdrop survives (white-frame key). Do not use until regenerated.
+- `vfx_shockwave_ring_03`: a thin arc fragment after global keying; skip it.
+- Beach (reg003) and bamboo (reg005) tilesets: irregular silhouettes, arrow baked into the moving platform; T15 regeneration.
+- `ui_panel_popup`: baked "X" in the corner; the game overlays an invisible real close button on it (`UiKit.AddHitArea`).

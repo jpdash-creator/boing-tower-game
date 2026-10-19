@@ -61,17 +61,17 @@
     },
     {
       "file": "vfx_speed_streaks_09.png",
+      "x": 1350,
+      "y": 261,
+      "w": 426,
+      "h": 280
+    },
+    {
+      "file": "vfx_speed_streaks_10.png",
       "x": 1707,
       "y": 534,
       "w": 255,
       "h": 178
-    },
-    {
-      "file": "vfx_speed_streaks_10.png",
-      "x": 0,
-      "y": 0,
-      "w": 2304,
-      "h": 1728
     },
     {
       "file": "vfx_speed_streaks_11.png",

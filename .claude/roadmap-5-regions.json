@@ -52,9 +52,9 @@
     {
       "id": "T5",
       "task": "Run scene: sim-to-sprite renderer, camera follow, parallax, HUD, level start/finish flow",
-      "status": "pending",
-      "minutes": 150,
-      "blocker": "needs T1 (sprites) and T2",
+      "status": "done",
+      "minutes": 0,
+      "blocker": "",
       "depends": [
         "T1",
         "T2"
@@ -63,9 +63,9 @@
     {
       "id": "T6",
       "task": "Input: touch zones (left/right + tap jump), keyboard for editor testing, haptics hooks",
-      "status": "pending",
-      "minutes": 45,
-      "blocker": "needs T5",
+      "status": "done",
+      "minutes": 0,
+      "blocker": "",
       "depends": [
         "T5"
       ]
@@ -73,9 +73,9 @@
     {
       "id": "T7",
       "task": "Meta flow: Boot, main menu, world map (5 live + locked), 15-level select, results with stars, pause, settings",
-      "status": "pending",
-      "minutes": 210,
-      "blocker": "needs T1 (UI sheets) and T2",
+      "status": "done",
+      "minutes": 0,
+      "blocker": "",
       "depends": [
         "T1",
         "T2"
@@ -148,9 +148,9 @@
     {
       "id": "T14",
       "task": "Apply owner decisions: relax speedrun time goals (normal gaps), raise coin-star targets (bot-proven), hidden gem first-clear reward, regenerate content/manifest/golden hashes",
-      "status": "active",
-      "minutes": 60,
-      "blocker": "background agent (dotnet only) then Unity manifest rebuild by main session",
+      "status": "done",
+      "minutes": 0,
+      "blocker": "",
       "depends": [
         "T3",
         "T8"
@@ -164,6 +164,27 @@
       "blocker": "Needs owner approval packet and credits (about 120)",
       "depends": [
         "T5"
+      ]
+    },
+    {
+      "id": "T16",
+      "task": "CUX hardening: reduced-motion, left-handed layout, colour-blind-safe cues, haptics wired, text scale 130% and contrast tests (CUX-4/5/6)",
+      "status": "pending",
+      "minutes": 120,
+      "blocker": "",
+      "depends": [
+        "T5",
+        "T7"
+      ]
+    },
+    {
+      "id": "T17",
+      "task": "Device validation of CUX-1 on a real phone (60 fps, thermals) with the Android build",
+      "status": "blocked",
+      "minutes": 45,
+      "blocker": "T11 phone build",
+      "depends": [
+        "T11"
       ]
     }
   ]

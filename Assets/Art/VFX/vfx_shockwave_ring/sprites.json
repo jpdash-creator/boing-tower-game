@@ -20,16 +20,16 @@
     {
       "file": "vfx_shockwave_ring_03.png",
       "x": 1640,
-      "y": 289,
-      "w": 553,
-      "h": 351
+      "y": 311,
+      "w": 297,
+      "h": 329
     },
     {
       "file": "vfx_shockwave_ring_04.png",
-      "x": 0,
-      "y": 0,
-      "w": 2304,
-      "h": 1728
+      "x": 1678,
+      "y": 289,
+      "w": 515,
+      "h": 346
     },
     {
       "file": "vfx_shockwave_ring_05.png",

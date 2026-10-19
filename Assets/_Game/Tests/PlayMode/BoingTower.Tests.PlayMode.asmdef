@@ -1,0 +1,26 @@
+{
+  "name": "BoingTower.Tests.PlayMode",
+  "rootNamespace": "BoingTower.Tests",
+  "references": [
+    "BoingTower.Simulation",
+    "BoingTower.Content",
+    "BoingTower.Economy",
+    "BoingTower.Gameplay",
+    "Unity.InputSystem",
+    "UnityEngine.TestRunner",
+    "UnityEditor.TestRunner"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

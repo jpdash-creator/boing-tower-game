@@ -45,7 +45,12 @@ REGIONS = [
     ("Rift Of Time", ["chrono violet", "white"], "Rewind Zones", "Rewind zones leave a position echo"),
 ]
 
-# index -> (class, d, goal, star coin target)
+# Speedrun time goal (level index 9, every region), seconds. Owner decision 2026-10-19: relax the time, keep the normal
+# vertical gaps. Value = slowest bot time over regions 1-5 times 1.2 (margin), rounded up to 5 s; see
+# Tests/Simulation/SOLVABILITY_REPORT.md and Assets/_Game/Simulation/NOTES.md.
+SPEEDRUN_TIME_SEC = 75
+
+# index -> (class, d, goal)
 LEVELS = {
     1: ("simple", 0.05, {"type": "reachFloor", "value": 30}),
     2: ("simple", 0.10, {"type": "reachFloor", "value": 45}),
@@ -55,7 +60,7 @@ LEVELS = {
     6: ("medium", 0.35, {"type": "reachFloor", "value": 80}),
     7: ("medium", 0.42, {"type": "noWallBounce", "value": 60}),
     8: ("medium", 0.50, {"type": "findHiddenGem"}),
-    9: ("medium", 0.58, {"type": "speedrun", "value": 90, "timeSec": 45}),
+    9: ("medium", 0.58, {"type": "speedrun", "value": 90, "timeSec": SPEEDRUN_TIME_SEC}),
     10: ("complex", 0.70, {"type": "surviveWave"}),
     11: ("hard", 0.62, {"type": "comboChain", "value": 6, "count": 1}),
     12: ("hard", 0.70, {"type": "reachFloor", "value": 100}),
@@ -98,17 +103,37 @@ def gem_rewards(index):
     return {"chance": 0.03, "min": 1, "max": 1}
 
 
+def load_coin_star_targets():
+    """Star-2 targets of regions 1-5 from Content/config/coin_star_targets.json (written by the Simulation test
+    CoinStarTargetTests from the bot's proven coin bound). Returns {level id: target}; empty if the file is absent."""
+    path = os.path.join(CONTENT, "config", "coin_star_targets.json")
+    if not os.path.exists(path):
+        return {}
+    with open(path, encoding="utf-8") as f:
+        table = json.load(f)
+    return {lid: e["target"] for lid, e in table["levels"].items()}
+
+
+COIN_STAR_TARGETS = load_coin_star_targets()
+
+
+def coin_star_target(level_id, i):
+    """Raised target for the five playable regions (from the bot table); the old formula for regions 6-30."""
+    return COIN_STAR_TARGETS.get(level_id, 20 + 5 * i)
+
+
 def make_level(r, region_id, i):
     cls, d, goal = LEVELS[i]
+    level_id = "lvl_%03d_%02d" % (r, i)
     level = {
-        "id": "lvl_%03d_%02d" % (r, i),
+        "id": level_id,
         "region": region_id,
         "index": i,
         "seed": (r * 7919 + i * 104729 + 12345) % 2147483647,
         "class": cls,
         "difficulty": d,
         "goal": goal,
-        "stars": [{"type": "clear"}, {"type": "coins", "value": 20 + 5 * i}, {"type": "noRevive"}],
+        "stars": [{"type": "clear"}, {"type": "coins", "value": coin_star_target(level_id, i)}, {"type": "noRevive"}],
         "rewards": {"coinPayout": coin_payout(i), "replayCoinPercent": 40, "gems": gem_rewards(i)},
     }
     if i in (5, 10):

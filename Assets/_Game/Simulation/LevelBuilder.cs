@@ -66,7 +66,6 @@ namespace BoingTower.Simulation
                 else sigShare = PercentLerp(cfg.SignatureBasePercent, cfg.SignatureMaxPercent, d);
                 if (sigShare > cfg.SignatureMaxPercent) sigShare = cfg.SignatureMaxPercent;
             }
-            bool speedrun = spec.Goal.Type == GoalType.Speedrun;
 
             // ---- plan fixed-position elements: combo ladder, chunks, hidden gem, wave ----
             bool[] locked = new bool[rows + 3];
@@ -174,7 +173,6 @@ namespace BoingTower.Simulation
                 if (rowNo == ladderStart)
                 {
                     Fx gap0 = rng.Range(Fx.Lerp(gapEasyLo, gapHardLo, d), Fx.Lerp(gapEasyHi, gapHardHi, d));
-                    if (speedrun) gap0 = gap0 * cfg.SpeedrunGapPercent / 100;
                     gap0 = Fx.Min(gap0, maxGap);
                     if (prevKind == PlatformKind.Sticky) gap0 = Fx.Min(gap0, cfg.StickyNextGapMax);
                     bool lAfterBounce = prevKind == PlatformKind.Bounce || prevKind == PlatformKind.BounceCap;
@@ -250,7 +248,6 @@ namespace BoingTower.Simulation
                 // ---------- generated row ----------
                 int row = rowNo;
                 Fx gap = rng.Range(Fx.Lerp(gapEasyLo, gapHardLo, d), Fx.Lerp(gapEasyHi, gapHardHi, d));
-                if (speedrun) gap = gap * cfg.SpeedrunGapPercent / 100;
                 gap = Fx.Min(gap, maxGap);
                 if (prevKind == PlatformKind.Sticky) gap = Fx.Min(gap, cfg.StickyNextGapMax);
                 bool afterBounce = prevKind == PlatformKind.Bounce || prevKind == PlatformKind.BounceCap;

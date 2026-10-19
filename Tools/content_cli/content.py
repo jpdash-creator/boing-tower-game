@@ -95,6 +95,14 @@ D_BY_LEVEL = {1: 0.05, 2: 0.10, 3: 0.15, 4: 0.22, 5: 0.40, 6: 0.35, 7: 0.42, 8: 
               10: 0.70, 11: 0.62, 12: 0.70, 13: 0.78, 14: 0.86, 15: 1.00}
 
 
+# Owner decision 2026-10-19 (T14): Speedrun keeps normal gaps, the time goal is relaxed. Regions 1-5 were verified by the bot
+# (slowest bot time 61.0 s, timeSec = ceil(1.2 * 61.0 to 5 s) = 75). Any change must be re-verified with the Simulation tests.
+SPEEDRUN_VALUE = 90
+SPEEDRUN_TIME_MIN, SPEEDRUN_TIME_MAX = 60, 120
+PLAYABLE_REGIONS = 5
+COIN_STAR_MIN, COIN_STAR_MAX = 15, 500
+
+
 def validate():
     errors = []
     schemas = {name: load("schemas/%s.schema.json" % name)
@@ -170,6 +178,19 @@ def validate():
         if lid not in listed:
             errors.append("%s: level not referenced by any region" % lid)
 
+    # --- coin-star table (regions 1-5, generated from the bot by Tests/Simulation CoinStarTargetTests) ---
+    table_path = os.path.join(CONTENT, "config", "coin_star_targets.json")
+    coin_table = {}
+    if os.path.exists(table_path):
+        coin_table = load_abs(table_path).get("levels", {})
+    else:
+        errors.append("config/coin_star_targets.json missing (run the Simulation tests with UPDATE_COIN_TARGETS=1)")
+    for lid in sorted(levels):
+        n = int(lid.split("_")[1])
+        if n <= PLAYABLE_REGIONS and lid not in coin_table:
+            errors.append("%s: no entry in config/coin_star_targets.json" % lid)
+    speedrun_times = set()
+
     # --- level rules (doc 08 sections 6-7) ---
     seeds = {}
     for lid, lv in levels.items():
@@ -190,9 +211,38 @@ def validate():
             errors.append("%s: gems min > max" % lid)
         if i == 15 and lv["rewards"]["gems"].get("firstClearGuaranteed") != 5:
             errors.append("%s: L15 must guarantee 5 gems on first clear" % lid)
+        n = int(lid.split("_")[1])
+        coin_stars = [st for st in lv["stars"] if st["type"] == "coins"]
+        if len(coin_stars) != 1 or lv["stars"][1]["type"] != "coins":
+            errors.append("%s: star 2 must be a coins star" % lid)
+        else:
+            target = coin_stars[0].get("value", 0)
+            if not COIN_STAR_MIN <= target <= COIN_STAR_MAX:
+                errors.append("%s: coin star %s outside %d-%d" % (lid, target, COIN_STAR_MIN, COIN_STAR_MAX))
+            if n <= PLAYABLE_REGIONS:
+                entry = coin_table.get(lid)
+                if entry is not None:
+                    if target != entry["target"]:
+                        errors.append("%s: coin star %s differs from the bot table %s" % (lid, target, entry["target"]))
+                    if entry["target"] > entry["botBound"]:
+                        errors.append("%s: coin star %s above the bot's proven bound %s" % (lid, entry["target"], entry["botBound"]))
+                    if entry["target"] < entry["oldTarget"] and not entry.get("capped"):
+                        errors.append("%s: coin star below the old target without a cap" % lid)
+            elif target != 20 + 5 * i:
+                errors.append("%s: regions 6-30 keep the old coin star formula (%d)" % (lid, 20 + 5 * i))
+        if lv["goal"]["type"] == "speedrun":
+            g = lv["goal"]
+            speedrun_times.add(g.get("timeSec"))
+            if g.get("value") != SPEEDRUN_VALUE:
+                errors.append("%s: speedrun value must be %d" % (lid, SPEEDRUN_VALUE))
+            if not SPEEDRUN_TIME_MIN <= g.get("timeSec", 0) <= SPEEDRUN_TIME_MAX or g.get("timeSec", 0) % 5:
+                errors.append("%s: speedrun timeSec must be a multiple of 5 in %d-%d" % (lid, SPEEDRUN_TIME_MIN, SPEEDRUN_TIME_MAX))
         if lv["seed"] in seeds:
             errors.append("%s: seed collides with %s" % (lid, seeds[lv["seed"]]))
         seeds[lv["seed"]] = lid
+
+    if len(speedrun_times) > 1:
+        errors.append("speedrun timeSec must be one constant for all regions, found %s" % sorted(speedrun_times))
 
     # --- modules ---
     covered = set()

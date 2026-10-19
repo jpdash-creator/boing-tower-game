@@ -4,6 +4,9 @@
 
 **Design docs** (source of truth, read before changing rules or numbers): `E:\Source\Game Ideas\boing-tower-docs\docs\`. Doc 08 (rules addendum) wins over docs 01, 02, 05. Doc 09 records the accepted review decisions.
 
+## CRITICAL REQUIREMENTS (owner, 2026-10-19): seamless gameplay, no improper overlap, accessibility
+User experience and accessibility are critical. Gameplay must be seamless and never choppy; screen items must never overlap improperly. The full mandatory rule set (CUX-1 to CUX-10) is in `.claude/rules/ux-gameplay-critical.md` (always loaded) and `docs/11-critical-ux-gameplay-requirements.md`. Headlines: 60 fps with fixed-step sim + interpolation, zero per-frame allocations, instant input, no overlapping or clipped UI on any aspect, 48 dp touch targets, readable contrast, no colour-only cues, reduced motion/haptics/left-handed options, clean sliced art. CUX tests (category `CriticalUX`) must stay green; a failing CUX test blocks a commit.
+
 ## Hard rules
 - **OpenArt credits (MANDATORY GUARDRAIL):** never call a credit-consuming OpenArt tool (`openart_generate_image`, `openart_generate_video`, edits/upscales) without the owner's explicit chat approval for that exact batch. Ask first with full details: purpose, MCP and tool, model and settings, the full prompts, credits per job and total, balance before and after, alternatives. Full rule: `.claude/rules/openart-credit-guardrail.md`. Read-only OpenArt tools (account, model list/cost/form, creation list) are free to use.
 - **Originality:** never mention, name or imitate any existing jumper game in code, art, prompts, store text or comments. Generic genre mechanics only.
@@ -53,7 +56,7 @@ Open items waiting on the owner are logged in `.claude/pendingdecisions/` (asset
 - Status and task list: `.claude/roadmap-5-regions.json` (`python Tools/status_ticker.py`). Done: T0 Unity setup, T2 runtime content, T3 gameplay completeness, T4 bot solvability (75 of 75 star-1 goals for regions 1-5), T8 save/wallet/rewards/unlocks (`Assets/_Game/Economy`, notes in its NOTES.md), T1 art pipeline (`Tools/art_pipeline/process_art.py`, notes in `Assets/Art/NOTES.md`).
 - Simulation (`Assets/_Game/Simulation`, plain C# 9, no floats): Fx, Rng, SimConfig, Sim, LevelGenerator, LevelBuilder/LevelSpec/LevelData, Chunks, Goals (GoalEvaluator, StarEvaluator), LevelBot. API summary: `Assets/_Game/Simulation/NOTES.md`. Content side: `Assets/_Game/Content/NOTES.md` (ContentRepository, LevelSpecFactory).
 - Determinism contract: `Content/golden/level_hashes_r1-5.txt` (dotnet writes it; the Unity test `LevelSpecFactoryTests` must match). Regenerate only for an intended generator change: set `UPDATE_GOLDEN=1` and run `dotnet test Tests/Simulation`.
-- Test counts to keep green: dotnet 80 (`dotnet test Tests/Simulation`, ~2 min), Unity EditMode 52 (headless, ~25 s).
+- Test counts to keep green: dotnet 84 (`dotnet test Tests/Simulation`, ~2 min), Unity EditMode 65, Unity PlayMode 10 (3 `CriticalUX`; run `Tools/unity_tests.ps1 -Platform PlayMode`, needs graphics for screenshots in `E:/Unity/shots`), art QA `python Tools/art_pipeline/qa_art.py`.
 - Physics constants in `SimConfig` are unplayed baselines (doc 09 D4): tune by playing, then freeze; builder caps may need retuning afterwards.
 - Open owner questions from T3/T4 (coin-star targets too easy, speedrun content infeasible at doc 08 gaps, level-end semantics, hidden-gem reward): `.claude/pendingdecisions/open-items.md`.
 - Signature modules (`Content/config/modules.json`) are all `planned`; regions 1-5 now have working signatures (bounce flowers, bounce caps, drifting, sticky gum, gongs); track `buildStatus` there.

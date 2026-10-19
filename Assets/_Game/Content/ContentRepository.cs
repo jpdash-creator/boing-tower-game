@@ -156,6 +156,13 @@ namespace BoingTower.Content
             return r;
         }
 
+        /// <summary>Region by index, or null when there is no such region (for example the one after the last).</summary>
+        public RegionDef TryGetRegionByIndex(int index)
+        {
+            RegionDef r;
+            return _regionsByIndex.TryGetValue(index, out r) ? r : null;
+        }
+
         public LevelDef GetLevel(string id)
         {
             LevelDef l;

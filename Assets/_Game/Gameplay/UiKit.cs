@@ -1,0 +1,218 @@
+using System;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.UI;
+using UnityEngine.UI;
+
+namespace BoingTower.Gameplay
+{
+    /// <summary>Accessibility label of an interactive element (bridged to the platform screen reader later). CUX-6.</summary>
+    public sealed class A11yLabel : MonoBehaviour
+    {
+        public string Text;
+    }
+
+    /// <summary>Keeps a UI rect inside the device safe area (notches, rounded corners). CUX-3 / CUX-10.</summary>
+    public sealed class SafeAreaFitter : MonoBehaviour
+    {
+        Rect last = new Rect(-1f, -1f, -1f, -1f);
+
+        void Update() { Apply(); }
+        void OnEnable() { Apply(); }
+
+        public void Apply()
+        {
+            Rect sa = UiKit.SafeAreaNormalized();
+            if (sa == last) return;
+            last = sa;
+            var rt = (RectTransform)transform;
+            rt.anchorMin = new Vector2(sa.xMin, sa.yMin);
+            rt.anchorMax = new Vector2(sa.xMax, sa.yMax);
+            rt.offsetMin = Vector2.zero;
+            rt.offsetMax = Vector2.zero;
+        }
+    }
+
+    /// <summary>
+    /// Code-built uGUI helpers. Reference resolution 1080 x 1920. Sizes follow the critical UX rules (CUX-3..5):
+    /// at least 48 dp touch targets, at least 8 dp spacing, at least 16 sp text, text scale option, safe area.
+    /// </summary>
+    public static class UiKit
+    {
+        public static readonly Vector2 Reference = new Vector2(1080f, 1920f);
+
+        /// <summary>Reference pixels per dp (a typical phone is about 411 dp wide: 1080 / 411).</summary>
+        public const float PxPerDp = 1080f / 411f;
+        public const float MinTouchPx = 48f * PxPerDp;      // about 126
+        public const float MinSpacingPx = 8f * PxPerDp;     // about 21
+        public const float MinBodyTextPx = 16f * PxPerDp;   // about 42
+        public const float LargeTextPx = 24f * PxPerDp;     // about 63 (3:1 contrast is enough above this)
+
+        /// <summary>Accessibility text scale (1.0 to 1.3), applied to every text created afterwards.</summary>
+        public static float TextScale = 1f;
+
+        /// <summary>Normalised (0..1) safe area. Tests replace this to simulate notches.</summary>
+        public static Func<Rect> SafeAreaNormalized = () =>
+        {
+            Rect sa = Screen.safeArea;
+            return new Rect(sa.x / Screen.width, sa.y / Screen.height, sa.width / Screen.width, sa.height / Screen.height);
+        };
+
+        static Font font;
+
+        public static Font DefaultFont
+        {
+            get
+            {
+                if (font == null) font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+                return font;
+            }
+        }
+
+        public static Canvas CreateCanvas(string name, int sortingOrder)
+        {
+            var go = new GameObject(name);
+            var canvas = go.AddComponent<Canvas>();
+            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            canvas.sortingOrder = sortingOrder;
+            var scaler = go.AddComponent<CanvasScaler>();
+            scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+            scaler.referenceResolution = Reference;
+            scaler.matchWidthOrHeight = 0.5f;
+            go.AddComponent<GraphicRaycaster>();
+            EnsureEventSystem();
+            return canvas;
+        }
+
+        public static void EnsureEventSystem()
+        {
+            if (UnityEngine.Object.FindFirstObjectByType<EventSystem>() != null) return;
+            var go = new GameObject("EventSystem");
+            go.AddComponent<EventSystem>();
+            go.AddComponent<InputSystemUIInputModule>();
+        }
+
+        public static RectTransform Rect(Transform parent, string name)
+        {
+            var go = new GameObject(name, typeof(RectTransform));
+            go.transform.SetParent(parent, false);
+            return (RectTransform)go.transform;
+        }
+
+        /// <summary>A full-stretch child that follows the safe area. Put all interactive and text content under it.</summary>
+        public static RectTransform SafeArea(Transform parent)
+        {
+            RectTransform rt = Rect(parent, "Safe");
+            Stretch(rt);
+            rt.gameObject.AddComponent<SafeAreaFitter>().Apply();
+            return rt;
+        }
+
+        /// <summary>Anchors an element to a corner/edge/centre point (pivot = anchor) and positions it by pixel offset and size.</summary>
+        public static RectTransform Place(RectTransform rt, Vector2 anchor, Vector2 position, Vector2 size)
+        {
+            rt.anchorMin = anchor;
+            rt.anchorMax = anchor;
+            rt.pivot = anchor;
+            rt.anchoredPosition = position;
+            rt.sizeDelta = size;
+            return rt;
+        }
+
+        public static RectTransform Stretch(RectTransform rt)
+        {
+            rt.anchorMin = Vector2.zero;
+            rt.anchorMax = Vector2.one;
+            rt.offsetMin = Vector2.zero;
+            rt.offsetMax = Vector2.zero;
+            return rt;
+        }
+
+        public static Image AddImage(Transform parent, string name, Sprite sprite, Color color)
+        {
+            RectTransform rt = Rect(parent, name);
+            var img = rt.gameObject.AddComponent<Image>();
+            img.sprite = sprite;
+            img.color = sprite == null && color == Color.white ? new Color(1f, 1f, 1f, 0.15f) : color;
+            img.preserveAspect = sprite != null;
+            img.raycastTarget = false;
+            return img;
+        }
+
+        /// <summary>Font size is raised to the 16 sp minimum and multiplied by the accessibility text scale.</summary>
+        public static Text AddText(Transform parent, string name, string text, int size, Color color, TextAnchor align = TextAnchor.MiddleCenter)
+        {
+            RectTransform rt = Rect(parent, name);
+            var t = rt.gameObject.AddComponent<Text>();
+            t.font = DefaultFont;
+            t.text = text;
+            t.fontSize = Mathf.RoundToInt(Mathf.Max(size, MinBodyTextPx) * TextScale);
+            t.color = color;
+            t.alignment = align;
+            t.horizontalOverflow = HorizontalWrapMode.Wrap;
+            t.verticalOverflow = VerticalWrapMode.Overflow;
+            t.raycastTarget = false;
+            var outline = rt.gameObject.AddComponent<Outline>();
+            // The outline grows with the text so big titles stay readable over bright art (CUX-5).
+            float d = Mathf.Max(2.5f, t.fontSize * 0.045f);
+            outline.effectColor = new Color(0.05f, 0.05f, 0.12f, 0.9f);
+            outline.effectDistance = new Vector2(d, -d);
+            return t;
+        }
+
+        public static readonly Color PanelInk = new Color(0.20f, 0.11f, 0.16f, 1f);
+
+        /// <summary>Dark ink for text on the light cream popup panels (white text there fails the 4.5:1 contrast rule).</summary>
+        public static Text OnPanel(Text t)
+        {
+            t.color = PanelInk;
+            var o = t.GetComponent<Outline>();
+            if (o != null) o.enabled = false;
+            return t;
+        }
+
+        /// <summary>An invisible touch target placed over art that has a baked-in close mark, so the mark is a real control.</summary>
+        public static Button AddHitArea(Transform parent, string name, string label, Vector2 anchor, Vector2 position, Vector2 size, Action onClick)
+        {
+            Button b = AddButton(parent, name, null, null, new Color(1f, 1f, 1f, 0f), size, onClick);
+            b.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0.001f);
+            b.GetComponent<A11yLabel>().Text = label;
+            Place((RectTransform)b.transform, anchor, position, new Vector2(Mathf.Max(size.x, MinTouchPx), Mathf.Max(size.y, MinTouchPx)));
+            return b;
+        }
+
+        /// <summary>Touch target. Size is raised to the 48 dp minimum so no button can be built too small.</summary>
+        public static Button AddButton(Transform parent, string name, string label, Sprite sprite, Color tint, Vector2 size, Action onClick, int fontSize = 44)
+        {
+            size = new Vector2(Mathf.Max(size.x, MinTouchPx), Mathf.Max(size.y, MinTouchPx));
+            RectTransform rt = Rect(parent, name);
+            rt.sizeDelta = size;
+            var img = rt.gameObject.AddComponent<Image>();
+            img.sprite = sprite;
+            img.color = sprite != null ? tint : new Color(tint.r, tint.g, tint.b, 0.9f);
+            img.type = Image.Type.Simple;
+            var btn = rt.gameObject.AddComponent<Button>();
+            var colors = btn.colors;
+            colors.pressedColor = new Color(0.8f, 0.8f, 0.8f, 1f);
+            btn.colors = colors;
+            if (onClick != null) btn.onClick.AddListener(() => onClick());
+            rt.gameObject.AddComponent<A11yLabel>().Text = string.IsNullOrEmpty(label) ? name : label;
+            if (!string.IsNullOrEmpty(label))
+            {
+                Text t = AddText(rt, "Label", label, fontSize, Color.white);
+                Stretch((RectTransform)t.transform);
+            }
+            return btn;
+        }
+
+        public static void SetText(Text t, string value)
+        {
+            if (t != null && !string.Equals(t.text, value)) t.text = value;
+        }
+
+        public static void ClearChildren(Transform parent)
+        {
+            for (int i = parent.childCount - 1; i >= 0; i--) UnityEngine.Object.Destroy(parent.GetChild(i).gameObject);
+        }
+    }
+}

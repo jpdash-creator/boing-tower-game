@@ -1,0 +1,334 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.Text;
+using BoingTower.Content;
+using BoingTower.Economy;
+using BoingTower.Gameplay;
+using BoingTower.Simulation;
+using NUnit.Framework;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.TestTools;
+using UnityEngine.UI;
+
+namespace BoingTower.Tests
+{
+    /// <summary>
+    /// Enforces the critical UX rules (docs/11, CUX-3/4/5): no overlapping text or buttons, nothing outside the safe area,
+    /// touch targets of at least 48 dp and text of at least 16 sp on every supported aspect ratio. Category CriticalUX.
+    /// The canvas follows the camera's target texture, so each aspect is simulated by rendering to a texture of that size.
+    /// </summary>
+    [Category("CriticalUX")]
+    public class CriticalUxLayoutTests
+    {
+        struct Aspect
+        {
+            public string Name; public int W, H;
+            public Aspect(string n, int w, int h) { Name = n; W = w; H = h; }
+        }
+
+        static readonly Aspect[] Aspects =
+        {
+            new Aspect("9x16", 540, 960),
+            new Aspect("9x19.5", 450, 975),
+            new Aspect("9x21", 450, 1050),
+            new Aspect("3x4", 720, 960),
+        };
+
+        sealed class Item { public RectTransform Rt; public Rect Box; public string Name; public bool IsButton; }
+
+        [SetUp]
+        public void SetUp()
+        {
+            Time.captureFramerate = 60;
+            GameSession.Reset();
+            GameSession.InitForTests(new MemorySaveStore());
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            Time.captureFramerate = 0;
+            foreach (var rc in Object.FindObjectsByType<RunController>(FindObjectsSortMode.None)) rc.enabled = false;
+            foreach (var mc in Object.FindObjectsByType<MetaController>(FindObjectsSortMode.None)) mc.enabled = false;
+            UiKit.SafeAreaNormalized = () => new Rect(0f, 0f, 1f, 1f);
+            RunView.AspectOverride = 0f;
+            GameSession.Reset();
+        }
+
+        static IEnumerator Load(string scene)
+        {
+            var op = SceneManager.LoadSceneAsync(scene);
+            while (!op.isDone) yield return null;
+            yield return null;
+            yield return null;
+        }
+
+        static string Path(Transform t)
+        {
+            var sb = new StringBuilder(t.name);
+            for (Transform p = t.parent; p != null && p.GetComponent<Canvas>() == null; p = p.parent) sb.Insert(0, p.name + "/");
+            return sb.ToString();
+        }
+
+        static bool IsDescendant(Transform child, Transform ancestor)
+        {
+            for (Transform t = child; t != null; t = t.parent) if (t == ancestor) return true;
+            return false;
+        }
+
+        /// <summary>Collects the visible text and button boxes in canvas units (reference pixels) and returns the violations found.</summary>
+        static List<string> Audit(string screen, Aspect a, Rect safe)
+        {
+            var problems = new List<string>();
+            var items = new List<Item>();
+            Camera cam = Camera.main;
+            foreach (Canvas canvas in Object.FindObjectsByType<Canvas>(FindObjectsSortMode.None))
+            {
+                if (!canvas.isActiveAndEnabled || canvas.renderMode != RenderMode.ScreenSpaceCamera) continue;
+                float scale = canvas.scaleFactor;
+
+                foreach (Text t in canvas.GetComponentsInChildren<Text>(false))
+                {
+                    if (string.IsNullOrEmpty(t.text) || !t.gameObject.activeInHierarchy) continue;
+                    if (t.color.a < 0.05f) continue;
+                    Rect box = ToCanvasUnits(t.rectTransform, cam, scale);
+                    // Use the size the text really needs, placed according to its alignment.
+                    float pw = Mathf.Min(t.preferredWidth, box.width);
+                    float ph = t.preferredHeight;
+                    float x = box.x, y = box.y;
+                    switch (t.alignment)
+                    {
+                        case TextAnchor.UpperCenter: case TextAnchor.MiddleCenter: case TextAnchor.LowerCenter: x += (box.width - pw) * 0.5f; break;
+                        case TextAnchor.UpperRight: case TextAnchor.MiddleRight: case TextAnchor.LowerRight: x += box.width - pw; break;
+                    }
+                    switch (t.alignment)
+                    {
+                        case TextAnchor.UpperLeft: case TextAnchor.UpperCenter: case TextAnchor.UpperRight: y += box.height - ph; break;
+                        case TextAnchor.MiddleLeft: case TextAnchor.MiddleCenter: case TextAnchor.MiddleRight: y += (box.height - ph) * 0.5f; break;
+                    }
+                    items.Add(new Item { Rt = t.rectTransform, Box = new Rect(x, y, pw, ph), Name = Path(t.transform) + " \"" + Trim(t.text) + "\"" });
+                    if (t.fontSize < UiKit.MinBodyTextPx - 1f)
+                        problems.Add(screen + ": text below 16 sp (" + t.fontSize + "): " + Path(t.transform));
+                }
+
+                foreach (Button b in canvas.GetComponentsInChildren<Button>(false))
+                {
+                    if (!b.gameObject.activeInHierarchy) continue;
+                    var rt = (RectTransform)b.transform;
+                    Rect box = ToCanvasUnits(rt, cam, scale);
+                    items.Add(new Item { Rt = rt, Box = box, Name = Path(rt) + " [button]", IsButton = true });
+                    if (box.width < UiKit.MinTouchPx - 1f || box.height < UiKit.MinTouchPx - 1f)
+                        problems.Add(screen + ": touch target below 48 dp (" + Mathf.RoundToInt(box.width) + "x" + Mathf.RoundToInt(box.height) + "): " + Path(rt));
+                }
+
+                // A modal popup or overlay hides everything behind it: only the modal is audited.
+                if (items.Exists(i => i.Name.StartsWith("Popup/") || i.Name.StartsWith("Overlay/")))
+                    items.RemoveAll(i => !(i.Name.StartsWith("Popup/") || i.Name.StartsWith("Overlay/")));
+
+                // Inside the safe area (normalised to the canvas size in canvas units).
+                float cw = a.W / scale, ch = a.H / scale;
+                var sa = new Rect(safe.x * cw, safe.y * ch, safe.width * cw, safe.height * ch);
+                foreach (Item it in items)
+                {
+                    const float tol = 2f;
+                    if (it.Box.xMin < sa.xMin - tol || it.Box.xMax > sa.xMax + tol || it.Box.yMin < sa.yMin - tol || it.Box.yMax > sa.yMax + tol)
+                        problems.Add(screen + ": outside the safe area: " + it.Name + " " + it.Box + " safe " + sa);
+                }
+            }
+
+            // Overlap of text or buttons (shared ancestors and button labels are not overlaps).
+            for (int i = 0; i < items.Count; i++)
+            {
+                for (int j = i + 1; j < items.Count; j++)
+                {
+                    Item p = items[i], q = items[j];
+                    if (IsDescendant(p.Rt, q.Rt) || IsDescendant(q.Rt, p.Rt)) continue;
+                    if (!p.Box.Overlaps(q.Box)) continue;
+                    float ox = Mathf.Min(p.Box.xMax, q.Box.xMax) - Mathf.Max(p.Box.xMin, q.Box.xMin);
+                    float oy = Mathf.Min(p.Box.yMax, q.Box.yMax) - Mathf.Max(p.Box.yMin, q.Box.yMin);
+                    if (ox < 6f || oy < 6f) continue;
+                    problems.Add(screen + ": overlap " + ox.ToString("F0") + "x" + oy.ToString("F0") + ": " + p.Name + "  <>  " + q.Name);
+                }
+            }
+            return problems;
+        }
+
+        static string Trim(string s) { s = s.Replace("\n", " "); return s.Length > 24 ? s.Substring(0, 24) : s; }
+
+        static Rect ToCanvasUnits(RectTransform rt, Camera cam, float scale)
+        {
+            var c = new Vector3[4];
+            rt.GetWorldCorners(c);
+            Vector3 a = cam.WorldToScreenPoint(c[0]);
+            Vector3 b = cam.WorldToScreenPoint(c[2]);
+            return new Rect(a.x / scale, a.y / scale, (b.x - a.x) / scale, (b.y - a.y) / scale);
+        }
+
+        /// <summary>Points the canvases at a render texture of the given size so the CanvasScaler lays out for that aspect.</summary>
+        static IEnumerator ApplyAspect(Aspect a, RenderTexture[] holder)
+        {
+            Camera cam = Camera.main;
+            if (holder[0] != null) holder[0].Release();
+            holder[0] = new RenderTexture(a.W, a.H, 24);
+            cam.targetTexture = holder[0];
+            cam.aspect = (float)a.W / a.H;
+            RunView.AspectOverride = (float)a.W / a.H;
+            foreach (Canvas c in Object.FindObjectsByType<Canvas>(FindObjectsSortMode.None))
+            {
+                if (c.renderMode == RenderMode.ScreenSpaceOverlay || c.renderMode == RenderMode.ScreenSpaceCamera)
+                {
+                    c.renderMode = RenderMode.ScreenSpaceCamera;
+                    c.worldCamera = cam;
+                    c.planeDistance = 1f;
+                }
+            }
+            yield return null;
+            yield return null;
+            Canvas.ForceUpdateCanvases();
+        }
+
+        static void Restore(RenderTexture[] holder)
+        {
+            Camera cam = Camera.main;
+            if (cam != null) { cam.targetTexture = null; cam.ResetAspect(); }
+            RunView.AspectOverride = 0f;
+            if (holder[0] != null) holder[0].Release();
+        }
+
+        static readonly Rect FullSafe = new Rect(0f, 0f, 1f, 1f);
+        static readonly Rect NotchSafe = new Rect(0.03f, 0.02f, 0.94f, 0.93f);   // a rounded, notched phone
+
+        static IEnumerator CheckScreen(string screen, System.Action show, List<string> all)
+        {
+            var holder = new RenderTexture[1];
+            foreach (Aspect a in Aspects)
+            {
+                foreach (Rect safe in new[] { FullSafe, NotchSafe })
+                {
+                    Rect s = safe;
+                    UiKit.SafeAreaNormalized = () => s;
+                    show();
+                    yield return ApplyAspect(a, holder);
+                    yield return null;
+                    all.AddRange(Audit(screen + "@" + a.Name + (safe == NotchSafe ? "+notch" : ""), a, safe));
+                }
+            }
+            Restore(holder);
+        }
+
+        static void Report(List<string> problems)
+        {
+            // De-duplicate while keeping order, so one real defect is not repeated per aspect.
+            var seen = new HashSet<string>();
+            var sb = new StringBuilder();
+            foreach (string p in problems)
+            {
+                string key = p.Substring(p.IndexOf(':') + 1);
+                if (seen.Add(key)) sb.AppendLine(p);
+            }
+            Assert.IsEmpty(problems, "Critical UX violations (" + seen.Count + " distinct):\n" + sb);
+        }
+
+        [UnityTest]
+        public IEnumerator MetaScreensHaveNoOverlapAndFitEveryAspect()
+        {
+            yield return Load("Meta");
+            var meta = Object.FindFirstObjectByType<MetaController>();
+            var problems = new List<string>();
+            RegionDef r1 = GameSession.Repo.GetRegionByIndex(1);
+            for (int i = 1; i <= 6; i++)
+                GameSession.Progress.ApplyRun("lvl_001_" + i.ToString("D2"), new RunOutcome { Completed = true, StarMask = i % 2 == 0 ? 7 : 3, Score = 100 * i, CoinsCollected = 30 });
+
+            yield return CheckScreen("menu", () => meta.ShowMenu(), problems);
+            yield return CheckScreen("map", () => meta.ShowMap(), problems);
+            yield return CheckScreen("levels", () => meta.ShowLevels(r1), problems);
+            yield return CheckScreen("settings", () => meta.ShowSettings(), problems);
+            var levels = GameSession.Repo.LevelsOf(r1.Id);
+            yield return CheckScreen("level-popup", () => { meta.ShowLevels(r1); meta.OnLevelTapped(levels[2]); }, problems);
+            yield return CheckScreen("locked-popup", () => { meta.ShowLevels(r1); meta.OnLevelTapped(levels[12]); }, problems);
+            yield return CheckScreen("region-locked-popup", () => { meta.ShowMap(); meta.OnRegionTapped(GameSession.Repo.GetRegionByIndex(2)); }, problems);
+            yield return CheckScreen("coming-soon-popup", () => { meta.ShowMap(); meta.OnRegionTapped(GameSession.Repo.GetRegionByIndex(6)); }, problems);
+            yield return CheckScreen("reset-popup", () => { meta.ShowSettings(); meta.ConfirmReset(); }, problems);
+            Report(problems);
+        }
+
+        [UnityTest]
+        public IEnumerator RunScreensHaveNoOverlapAndFitEveryAspect()
+        {
+            for (int i = 1; i <= 2; i++)
+                GameSession.Progress.ApplyRun("lvl_001_0" + i, new RunOutcome { Completed = true, StarMask = 1, Score = 100, CoinsCollected = 10 });
+            GameSession.CurrentLevelId = "lvl_001_03";
+            yield return Load("Run");
+            var rc = Object.FindFirstObjectByType<RunController>();
+            var problems = new List<string>();
+            yield return CheckScreen("run-intro", () => { }, problems);
+            rc.Hud.SkipIntro();
+            int frame = 0;
+            rc.Input.ScriptedMove = () => SimInput.Right;
+            rc.Input.ScriptedJump = () => frame % 45 == 0;
+            for (frame = 1; frame <= 120; frame++) yield return null;
+            yield return CheckScreen("run-hud", () => { }, problems);
+            yield return CheckScreen("run-pause", () => rc.Hud.ShowPause(), problems);
+            rc.Hud.CloseOverlay();
+            yield return CheckScreen("run-failed", () => rc.Hud.ShowFailed(rc.Session, true), problems);
+            rc.Hud.CloseOverlay();
+            var outcome = rc.Session.BuildOutcome();
+            var reward = GameSession.Progress.ApplyRun(GameSession.CurrentLevelId, outcome);
+            yield return CheckScreen("run-results", () => rc.Hud.ShowResults(rc.Session, reward, true), problems);
+            Report(problems);
+        }
+    }
+
+    /// <summary>CUX-1: the run loop stays inside its frame budget and does not allocate per frame, on the hardest content.</summary>
+    [Category("CriticalUX")]
+    public class CriticalUxPerformanceTests
+    {
+        [SetUp]
+        public void SetUp()
+        {
+            Time.captureFramerate = 60;
+            GameSession.Reset();
+            GameSession.InitForTests(new MemorySaveStore());
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            Time.captureFramerate = 0;
+            foreach (var rc in Object.FindObjectsByType<RunController>(FindObjectsSortMode.None)) rc.enabled = false;
+            GameSession.Reset();
+        }
+
+        [UnityTest]
+        public IEnumerator HardestLevelStaysInTheFrameBudgetWithoutAllocations()
+        {
+            GameSession.CurrentLevelId = "lvl_005_15";
+            var op = SceneManager.LoadSceneAsync("Run");
+            while (!op.isDone) yield return null;
+            yield return null;
+            var rc = Object.FindFirstObjectByType<RunController>();
+            rc.Hud.SkipIntro();
+            int frame = 0;
+            rc.Input.ScriptedMove = () => (frame / 70) % 2 == 0 ? SimInput.Right : SimInput.Left;
+            rc.Input.ScriptedJump = () => frame % 30 == 0;
+            for (frame = 1; frame <= 120; frame++) yield return null;     // warm-up (JIT, first-use caches)
+
+            rc.Stats.Reset();
+            System.GC.Collect();
+            long before = System.GC.GetAllocatedBytesForCurrentThread();
+            const int measured = 600;
+            for (frame = 121; frame < 121 + measured; frame++) yield return null;
+            long allocated = System.GC.GetAllocatedBytesForCurrentThread() - before;
+
+            double perFrame = allocated / (double)measured;
+            Debug.Log("[CUX-PERF] avg " + rc.Stats.AverageMs.ToString("F3") + " ms, max " + rc.Stats.MaxMs.ToString("F3") + " ms, alloc " + perFrame.ToString("F1") + " B/frame");
+            Assert.LessOrEqual(rc.Stats.AverageMs, 2.0, "average script time per frame (CUX-1)");
+            Assert.LessOrEqual(rc.Stats.MaxMs, 6.0, "worst script time per frame (CUX-1)");
+            Assert.LessOrEqual(perFrame, AllocBudget, "managed allocation per frame (CUX-1)");
+            Assert.IsFalse(rc.Paused, "the run was not interrupted");
+        }
+
+        const double AllocBudget = 1024.0;
+    }
+}

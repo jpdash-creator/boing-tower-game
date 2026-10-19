@@ -16,7 +16,7 @@
       },
       {
         "type": "coins",
-        "value": 25
+        "value": 55
       },
       {
         "type": "noRevive"
@@ -49,7 +49,7 @@
       },
       {
         "type": "coins",
-        "value": 30
+        "value": 90
       },
       {
         "type": "noRevive"
@@ -82,7 +82,7 @@
       },
       {
         "type": "coins",
-        "value": 35
+        "value": 115
       },
       {
         "type": "noRevive"
@@ -115,7 +115,7 @@
       },
       {
         "type": "coins",
-        "value": 40
+        "value": 15
       },
       {
         "type": "noRevive"
@@ -149,7 +149,7 @@
       },
       {
         "type": "coins",
-        "value": 45
+        "value": 60
       },
       {
         "type": "noRevive"
@@ -187,7 +187,7 @@
       },
       {
         "type": "coins",
-        "value": 50
+        "value": 150
       },
       {
         "type": "noRevive"
@@ -220,7 +220,7 @@
       },
       {
         "type": "coins",
-        "value": 55
+        "value": 125
       },
       {
         "type": "noRevive"
@@ -278,7 +278,7 @@
     "goal": {
       "type": "speedrun",
       "value": 90,
-      "timeSec": 45
+      "timeSec": 75
     },
     "stars": [
       {
@@ -286,7 +286,7 @@
       },
       {
         "type": "coins",
-        "value": 65
+        "value": 130
       },
       {
         "type": "noRevive"
@@ -318,7 +318,7 @@
       },
       {
         "type": "coins",
-        "value": 70
+        "value": 175
       },
       {
         "type": "noRevive"
@@ -358,7 +358,7 @@
       },
       {
         "type": "coins",
-        "value": 75
+        "value": 60
       },
       {
         "type": "noRevive"
@@ -391,7 +391,7 @@
       },
       {
         "type": "coins",
-        "value": 80
+        "value": 215
       },
       {
         "type": "noRevive"
@@ -424,7 +424,7 @@
       },
       {
         "type": "coins",
-        "value": 85
+        "value": 265
       },
       {
         "type": "noRevive"
@@ -457,7 +457,7 @@
       },
       {
         "type": "coins",
-        "value": 90
+        "value": 310
       },
       {
         "type": "noRevive"
@@ -490,7 +490,7 @@
       },
       {
         "type": "coins",
-        "value": 95
+        "value": 345
       },
       {
         "type": "noRevive"

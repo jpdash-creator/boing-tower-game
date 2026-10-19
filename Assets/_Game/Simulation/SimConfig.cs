@@ -134,8 +134,6 @@ namespace BoingTower.Simulation
         public int CampaignRampCapPercent = 60;
 
         // Builder shaping
-        /// <summary>Speedrun levels use this share of the normal vertical gap so multi-floor jumps are possible, percent.</summary>
-        public int SpeedrunGapPercent = 50;
         /// <summary>Combo ladder (ComboChain goals): height of one goal-sized jump, u. Rung gap = span / Goal.Value.</summary>
         public Fx ComboLadderSpan = Fx.FromRatio(36, 10);
         public Fx ComboLadderWidth = Fx.FromInt(6);

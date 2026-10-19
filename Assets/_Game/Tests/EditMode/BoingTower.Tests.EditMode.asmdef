@@ -5,6 +5,7 @@
     "BoingTower.Simulation",
     "BoingTower.Content",
     "BoingTower.Economy",
+    "BoingTower.Gameplay",
     "Unity.Nuget.Newtonsoft-Json",
     "UnityEngine.TestRunner",
     "UnityEditor.TestRunner"

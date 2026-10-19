@@ -1,0 +1,181 @@
+using BoingTower.Content;
+using BoingTower.Economy;
+using BoingTower.Simulation;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+namespace BoingTower.Gameplay
+{
+    /// <summary>
+    /// The Run scene driver: a fixed 60 Hz simulation clock (accumulator), input, view, HUD and the end-of-run flow.
+    /// Owner decision: a run ends at goal completion or when the player falls; failed runs pay nothing.
+    /// </summary>
+    public sealed class RunController : MonoBehaviour
+    {
+        const float StepSeconds = 1f / SimConfig.TicksPerSecond;
+        const int MaxStepsPerFrame = 6;
+
+        public RunSession Session { get; private set; }
+        public RunInputReader Input { get; private set; }
+        public RunHud Hud { get; private set; }
+        public RunView View { get; private set; }
+        public bool Paused { get; private set; }
+        public RewardResult LastReward { get; private set; }
+
+        float acc;
+        bool endHandled;
+        int lastCoins;
+        float shotTimer;
+
+        void Start()
+        {
+            GameSession.EnsureInit();
+            Input = new RunInputReader();
+            string id = string.IsNullOrEmpty(GameSession.CurrentLevelId) ? "lvl_001_01" : GameSession.CurrentLevelId;
+            StartRun(id);
+        }
+
+        public void StartRun(string levelId)
+        {
+            if (View != null) Destroy(View.gameObject);
+            if (Hud != null) Destroy(Hud.gameObject);
+
+            GameSession.CurrentLevelId = levelId;
+            Session = new RunSession(GameSession.Repo, GameSession.Cfg, levelId);
+            acc = 0f;
+            endHandled = false;
+            Paused = false;
+            lastCoins = 0;
+            Input.Clear();
+
+            Camera cam = Camera.main;
+            if (cam == null)
+            {
+                var camGo = new GameObject("Main Camera");
+                camGo.tag = "MainCamera";
+                cam = camGo.AddComponent<Camera>();
+            }
+            var viewGo = new GameObject("RunView");
+            View = viewGo.AddComponent<RunView>();
+            View.Build(Session, GameSession.Art, cam);
+
+            var hudGo = new GameObject("RunHudRoot");
+            Hud = hudGo.AddComponent<RunHud>();
+            Hud.Build(Session, GameSession.Art);
+            Hud.OnPause = Pause;
+            Hud.OnResume = Resume;
+            Hud.OnRetry = () => StartRun(GameSession.CurrentLevelId);
+            Hud.OnMenu = ExitToMeta;
+            Hud.OnNext = PlayNext;
+            Hud.OnRevive = Revive;
+        }
+
+        /// <summary>Script time per frame (milliseconds), for the CUX-1 budget tests and on-device profiling.</summary>
+        public sealed class FrameStats
+        {
+            public int Frames;
+            public double TotalMs;
+            public double MaxMs;
+            public double AverageMs { get { return Frames == 0 ? 0.0 : TotalMs / Frames; } }
+            public void Reset() { Frames = 0; TotalMs = 0.0; MaxMs = 0.0; }
+        }
+
+        public readonly FrameStats Stats = new FrameStats();
+
+        void Update()
+        {
+            long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
+            Tick();
+            double ms = (System.Diagnostics.Stopwatch.GetTimestamp() - t0) * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
+            Stats.Frames++;
+            Stats.TotalMs += ms;
+            if (ms > Stats.MaxMs) Stats.MaxMs = ms;
+        }
+
+        // A phone call, the home button or a notification shade must never cost the player a run (CUX-6).
+        void OnApplicationPause(bool paused) { if (paused) Pause(); }
+        void OnApplicationFocus(bool focus) { if (!focus) Pause(); }
+
+        void Tick()
+        {
+            if (Session == null) return;
+            float dt = Mathf.Min(Time.deltaTime, 0.1f);   // the game never changes timeScale; deltaTime also honours Time.captureFramerate in tests
+            Input.Update();
+
+            bool introDone = Hud.IntroRemaining <= 0f;
+            if (!Paused && !Session.Over && introDone)
+            {
+                acc += dt;
+                int steps = 0;
+                while (acc >= StepSeconds && steps < MaxStepsPerFrame && !Session.Over)
+                {
+                    int bits = Input.ReadTick();
+                    Session.Step(bits);
+                    bool coin = Session.State.Coins > lastCoins;
+                    lastCoins = Session.State.Coins;
+                    View.OnTick(coin, Session.State.X.F(), Session.State.Y.F() + 0.5f);
+                    acc -= StepSeconds;
+                    steps++;
+                }
+                if (steps == MaxStepsPerFrame) acc = 0f;   // never spiral after a long frame
+            }
+            View.Render(Mathf.Clamp01(acc / StepSeconds), dt);
+            Hud.Refresh(Session, dt);
+
+            if (Session.Over && !endHandled) HandleEnd();
+        }
+
+        void HandleEnd()
+        {
+            endHandled = true;
+            if (Session.GoalReached)
+            {
+                RewardResult reward = GameSession.Progress.ApplyRun(Session.Level.Id, Session.BuildOutcome());
+                LastReward = reward;
+                GameSession.LastResult = new RunResult { LevelId = Session.Level.Id, Completed = true, Reward = reward, Stars = reward.Stars, Score = Session.State.Score };
+                Hud.ShowResults(Session, reward, GameSession.NextLevel(Session.Level) != null && GameSession.Progress.IsLevelUnlocked(GameSession.NextLevel(Session.Level)));
+            }
+            else
+            {
+                Hud.ShowFailed(Session, GameSession.Progress.Gems >= RunSession.ReviveGemCost);
+            }
+        }
+
+        public void Pause()
+        {
+            if (Session == null || Session.Over || Paused) return;
+            Paused = true;
+            Hud.ShowPause();
+        }
+
+        public void Resume()
+        {
+            Paused = false;
+            Hud.CloseOverlay();
+            Input.Clear();
+        }
+
+        void Revive()
+        {
+            if (Session.TryRevive(GameSession.Progress))
+            {
+                endHandled = false;
+                Hud.CloseOverlay();
+                Input.Clear();
+            }
+        }
+
+        void PlayNext()
+        {
+            LevelDef next = GameSession.NextLevel(Session.Level);
+            if (next == null) { ExitToMeta(); return; }
+            StartRun(next.Id);
+        }
+
+        public void ExitToMeta()
+        {
+            GameSession.PendingRegionId = Session != null ? Session.Region.Id : null;
+            SceneManager.LoadScene("Meta");
+        }
+    }
+}

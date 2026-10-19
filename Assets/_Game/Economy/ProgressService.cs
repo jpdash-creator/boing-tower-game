@@ -197,7 +197,7 @@ namespace BoingTower.Economy
 
             if (level.Index == region.Levels.Count)
             {
-                RegionDef next = repo.GetRegionByIndex(region.Index + 1);
+                RegionDef next = repo.TryGetRegionByIndex(region.Index + 1);
                 if (next != null && IsRegionPlayable(next) && !IsRegionUnlocked(next))
                 {
                     Data.UnlockedRegions.Add(next.Id);
@@ -206,6 +206,13 @@ namespace BoingTower.Economy
             }
             Commit();
             return reward;
+        }
+
+        /// <summary>Erases all progress, coins and gems (Settings > Reset progress).</summary>
+        public void ResetAll()
+        {
+            Data = new SaveData();
+            Commit();
         }
 
         void Commit()

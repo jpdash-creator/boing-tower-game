@@ -71,8 +71,13 @@ namespace BoingTower.Simulation
         private static readonly int[] HomeBacksFast = { 0, 8 };
         /// <summary>Consecutive sideways hops on the same row the depth-first search may chain (bounds recursion depth).</summary>
         private const int MaxSameRowHops = 6;
-        /// <summary>Best-first search weight: assumed ticks needed per remaining row.</summary>
-        private const int TicksPerRowGuess = 18;
+        /// <summary>
+        /// Speedrun best-first search weight: assumed ticks needed per remaining row. With the normal gaps the real figure is
+        /// about 40 to 45 ticks per row; a lower (optimistic) guess spreads the search over all rows and exhausts the node budget
+        /// (4 of 5 speedrun levels unsolved at 18), 45 solves all five in under 200 nodes. The result is therefore a good
+        /// upper bound of the minimum time, not a proven optimum.
+        /// </summary>
+        private const int TicksPerRowGuess = 45;
 
         private readonly Sim sim;
         private readonly LevelSpec spec;
@@ -585,7 +590,23 @@ namespace BoingTower.Simulation
         /// </summary>
         public BotResult MaxCoinsFrom(SimState from, int beamWidth)
         {
-            stopWhenDone = false;
+            return MaxCoinsCore(from, beamWidth, false);
+        }
+
+        /// <summary>
+        /// Maximises the coins held at the moment the goal is met (the run ends there, owner decision 2026-10-19), without
+        /// requiring the top row. This is the star-2 bound for goals that complete before the top (CollectCoins,
+        /// ComboChain, FindHiddenGem). Solved = a state meeting the goal was found; Coins = coins at that moment
+        /// (a lower bound of the true maximum).
+        /// </summary>
+        public BotResult MaxCoinsAtGoal(int beamWidth)
+        {
+            return MaxCoinsCore(sim.NewState(), beamWidth, true);
+        }
+
+        private BotResult MaxCoinsCore(SimState from, int beamWidth, bool atGoal)
+        {
+            stopWhenDone = atGoal;
             int maxRow = sim.Platforms[sim.Platforms.Length - 1].Row;
             List<SimState>[] buckets = new List<SimState>[maxRow + 2];
             for (int i = 0; i < buckets.Length; i++) buckets[i] = new List<SimState>();
@@ -611,7 +632,7 @@ namespace BoingTower.Simulation
                     if (!seen.Add(Key(s))) continue;
                     taken++;
                     nodes++;
-                    if (s.Row >= maxRow && Done(s))
+                    if (atGoal ? Done(s) : (s.Row >= maxRow && Done(s)))
                     {
                         if (!found || s.Coins > bestFinal.Coins) bestFinal = s;
                         found = true;
@@ -622,6 +643,12 @@ namespace BoingTower.Simulation
                     Expand(s, Beam, false, kids);
                     for (int k = 0; k < kids.Count; k++)
                     {
+                        if (atGoal && Done(kids[k]))
+                        {
+                            if (!found || kids[k].Coins > bestFinal.Coins) bestFinal = kids[k];
+                            found = true;
+                            continue;
+                        }
                         if (kids[k].Row > r) buckets[kids[k].Row].Add(kids[k]);
                     }
                 }

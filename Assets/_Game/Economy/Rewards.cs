@@ -22,6 +22,8 @@ namespace BoingTower.Economy
         public int CoinsCollected;
         /// <summary>Normal gem pickups collected in the run (SimState.Gems).</summary>
         public int GemsCollected;
+        /// <summary>Hidden gems collected in the run (SimState.HiddenGems). Pays +1 gem on the first clear of the level only (owner decision 2026-10-19).</summary>
+        public int HiddenGems;
 
         public int Stars
         {
@@ -43,10 +45,11 @@ namespace BoingTower.Economy
         public int PickupCoins;      // coins collected during the run
         public int RewardGems;       // milestone gem rewards (L5/L10/L15)
         public int PickupGems;       // gems picked up during the run
+        public int HiddenGemReward;  // +1 gem for a hidden gem, first clear only
         public string UnlockedRegionId;
 
         public int TotalCoins { get { return PayoutCoins + PickupCoins; } }
-        public int TotalGems { get { return RewardGems + PickupGems; } }
+        public int TotalGems { get { return RewardGems + PickupGems + HiddenGemReward; } }
     }
 
     /// <summary>
@@ -54,7 +57,7 @@ namespace BoingTower.Economy
     /// so a server can recompute them).
     /// Assumptions (open for the owner): a failed run pays nothing; in-run pickups always pay in full (only the end-of-level payout
     /// is reduced on replays); normal levels get gems only from in-run pickups (the 3 percent chance in the content is the pickup);
-    /// milestone gem rewards (L5, L10, L15) follow the doc 08 table; hidden gems pay nothing yet.
+    /// milestone gem rewards (L5, L10, L15) follow the doc 08 table; a hidden gem pays +1 gem on the first clear only.
     /// </summary>
     public static class RewardCalculator
     {
@@ -92,6 +95,7 @@ namespace BoingTower.Economy
             result.StarBonusCoins = (int)bonus;
             result.PickupCoins = run.CoinsCollected < 0 ? 0 : run.CoinsCollected;
             result.PickupGems = run.GemsCollected < 0 ? 0 : run.GemsCollected;
+            if (firstClear && run.HiddenGems > 0) result.HiddenGemReward = 1;
 
             GemRewardDef g = level.Rewards.Gems;
             if (g != null && IsMilestone(level))

@@ -39,7 +39,7 @@ namespace BoingTower.Simulation.Tests
         private static readonly object Gate = new object();
         private static List<LevelOutcome> cached;
 
-        private static List<LevelOutcome> Outcomes()
+        internal static List<LevelOutcome> Outcomes()
         {
             lock (Gate)
             {
@@ -69,19 +69,30 @@ namespace BoingTower.Simulation.Tests
                     }
                     if (o.Solve.Solved && o.CoinTarget > 0)
                     {
-                        // Best known coin count of a run that completes the goal and reaches the top row:
-                        // the solving line itself if it already reaches the top, a beam search from the start,
-                        // and a beam search continued from the end of the solving line.
+                        // Best known coin count at the moment the run ends (owner decision 2026-10-19: the run ends at goal completion).
+                        // Goals that complete before the top row (collectCoins, comboChain, findHiddenGem): beam search for the
+                        // most coins held when the goal is met. All other goals complete at the top row: the solving line if
+                        // it reaches the top, a beam search from the start, and a beam continued from the end of the solving line.
                         int top = data.Rows;
                         BotResult bestRun = new BotResult();
                         bool have = false;
-                        if (o.Solve.Final.Row >= top) { bestRun = o.Solve; have = true; }
-                        BotResult scratch = new LevelBot(sim, ll.Spec, data, NodeBudget).MaxCoins(CoinBeamWidth);
-                        if (scratch.Solved && (!have || scratch.Coins > bestRun.Coins)) { bestRun = scratch; have = true; }
-                        if (o.Solve.Final.Row < top)
+                        GoalType gt = ll.Spec.Goal.Type;
+                        if (EndsBeforeTop(gt))
                         {
-                            BotResult cont = new LevelBot(sim, ll.Spec, data, NodeBudget).MaxCoinsFrom(o.Solve.Final, CoinBeamWidth);
-                            if (cont.Solved && (!have || cont.Coins > bestRun.Coins)) { bestRun = cont; have = true; }
+                            bestRun = o.Solve; have = true;
+                            BotResult atGoal = new LevelBot(sim, ll.Spec, data, NodeBudget).MaxCoinsAtGoal(CoinBeamWidth);
+                            if (atGoal.Solved && atGoal.Coins > bestRun.Coins) bestRun = atGoal;
+                        }
+                        else
+                        {
+                            if (o.Solve.Final.Row >= top) { bestRun = o.Solve; have = true; }
+                            BotResult scratch = new LevelBot(sim, ll.Spec, data, NodeBudget).MaxCoins(CoinBeamWidth);
+                            if (scratch.Solved && (!have || scratch.Coins > bestRun.Coins)) { bestRun = scratch; have = true; }
+                            if (o.Solve.Final.Row < top)
+                            {
+                                BotResult cont = new LevelBot(sim, ll.Spec, data, NodeBudget).MaxCoinsFrom(o.Solve.Final, CoinBeamWidth);
+                                if (cont.Solved && (!have || cont.Coins > bestRun.Coins)) { bestRun = cont; have = true; }
+                            }
                         }
                         o.CoinSearch = bestRun;
                         o.CoinSearchRan = have;
@@ -92,6 +103,12 @@ namespace BoingTower.Simulation.Tests
                 cached = list;
                 return list;
             }
+        }
+
+        /// <summary>Goals that complete before the top row, so the run (and the coin count for star 2) ends earlier.</summary>
+        internal static bool EndsBeforeTop(GoalType t)
+        {
+            return t == GoalType.CollectCoins || t == GoalType.ComboChain || t == GoalType.FindHiddenGem;
         }
 
         private static string GoalText(GoalSpec g)
@@ -149,7 +166,7 @@ namespace BoingTower.Simulation.Tests
             sb.AppendLine();
             sb.AppendLine("**Star 1 (goal) solved: " + solved + " of " + list.Count + ".**");
             sb.AppendLine();
-            sb.AppendLine("Columns: `d` = effective difficulty; `rows` = platform rows; `nodes` = search nodes used; `ticks` = length of the solving line (60 per second); `coins` = coins on the solving line; `hits` = gong hits on that line; `star 2` = coin target reachable by a run that completes the goal and climbs to the top row (best of: the solving line when it reaches the top, a row-layered beam search, and a beam continued from the end of the solving line; a lower bound of the true maximum; landing coins count, see NOTES.md); `star 3` = no-revive star (the bot never revives) or time star.");
+            sb.AppendLine("Columns: `d` = effective difficulty; `rows` = platform rows; `nodes` = search nodes used; `ticks` = length of the solving line (60 per second); `coins` = coins on the solving line; `hits` = gong hits on that line; `star 2` = coin target reachable by a run that completes the goal and climbs to the top row (best of: for collectCoins, comboChain and findHiddenGem the coins held when the goal is met (the run ends there); for all other goals the best of the solving line when it reaches the top, a row-layered beam search, and a beam continued from the end of the solving line; a lower bound of the true maximum; landing coins count, see NOTES.md); `star 3` = no-revive star (the bot never revives) or time star.");
             sb.AppendLine();
             sb.AppendLine("| level | class | d | goal | rows | solved | nodes | ticks | coins | hits | star 2 (coin target) | star 3 |");
             sb.AppendLine("|---|---|---|---|---|---|---|---|---|---|---|---|");
@@ -177,6 +194,21 @@ namespace BoingTower.Simulation.Tests
                 if (o.CoinSearch.Coins >= o.CoinTarget) s2yes++; else s2no++;
             }
             sb.AppendLine("Star 2 feasible: " + s2yes + " yes, " + s2no + " no (of the solved levels). Star 3 (no revive) is feasible wherever star 1 is solved.");
+            sb.AppendLine();
+            sb.AppendLine("## Speedrun (level index 9)");
+            sb.AppendLine();
+            sb.AppendLine("Slowest = the longest best-first bot time over the regions; margin = timeSec / bot time.");
+            sb.AppendLine();
+            sb.AppendLine("| level | goal timeSec | bot time (s) | margin |");
+            sb.AppendLine("|---|---|---|---|");
+            foreach (LevelOutcome o in list)
+            {
+                if (o.Level.Spec.Goal.Type != GoalType.Speedrun) continue;
+                sb.Append("| ").Append(o.Level.Id).Append(" | ").Append(o.Level.Spec.Goal.TimeSec)
+                  .Append(" | ").Append((o.Solve.Ticks / 60.0).ToString("F1", System.Globalization.CultureInfo.InvariantCulture)).Append(" | ")
+                  .Append(o.Solve.Ticks > 0 ? (o.Level.Spec.Goal.TimeSec * 60.0 / o.Solve.Ticks).ToString("F2", System.Globalization.CultureInfo.InvariantCulture) : "n/a")
+                  .AppendLine(" |");
+            }
             File.WriteAllText(Path.Combine(root, "Tests", "Simulation", "SOLVABILITY_REPORT.md"), sb.ToString());
         }
 
@@ -271,10 +303,11 @@ namespace BoingTower.Simulation.Tests
             Assert.Equal(new string[] { "chunk_gauntlet_a" }, l15.Spec.FixedChunks);
             Assert.Equal(3, l15.Spec.Stars.Length);
             Assert.Equal(StarSpec.KindCoins, l15.Spec.Stars[1].Kind);
-            Assert.Equal(95, l15.Spec.Stars[1].Value);
+            Assert.True(l15.Spec.Stars[1].Value >= 95); // raised targets (coin_star_targets.json)
             LoadedLevel l9 = all.Find(x => x.Id == "lvl_001_09");
             Assert.Equal(GoalType.Speedrun, l9.Spec.Goal.Type);
-            Assert.Equal(45, l9.Spec.Goal.TimeSec);
+            Assert.Equal(90, l9.Spec.Goal.Value);
+            Assert.True(l9.Spec.Goal.TimeSec > 45); // relaxed by the owner decision of 2026-10-19
             Assert.Equal(SignatureKind.BounceFlowers, l9.Spec.Signature);
             // effective difficulty applies the region offset: d + offset (1 - d)
             LoadedLevel l1 = all.Find(x => x.Id == "lvl_005_01");
