@@ -34,8 +34,8 @@ namespace BoingTower.Gameplay
             { 1, new Vector2(0.20f, 0.30f) },    // on the green grass of the floating meadow
             { 2, new Vector2(0.11f, 0.56f) },    // at the big purple mushroom on the left
             { 7, new Vector2(0.17f, 0.26f) },    // by the big tree on the left
-            { 8, new Vector2(0.30f, 0.44f) },    // on the sand dune
-            { 9, new Vector2(0.80f, 0.42f) },    // on top of the pirate ship
+            { 8, new Vector2(0.34f, 0.40f) },    // on the sand dune
+            { 9, new Vector2(0.80f, 0.50f) },    // on top of the pirate ship
             { 10, new Vector2(0.88f, 0.14f) },   // on the blue toy block at the right
         };
         static float lastMapOffset = -1f; static int lastMapCurrent = -1;                                          // scroll position kept while visiting a region's levels
@@ -557,21 +557,21 @@ namespace BoingTower.Gameplay
 
         public void ShowDifficultyList()
         {
-            OpenPopup("Difficulty", "How fast the screen speeds up. Harder levels also drop more gems.");
+            OpenPopup("Difficulty", "How fast the screen speeds up. Harder levels also drop more gems.", 1300f);
             Transform panel = popup.Find("Panel");
             for (int i = 0; i < GameSettings.DifficultyNames.Length; i++)
             {
                 int level = i;
                 bool current = level == GameSettings.Difficulty;
                 string label = GameSettings.DifficultyLabel(level) + (GameSettings.DifficultyGemPercent[level] > 5 ? "  gems " + GameSettings.DifficultyGemPercent[level] + "%" : "");
-                Button opt = UiKit.AddButton(panel, "Diff" + level, label, Btn(current ? 1 : 0), Color.white, new Vector2(700f, 100f), () =>
+                Button opt = UiKit.AddButton(panel, "Diff" + level, label, Btn(current ? 1 : 0), Color.white, new Vector2(700f, 132f), () =>
                 {
                     GameSettings.Difficulty = level;
                     GameSession.ApplyDifficulty();
                     ClosePopup();
                     ShowSettings();
                 }, 40);
-                UiKit.Place((RectTransform)opt.transform, new Vector2(0.5f, 0f), new Vector2(0f, 40f + (GameSettings.DifficultyNames.Length - 1 - i) * 125f), new Vector2(700f, 100f));
+                UiKit.Place((RectTransform)opt.transform, new Vector2(0.5f, 0f), new Vector2(0f, 40f + (GameSettings.DifficultyNames.Length - 1 - i) * 145f), new Vector2(700f, 132f));
             }
         }
 
