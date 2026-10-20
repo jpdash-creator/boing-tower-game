@@ -127,9 +127,9 @@
     {
       "id": "T12",
       "task": "End-to-end test: all 75 levels via bot in Unity plus progression/unlock test; fix list",
-      "status": "pending",
-      "minutes": 45,
-      "blocker": "needs T3 to T8",
+      "status": "done",
+      "minutes": 0,
+      "blocker": "dotnet 83/83 (bot solves all 75 levels), EditMode 72/72, PlayMode 13/13 on 2026-10-20",
       "depends": [
         "T4",
         "T8"
