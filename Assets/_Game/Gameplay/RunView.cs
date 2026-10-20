@@ -503,21 +503,10 @@ namespace BoingTower.Gameplay
             }
         }
 
-        /// <summary>Draw height of a pickup: a pickup that would overlap a platform slab is lifted to rest on top of it; others stay in clear air.</summary>
+        /// <summary>Draw height of a pickup: always its Sim position (the builder keeps pickups in clear air), so what you touch is what you collect.</summary>
         float PickupVisualY(Pickup pk)
         {
-            float px = pk.X.F(), py = pk.Y.F();
-            Platform[] plats = session.Data.Platforms;
-            for (int i = 0; i < plats.Length; i++)
-            {
-                float halfW = plats[i].Width.F() * 0.5f + 0.2f;
-                float x = plats[i].X.F();
-                if (Mathf.Abs(px - x) > halfW + 1.5f) continue;   // moving platforms drift; keep a margin
-                float top = plats[i].Y.F();
-                float r = VisualDiameter(pk) * 0.5f;
-                if (py > top - 0.7f - r && py < top + 0.45f + r) return top + 0.12f + r;
-            }
-            return py;
+            return pk.Y.F();
         }
 
         static readonly Color[] RarityTint =

@@ -48,7 +48,7 @@ namespace BoingTower.Simulation
             Rng rng = new Rng(p.Seed);
             List<Platform> list = new List<Platform>(p.Rows * 2 + 1);
             Fx screen = cfg.ScreenWidth;
-            Fx maxGap = cfg.MaxJumpHeight() * 9 / 10;
+            Fx maxGap = cfg.LayoutMaxJumpHeight() * 9 / 10;
 
             Platform start = new Platform();
             start.Id = 0;
@@ -102,7 +102,7 @@ namespace BoingTower.Simulation
                 Fx offFrac = rng.Range(Fx.Lerp(offEasyLo, offHardLo, d), Fx.Lerp(offEasyHi, offHardHi, d));
                 Fx dx = offFrac * screen;
                 // Edge-to-edge travel must stay within 60 percent of the analytic full-speed reach.
-                Fx dxLimit = cfg.MaxReachDx(gap) * 6 / 10 + (prevW + w) / 2 + cfg.PlayerHalfWidth;
+                Fx dxLimit = cfg.LayoutMaxReachDx(gap, Fx.One) * 6 / 10 + (prevW + w) / 2 + cfg.PlayerHalfWidth;
                 dx = Fx.Min(dx, dxLimit);
 
                 int dir = rng.Next(2) == 0 ? -1 : 1;

@@ -142,6 +142,8 @@ namespace BoingTower.Tests
                     ScrollRect sr = items[n].Rt.GetComponentInParent<ScrollRect>();
                     if (sr == null || sr.viewport == null || sr.GetComponentInParent<Canvas>() != canvas) continue;
                     Rect vp = ToCanvasUnits(sr.viewport, cam, scale);
+                    Transform topBar = sr.transform.parent != null ? sr.transform.parent.Find("TopBacking") : null;
+                    if (topBar != null) vp.yMax = Mathf.Min(vp.yMax, ToCanvasUnits((RectTransform)topBar, cam, scale).yMin);   // the map shows through the floating top bar; only the part below it is audited
                     Rect b = items[n].Box;
                     float x0 = Mathf.Max(b.xMin, vp.xMin), x1 = Mathf.Min(b.xMax, vp.xMax);
                     float y0 = Mathf.Max(b.yMin, vp.yMin), y1 = Mathf.Min(b.yMax, vp.yMax);

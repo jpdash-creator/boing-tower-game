@@ -63,7 +63,7 @@ namespace BoingTower.Simulation
             Fx d = spec.Difficulty;
             Fx screen = cfg.ScreenWidth;
             Fx half = cfg.PlayerHalfWidth;
-            Fx maxGap = cfg.MaxJumpHeight() * 9 / 10;
+            Fx maxGap = cfg.LayoutMaxJumpHeight() * 9 / 10;
             int idx = spec.LevelIndex;
             Rng rng = new Rng(spec.Seed);
 
@@ -190,7 +190,7 @@ namespace BoingTower.Simulation
                     if (lAfterBounce) gap0 = Fx.Min(gap0, cfg.BounceNextGapMax);
                     Fx jm0 = prevKind == PlatformKind.Sticky ? cfg.StickyJumpMultiplier : Fx.One;
                     Fx lw = cfg.ComboLadderWidth;
-                    Fx lim0 = cfg.MaxReachDx(gap0, jm0) * 6 / 10 + (prevW + lw) / 2 + half;
+                    Fx lim0 = cfg.LayoutMaxReachDx(gap0, jm0) * 6 / 10 + (prevW + lw) / 2 + half;
                     if (lAfterBounce) lim0 = Fx.Min(lim0, cfg.BounceNextDxMax + (prevW + lw) / 2);
                     Fx xl = prevX + Fx.Clamp(screen / 2 - prevX, -lim0, lim0);
                     xl = Fx.Clamp(xl, lw / 2, screen - lw / 2);
@@ -225,7 +225,7 @@ namespace BoingTower.Simulation
                         if (i == 0)
                         {
                             Fx jm1 = prevKind == PlatformKind.Sticky ? cfg.StickyJumpMultiplier : Fx.One;
-                            Fx lim1 = cfg.MaxReachDx(cgap, jm1) * 6 / 10 + (prevW + cw) / 2 + half;
+                            Fx lim1 = cfg.LayoutMaxReachDx(cgap, jm1) * 6 / 10 + (prevW + cw) / 2 + half;
                             if (cAfterBounce) lim1 = Fx.Min(lim1, cfg.BounceNextDxMax + (prevW + cw) / 2);
                             cx = prevX + Fx.Clamp(ax - prevX, -lim1, lim1);
                             cx = Fx.Clamp(cx, cw / 2, screen - cw / 2);
@@ -293,7 +293,7 @@ namespace BoingTower.Simulation
                 Fx jm = prevKind == PlatformKind.Sticky ? cfg.StickyJumpMultiplier : Fx.One;
                 Fx offFrac = rng.Range(Fx.Lerp(offEasyLo, offHardLo, d), Fx.Lerp(offEasyHi, offHardHi, d));
                 Fx dx = offFrac * screen;
-                Fx dxLimit = cfg.MaxReachDx(gap, jm) * 6 / 10 + (prevW + w) / 2 + half;
+                Fx dxLimit = cfg.LayoutMaxReachDx(gap, jm) * 6 / 10 + (prevW + w) / 2 + half;
                 if (afterBounce) dxLimit = Fx.Min(dxLimit, cfg.BounceNextDxMax + (prevW + w) / 2);
                 dx = Fx.Min(dx, dxLimit);
 
@@ -329,7 +329,7 @@ namespace BoingTower.Simulation
                     // Side platform for the hidden gem: same row, reachable from the previous spine platform by the same rule.
                     Fx ws = cfg.HiddenGemPlatformWidth;
                     Fx sep = (w + ws) / 2 + Fx.FromRatio(5, 10);
-                    Fx limS = cfg.MaxReachDx(gap, jm) * 6 / 10 + (prevW + ws) / 2 + half;
+                    Fx limS = cfg.LayoutMaxReachDx(gap, jm) * 6 / 10 + (prevW + ws) / 2 + half;
                     Fx xs = Fx.Zero;
                     bool found = false;
                     for (int t = 0; t < 4 && !found; t++)
@@ -413,7 +413,7 @@ namespace BoingTower.Simulation
             data.Platforms = ctx.Plats.ToArray();
 
             // ---- pickups ----
-            data.Pickups = BuildPickups(cfg, spec, ctx, rows, d, hiddenGemPlaced, hiddenGemX, hiddenGemY);
+            data.Pickups = BuildPickups(cfg, spec, ctx, data.Platforms, rows, d, hiddenGemPlaced, hiddenGemX, hiddenGemY);
 
             // ---- hazards ----
             data.Hazards = BuildHazards(cfg, spec, ctx, rows, d, wave, waveStart, waveEnd, ladderStart, ladderLen);
@@ -429,7 +429,7 @@ namespace BoingTower.Simulation
         //   x1.6 for complex levels, x1.2 for highly complex (which also have 150 rows).
         // A rare 1-gem pickup (GemChancePercent per level) sits on a risky edge route.
         // ------------------------------------------------------------------------------------------
-        private static Pickup[] BuildPickups(SimConfig cfg, LevelSpec spec, Ctx ctx, int rows, Fx d,
+        private static Pickup[] BuildPickups(SimConfig cfg, LevelSpec spec, Ctx ctx, Platform[] platforms, int rows, Fx d,
             bool hiddenGem, Fx hgx, Fx hgy)
         {
             Rng r = new Rng(spec.Seed ^ 0x2F1A7C35);
@@ -478,10 +478,56 @@ namespace BoingTower.Simulation
                 list.Add(g);
             }
 
+            // Stars and gems are drawn where the Sim collects them (owner playtest 2026-10-20: a star drawn lifted off its real spot
+            // needed two passes). So they must sit in clear air: any that would overlap a platform slab is moved up onto the free space above it.
+            for (int i = 0; i < list.Count; i++)
+            {
+                Pickup pk = list[i];
+                if (pk.Kind != PickupKind.Star && pk.Kind != PickupKind.Gem) continue;
+                for (int pass = 0; pass < 8; pass++)
+                {
+                    Fx lift;
+                    if (!PickupOverlapsPlatform(platforms, pk, out lift)) break;
+                    pk.Y = lift;
+                }
+                list[i] = pk;
+            }
+
             list.Sort(ComparePickup);
             Pickup[] arr = list.ToArray();
             for (int i = 0; i < arr.Length; i++) arr[i].Id = i;
             return arr;
+        }
+
+        /// <summary>Half height of the drawn pickup sprite used for the clear-air test, u (the largest gem is 0.65 wide).</summary>
+        private static readonly Fx PickupClearHalf = Fx.FromRatio(7, 10);
+
+        /// <summary>
+        /// True when a pickup centre lies in the slab zone of a platform (from 0.7 + half sprite below its surface to 0.45 + half sprite above it,
+        /// with 0.2 + 1.5 u sideways margin because moving platforms drift). <paramref name="liftY"/> is the first free height above that platform.
+        /// </summary>
+        private static bool PickupOverlapsPlatform(Platform[] platforms, Pickup pk, out Fx liftY)
+        {
+            Fx margin = Fx.FromRatio(17, 10);
+            for (int i = 0; i < platforms.Length; i++)
+            {
+                Platform pl = platforms[i];
+                if (Fx.Abs(pk.X - pl.X) > pl.Width / 2 + margin) continue;
+                if (pk.Y > pl.Y - Fx.FromRatio(7, 10) - PickupClearHalf && pk.Y < pl.Y + Fx.FromRatio(45, 100) + PickupClearHalf)
+                {
+                    liftY = pl.Y + Fx.FromRatio(45, 100) + PickupClearHalf + Fx.FromRatio(1, 100);
+                    return true;
+                }
+            }
+            liftY = pk.Y;
+            return false;
+        }
+
+        /// <summary>True when the pickup is in clear air (no platform slab zone around it), so the view can draw it at its Sim position.</summary>
+        public static bool IsPickupClearOfPlatforms(Platform[] platforms, Pickup pk)
+        {
+            Fx lift;
+            return !PickupOverlapsPlatform(platforms, pk, out lift);
         }
 
         private static int StarRow(int rows, int percent)

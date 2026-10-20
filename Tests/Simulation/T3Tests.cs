@@ -115,8 +115,8 @@ namespace BoingTower.Simulation.Tests
             LevelSpec b = T3.Spec(777, 700, 10, SignatureKind.SwingingGongs, GoalType.SurviveWave);
             b.FixedChunks = new string[] { "chunk_complex_a" };
             b.Class = 3;
-            Assert.Equal(6769745202600320962L, LevelBuilder.Build(cfg, a).ComputeHash());
-            Assert.Equal(6672325137825293915L, LevelBuilder.Build(cfg, b).ComputeHash());
+            Assert.Equal(-829843588191266141L, LevelBuilder.Build(cfg, a).ComputeHash());
+            Assert.Equal(-5269727590154578204L, LevelBuilder.Build(cfg, b).ComputeHash());
         }
 
         [Fact]
@@ -448,10 +448,10 @@ namespace BoingTower.Simulation.Tests
         private static Sim CoinWorld(SimConfig cfg, bool endless)
         {
             LevelData d = T3.World(cfg, null, null,
-                T3.P(1, 1, 1, 1, PlatformKind.Normal),
-                T3.P(2, 5, 2, 8, PlatformKind.Normal),
-                T3.P(3, 1, 3, 1, PlatformKind.Normal),
-                T3.P(4, 5, 4, 8, PlatformKind.Normal));
+                T3.P(1, 1, 2.25, 1, PlatformKind.Normal),
+                T3.P(2, 5, 4.5, 8, PlatformKind.Normal),
+                T3.P(3, 1, 6.75, 1, PlatformKind.Normal),
+                T3.P(4, 5, 9, 8, PlatformKind.Normal));
             return new Sim(cfg, d, Fx.Zero, endless, false);
         }
 
@@ -935,10 +935,10 @@ namespace BoingTower.Simulation.Tests
         {
             SimConfig cfg = new SimConfig();
             LevelData d = T3.World(cfg, null, null,
-                T3.P(1, 1, 1, 1, PlatformKind.Normal),
-                T3.P(2, 5, 2, 8, PlatformKind.Normal),
-                T3.P(3, 1, 3, 1, PlatformKind.Normal),
-                T3.P(4, 5, 4, 8, PlatformKind.Normal));
+                T3.P(1, 1, 2.25, 1, PlatformKind.Normal),
+                T3.P(2, 5, 4.5, 8, PlatformKind.Normal),
+                T3.P(3, 1, 6.75, 1, PlatformKind.Normal),
+                T3.P(4, 5, 9, 8, PlatformKind.Normal));
             Sim sim = new Sim(cfg, d, Fx.Zero, false, false);
             SimState s = sim.NewState();
             LevelSpec two = Spec(GoalType.ComboChain, 2, 2, 0);

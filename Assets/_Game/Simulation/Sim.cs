@@ -265,6 +265,7 @@ namespace BoingTower.Simulation
 
             // --- movement ---
             Fx prevY = s.Y;
+            Fx prevX = s.X;
             if (s.Grounded)
             {
                 if (Platforms[s.GroundId].Kind == PlatformKind.Moving)
@@ -325,7 +326,7 @@ namespace BoingTower.Simulation
             }
 
             // --- pickups and hazards ---
-            if (Pickups.Length > 0) CollectPickups(ref s);
+            if (Pickups.Length > 0) CollectPickups(ref s, prevX, prevY + Cfg.PlayerCenterY);
             if (Hazards.Length > 0) HitHazards(ref s, tick);
 
             // --- scroll pressure and death ---
@@ -366,23 +367,46 @@ namespace BoingTower.Simulation
             return dx * dx + dy * dy;
         }
 
-        private void CollectPickups(ref SimState s)
+        /// <summary>
+        /// Squared distance from point (px, py) to the segment a-b, in raw Q16.16 units squared. The foot parameter is computed in Q16 integer
+        /// math, so the result is exact on every platform.
+        /// </summary>
+        private static long SegmentDist2(Fx ax, Fx ay, Fx bx, Fx by, Fx px, Fx py)
+        {
+            long dx = (long)bx.Raw - ax.Raw, dy = (long)by.Raw - ay.Raw;
+            long dd = dx * dx + dy * dy;
+            if (dd == 0) return Dist2(ax, ay, px, py);
+            long dot = ((long)px.Raw - ax.Raw) * dx + ((long)py.Raw - ay.Raw) * dy;
+            if (dot <= 0) return Dist2(ax, ay, px, py);
+            if (dot >= dd) return Dist2(bx, by, px, py);
+            long t = (dot << 16) / dd;   // 0..65536
+            long fx = ax.Raw + ((dx * t) >> 16), fy = ay.Raw + ((dy * t) >> 16);
+            long ex = fx - px.Raw, ey = fy - py.Raw;
+            return ex * ex + ey * ey;
+        }
+
+        /// <summary>
+        /// Collects every pickup the player centre touched during this tick: the path from the previous tick position
+        /// (prevCx, prevCy) to the current one is tested against the pickup circle, so a fast pass cannot jump over a star between ticks.
+        /// </summary>
+        private void CollectPickups(ref SimState s, Fx prevCx, Fx prevCy)
         {
             Fx cx = s.X;
             Fx cy = s.Y + Cfg.PlayerCenterY;
             int lo = 0, hi = Pickups.Length;
-            Fx from = cy - maxPickupRadius;
+            Fx lowY = Fx.Min(cy, prevCy), highY = Fx.Max(cy, prevCy);
+            Fx from = lowY - maxPickupRadius;
             while (lo < hi)
             {
                 int mid = (lo + hi) >> 1;
                 if (Pickups[mid].Y < from) lo = mid + 1; else hi = mid;
             }
-            Fx to = cy + maxPickupRadius;
+            Fx to = highY + maxPickupRadius;
             for (int i = lo; i < Pickups.Length && Pickups[i].Y <= to; i++)
             {
                 if (s.PickupTaken[i]) continue;
                 long r = Pickups[i].Radius.Raw;
-                if (Dist2(cx, cy, Pickups[i].X, Pickups[i].Y) > r * r) continue;
+                if (SegmentDist2(prevCx, prevCy, cx, cy, Pickups[i].X, Pickups[i].Y) > r * r) continue;
                 s.PickupTaken[i] = true;
                 switch (Pickups[i].Kind)
                 {

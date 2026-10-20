@@ -61,7 +61,7 @@ def cloud_band(width, height, seed):
     return np.concatenate([rgb, alpha], axis=2)
 
 
-BAND = 240          # height of the cloud stream
+BAND = 150          # height of the cloud stream (thinner: owner 2026-10-20, it covered too much art)
 
 
 def main():

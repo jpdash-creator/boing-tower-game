@@ -15,7 +15,9 @@ namespace BoingTower.Gameplay
 
         ArtCatalog art;
         Canvas canvas;
-        Text floorText, goalText, gemText, comboText, timeText, introText;
+        Text floorText, goalText, gemText, comboText, timeText, introText, speedText;
+        float speedCueTimer;
+        int lastSpeedStep;
         RectTransform overlay;
         float comboPulse;
         int lastCombo;
@@ -86,6 +88,10 @@ namespace BoingTower.Gameplay
             comboText = UiKit.AddText(root, "Combo", "", 72, new Color(1f, 0.85f, 0.2f));
             P((RectTransform)comboText.transform, new Vector2(0.5f, 1f), new Vector2(0f, -260f), new Vector2(700f, 100f));
 
+            speedText = UiKit.AddText(root, "SpeedUp", "", 60, new Color(1f, 0.55f, 0.3f), TextAnchor.MiddleCenter, true);
+            P((RectTransform)speedText.transform, new Vector2(0.5f, 1f), new Vector2(0f, -400f), new Vector2(760f, 90f));
+            speedText.gameObject.SetActive(false);
+
             timeText = UiKit.AddText(root, "Time", "", 40, Color.white, Align(TextAnchor.UpperLeft));
             P((RectTransform)timeText.transform, new Vector2(0f, 1f), new Vector2(30f, -215f), new Vector2(500f, 60f));
 
@@ -124,6 +130,25 @@ namespace BoingTower.Gameplay
             comboPulse = Mathf.Max(0f, comboPulse - deltaTime * 3f);
             if (st.Combo != lastCombo2) { lastCombo2 = st.Combo; UiKit.SetText(comboText, st.Combo > 1 ? "COMBO x" + st.Combo : ""); }
             if (!GameSettings.ReducedMotion) comboText.transform.localScale = Vector3.one * (1f + comboPulse * 0.35f);
+
+            // "Speed up" cue each time the screen speeds up (every ScrollStepSeconds): text plus a short pulse, a static cue with reduced motion.
+            if (st.StartTick >= 0 && !s.Sim.CampaignRamp)
+            {
+                int step = (st.Tick - st.StartTick) / (s.Cfg.ScrollStepSeconds * SimConfig.TicksPerSecond);
+                if (step > lastSpeedStep)
+                {
+                    lastSpeedStep = step;
+                    UiKit.SetText(speedText, "SPEED UP  +" + (step * s.Cfg.ScrollStepPercent) + "%");
+                    speedText.gameObject.SetActive(true);
+                    speedCueTimer = 1.6f;
+                }
+            }
+            if (speedCueTimer > 0f)
+            {
+                speedCueTimer -= deltaTime;
+                if (!GameSettings.ReducedMotion) speedText.transform.localScale = Vector3.one * (1f + Mathf.Clamp01(speedCueTimer - 1.2f) * 0.6f);
+                if (speedCueTimer <= 0f) speedText.gameObject.SetActive(false);
+            }
 
             if (introTimer > 0f)
             {

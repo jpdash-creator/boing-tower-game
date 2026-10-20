@@ -14,7 +14,7 @@ namespace BoingTower.Gameplay
         const string DifficultyKey = "settings.difficulty";
 
         /// <summary>Game difficulty (owner, 2026-10-19): scroll speed grows by this percent every 5 seconds.</summary>
-        public static readonly int[] DifficultyStepPercent = { 5, 10, 15, 20, 25 };
+        public static readonly int[] DifficultyStepPercent = { 8, 12, 16, 20, 25 };
         /// <summary>Chance in percent that a coin spot is a gem. Default 5, at most 10.</summary>
         public static readonly int[] DifficultyGemPercent = { 5, 5, 7, 9, 10 };
         public static readonly string[] DifficultyNames = { "Relaxed", "Easy", "Normal", "Hard", "Insane" };

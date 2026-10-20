@@ -26,8 +26,18 @@ namespace BoingTower.Gameplay
         }
 
         const float MapTopBar = 330f;                                              // fixed bar (home, title, wallet); the map scrolls below it
-        static readonly float[] PinRise = { 0.20f, 0.50f, 0.80f };                 // height of a segment's three regions, bottom to top
+        static readonly float[] PinRise = { 0.24f, 0.50f, 0.78f };                 // height of a segment's three regions, bottom to top
         static readonly float[] PinSide = { 0.30f, 0.68f, 0.34f };                 // left / right / left, so the pins zig-zag up the map
+        // Hand-placed pins (owner list 6, 2026-10-20): region index -> (x across the map, height inside the region's segment), both 0..1.
+        static readonly Dictionary<int, Vector2> PinSpots = new Dictionary<int, Vector2>
+        {
+            { 1, new Vector2(0.20f, 0.30f) },    // on the green grass of the floating meadow
+            { 2, new Vector2(0.11f, 0.56f) },    // at the big purple mushroom on the left
+            { 7, new Vector2(0.17f, 0.26f) },    // by the big tree on the left
+            { 8, new Vector2(0.30f, 0.44f) },    // on the sand dune
+            { 9, new Vector2(0.80f, 0.42f) },    // on top of the pirate ship
+            { 10, new Vector2(0.88f, 0.14f) },   // on the blue toy block at the right
+        };
         static float lastMapOffset = -1f; static int lastMapCurrent = -1;                                          // scroll position kept while visiting a region's levels
         RectTransform mapContent, mapViewport;
         ScrollRect mapScroll;
@@ -137,10 +147,10 @@ namespace BoingTower.Gameplay
         }
 
         /// <summary>Wallet: one dark rounded panel at the top-right with three aligned rows (coins, gems, stars): [icon][number].</summary>
-        void AddWallet()
+        void AddWallet(float panelAlpha = 0.92f)
         {
             const float rowH = 84f, panelW = 270f;
-            Image panel = UiKit.AddPanel(screen, "WalletPanel", new Color(0.05f, 0.07f, 0.16f, 0.92f));
+            Image panel = UiKit.AddPanel(screen, "WalletPanel", new Color(0.05f, 0.07f, 0.16f, panelAlpha));
             UiKit.Place(panel.rectTransform, new Vector2(1f, 1f), new Vector2(-20f, -20f), new Vector2(panelW, rowH * 3f + 30f));
             coinText = WalletRow(panel.transform, 0, art != null ? art.CoinIcon : null, Color.white);
             gemText = WalletRow(panel.transform, 1, art != null ? art.GemIcon : null, new Color(0.75f, 0.92f, 1f));
@@ -234,7 +244,7 @@ namespace BoingTower.Gameplay
             // Scrolling viewport below the fixed top bar. Its content keeps the art's aspect, so the map is never stretched.
             mapViewport = UiKit.Rect(screen, "MapViewport");
             UiKit.Stretch(mapViewport);
-            mapViewport.offsetMax = new Vector2(0f, -MapTopBar);
+            mapViewport.offsetMax = Vector2.zero;   // the map fills the whole screen; the top bar floats over it
             mapViewport.gameObject.AddComponent<RectMask2D>();
             Image hit = mapViewport.gameObject.AddComponent<Image>();
             hit.color = new Color(0f, 0f, 0f, 0f);
@@ -277,20 +287,23 @@ namespace BoingTower.Gameplay
                 if (region == null) continue;
                 int seg = (i - 1) / 3, k = (i - 1) % 3;
                 MapSpanMeta span = seg < meta.segmentSpans.Length ? meta.segmentSpans[seg] : new MapSpanMeta { bottom = seg * 1538, height = 1538 };
-                float rise = (span.bottom + span.height * PinRise[k]) / total;
+                float inSeg = PinRise[k];
                 float side = seg % 2 == 0 ? PinSide[k] : 1f - PinSide[k];
+                Vector2 spot;
+                if (PinSpots.TryGetValue(i, out spot)) { side = spot.x; inSeg = spot.y; }
+                float rise = (span.bottom + span.height * inSeg) / total;
                 AddRegionPin(region, new Vector2(side, rise));
                 if (i == current) currentRise = rise;
             }
 
             // Fixed overlay: dark top bar with the home button, the title and the wallet.
-            Image bar = UiKit.AddPanel(screen, "TopBacking", new Color(0.05f, 0.07f, 0.16f, 0.97f));
+            Image bar = UiKit.AddPanel(screen, "TopBacking", new Color(0.05f, 0.07f, 0.16f, 0.20f));
             bar.rectTransform.anchorMin = new Vector2(0f, 1f);
             bar.rectTransform.anchorMax = new Vector2(1f, 1f);
             bar.rectTransform.pivot = new Vector2(0.5f, 1f);
             bar.rectTransform.offsetMin = new Vector2(0f, -MapTopBar);
             bar.rectTransform.offsetMax = Vector2.zero;
-            AddWallet();
+            AddWallet(0.50f);
             AddBack("Menu", ShowMenu);
             Text hdr = UiKit.AddText(screen, "Header", "World map", 64, Color.white, TextAnchor.MiddleLeft);
             BesideWallet((RectTransform)hdr.transform, -30f, 130f);
@@ -354,7 +367,8 @@ namespace BoingTower.Gameplay
 
             bool open = playable && unlocked;
             Image tag = UiKit.AddPanel(rt, "NameBacking", open ? new Color(0.05f, 0.07f, 0.16f, 0.92f) : new Color(0.16f, 0.14f, 0.24f, 0.92f));
-            Text name = UiKit.AddText(tag.transform, "Name", region.Name, 36, open ? Color.white : new Color(0.88f, 0.88f, 0.95f, 1f), TextAnchor.MiddleCenter);
+            string label = playable ? region.Name : "Coming soon";
+            Text name = UiKit.AddText(tag.transform, "Name", label, 36, open ? Color.white : new Color(0.88f, 0.88f, 0.95f, 1f), TextAnchor.MiddleCenter);
             name.horizontalOverflow = HorizontalWrapMode.Overflow;
             float w = name.preferredWidth + 40f;
             bool tagRight = anchor.x < 0.5f;
