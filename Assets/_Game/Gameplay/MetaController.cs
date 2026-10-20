@@ -242,7 +242,8 @@ namespace BoingTower.Gameplay
             int total = Mathf.Max(1, meta.totalHeight);
 
             // Scrolling viewport below the fixed top bar. Its content keeps the art's aspect, so the map is never stretched.
-            mapViewport = UiKit.Rect(screen, "MapViewport");
+            mapViewport = UiKit.Rect(screenRoot, "MapViewport");   // full-bleed (under the notch and system bars); the HUD sits in the safe area above it
+            mapViewport.SetSiblingIndex(screen.GetSiblingIndex());
             UiKit.Stretch(mapViewport);
             mapViewport.offsetMax = Vector2.zero;   // the map fills the whole screen; the top bar floats over it
             mapViewport.gameObject.AddComponent<RectMask2D>();
