@@ -128,6 +128,7 @@ namespace BoingTower.Simulation.Tests
             }
             Fx peak = cfg.JumpBase * cfg.JumpBase / (cfg.Gravity * 2);
             Assert.True(peak >= largest + Fx.FromRatio(3, 10), "standing peak " + peak + " largest normal gap " + largest);
+            Assert.True(largest <= cfg.NormalGapMax, "generator exceeded NormalGapMax: " + largest);
             Assert.True(peak <= largest + Fx.FromRatio(5, 10), "standing peak " + peak + " is more than needed (largest gap " + largest + ")");
 
             // And in the simulation itself: a standing jump from the start platform lands on a platform one largest-gap above.
@@ -139,6 +140,42 @@ namespace BoingTower.Simulation.Tests
             for (int t = 0; t < 400 && s.Row < 1 && !s.Dead; t++) sim.Step(ref s, 0);
             Assert.Equal(1, s.Row);
             Assert.True(s.Grounded);
+        }
+
+        [Fact]
+        [Trait("Category", "CriticalUX")]
+        public void JumpPeaksAreAboutOneAndTwoMedianGaps()
+        {
+            SimConfig cfg = new SimConfig();
+            List<double> gaps = new List<double>();
+            foreach (LoadedLevel ll in ContentLoader.LoadRegions(ContentLoader.FindRoot(), 1, 5))
+            {
+                LevelData d = LevelBuilder.Build(cfg, ll.Spec);
+                for (int i = 0; i + 1 < d.Platforms.Length; i++)
+                {
+                    Platform a = d.Platforms[i];
+                    if (a.Kind == PlatformKind.Sticky || a.Kind == PlatformKind.Bounce || a.Kind == PlatformKind.BounceCap) continue;
+                    double g = (d.Platforms[i + 1].Y - a.Y).Raw / 65536.0;
+                    if (g > 0.01) gaps.Add(g);
+                }
+            }
+            gaps.Sort();
+            double median = gaps[gaps.Count / 2];
+            double standing = (cfg.JumpBase * cfg.JumpBase / (cfg.Gravity * 2)).Raw / 65536.0;
+            double full = cfg.MaxJumpHeight().Raw / 65536.0;
+            Assert.InRange(standing / median, 1.2, 1.4);
+            Assert.InRange(full / median, 1.9, 2.3);
+        }
+
+        [Fact]
+        public void LayoutReachNeverExceedsTheRealFullSpeedReach()
+        {
+            SimConfig cfg = new SimConfig();
+            for (int h = 0; h <= 42; h++)
+            {
+                Fx gap = Fx.FromRatio(h, 10);
+                Assert.True(cfg.LayoutMaxReachDx(gap, Fx.One) <= cfg.MaxReachDx(gap), "gap " + gap);
+            }
         }
     }
 }

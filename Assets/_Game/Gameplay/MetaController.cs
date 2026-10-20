@@ -34,8 +34,8 @@ namespace BoingTower.Gameplay
             { 1, new Vector2(0.20f, 0.30f) },    // on the green grass of the floating meadow
             { 2, new Vector2(0.11f, 0.56f) },    // at the big purple mushroom on the left
             { 7, new Vector2(0.17f, 0.26f) },    // by the big tree on the left
-            { 8, new Vector2(0.34f, 0.40f) },    // on the sand dune
-            { 9, new Vector2(0.80f, 0.50f) },    // on top of the pirate ship
+            { 8, new Vector2(0.40f, 0.46f) },    // on the sand dune hump
+            { 9, new Vector2(0.81f, 0.56f) },    // just above the red flag of the pirate ship
             { 10, new Vector2(0.88f, 0.14f) },   // on the blue toy block at the right
         };
         static float lastMapOffset = -1f; static int lastMapCurrent = -1;                                          // scroll position kept while visiting a region's levels

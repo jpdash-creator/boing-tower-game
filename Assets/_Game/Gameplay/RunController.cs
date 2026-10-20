@@ -113,7 +113,7 @@ namespace BoingTower.Gameplay
                 {
                     int bits = Input.ReadTick();
                     Session.Step(bits);
-                    int picked = Session.State.Stars + Session.State.Gems + Session.State.HiddenGems;
+                    int picked = Session.State.Stars + Session.State.Gems + Session.State.HiddenGems + Session.State.Coins;
                     bool got = picked > lastPicked;
                     lastPicked = picked;
                     View.OnTick(got, Session.State.X.F(), Session.State.Y.F() + 0.5f);

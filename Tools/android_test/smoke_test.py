@@ -62,7 +62,7 @@ def level_select():
 @step
 def level_popup():
     d.tap(name="Level1")
-    d.wait_element("Goal:")
+    d.wait_element("Close")
     time.sleep(1.0)
     check_screen("05_level_popup")
 

@@ -89,7 +89,7 @@ namespace BoingTower.Simulation
                 int rowPattern = row > FixedRows ? pattern : PatternLadder;
 
                 Fx gap = rng.Range(Fx.Lerp(gapEasyLo, gapHardLo, d), Fx.Lerp(gapEasyHi, gapHardHi, d));
-                gap = Fx.Min(gap, maxGap);
+                gap = Fx.Min(gap, cfg.NormalGapMax);
 
                 Fx w = rng.Range(Fx.Lerp(widthEasyLo, widthHardLo, d), Fx.Lerp(widthEasyHi, widthHardHi, d));
                 w = w * rng.Range(jitterLo, jitterHi);

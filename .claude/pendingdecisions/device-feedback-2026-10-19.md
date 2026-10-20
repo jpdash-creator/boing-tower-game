@@ -49,3 +49,10 @@ Verbatim themes (10 points) and the answers given via AskUserQuestion. Wording a
 ## Map stitching (2026-10-20)
 - Owner: do not stitch the 10 segments directly; separate them with a thin stream of clouds. Implemented in build_world_map.py (segments butt together, a 240 px procedural cloud band is laid over every joint; free, no OpenArt credits). Joint positions are written to world_map.json (cloudJoints). Owner to review the look on the full map.
 - Owner (seg 7 pick): region order must follow the picture (Moon Carnival, Dragon Peak, Space Station from bottom); content region order + golden hashes to be updated after the chain.
+
+## Lists 6 to 8 (2026-10-20)
+- Map: translucent header (about 20 percent) with the map full screen behind it; hand-placed pins for regions 1, 2, 7, 8 (sand dune hump), 9 (just above the red flag), 10; regions 6-30 show "Coming soon" tags with the padlock; cloud separator bands 150 px.
+- Speed ramp: visible "SPEED UP +N%" cue each step; step sizes per difficulty now 20/40/60/80/100 percent per 5 s (owner, list 8: "20% factors instead of 8%"), cap +400 percent.
+- Star pickup: root cause was the view drawing pickups away from the sim position; fixed (view = sim position, swept pickup test).
+- Jump retune (lists 6 and 7): standing peak 1.3 median row gaps (about 4.5 u), full speed about 2.1 gaps (about 7.3 u), JumpBase 19 u/s, JumpSpeedFactor 0.58, normal gaps capped at 4.2 u so a standing jump always reaches the next platform.
+- Pickup feedback (list 8): a gem shows its own gem and a star its star at the pickup position, never a star at the character.

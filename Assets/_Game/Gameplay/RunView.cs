@@ -42,6 +42,7 @@ namespace BoingTower.Gameplay
         float[] platformBaseScaleX;
         float[] platformOffX, platformOffY;   // sprite offset that puts the island's walking surface on the platform line
         SpriteRenderer[] pickupSr;
+        bool[] pickupSeen;
         Transform[] hazardTf;
         SpriteRenderer[] hazardSr;
         readonly List<Layer> layers = new List<Layer>();
@@ -518,6 +519,7 @@ namespace BoingTower.Gameplay
         {
             Pickup[] picks = session.Data.Pickups;
             pickupSr = new SpriteRenderer[picks.Length];
+            pickupSeen = new bool[picks.Length];
             for (int i = 0; i < picks.Length; i++)
             {
                 Pickup pk = picks[i];
@@ -604,7 +606,30 @@ namespace BoingTower.Gameplay
             bool grounded = session.State.Grounded;
             if (grounded && !wasGrounded) { squash = 1f; Spawn(curX, curY + 0.1f, 0.9f, new Color(1f, 1f, 1f, 0.6f), 0.25f, 0.2f, ArtCatalog.Pick(art != null ? art.DustPuff : null, 0)); }
             wasGrounded = grounded;
-            if (coinTaken) Spawn(coinX, coinY, 0.7f, new Color(1f, 0.9f, 0.3f, 1f), 0.3f, 0.8f, ArtCatalog.Pick(art != null ? art.Sparkles : null, 0));
+            if (coinTaken) SpawnPickupEffects();
+        }
+
+        /// <summary>Pickup feedback drawn where the pickup was (not at the character): a gem shows its own gem, a star its star, a coin a gold sparkle.</summary>
+        void SpawnPickupEffects()
+        {
+            Pickup[] picks = session.Data.Pickups;
+            for (int i = 0; i < picks.Length; i++)
+            {
+                if (pickupSeen[i] || session.State.PickupTaken == null || !session.State.PickupTaken[i]) continue;
+                pickupSeen[i] = true;
+                Pickup pk = picks[i];
+                float x = pk.X.F(), y = pk.Y.F();
+                if (pk.Kind == PickupKind.Gem || pk.Kind == PickupKind.HiddenGem)
+                {
+                    Sprite gem = art != null ? ArtCatalog.Pick(art.GemSizes, pk.Kind == PickupKind.HiddenGem ? 2 : Mathf.Min(pk.Tag, 2)) : null;
+                    Color tint = pk.Kind == PickupKind.HiddenGem ? new Color(1f, 0.6f, 1f, 1f) : RarityTint[Mathf.Clamp(pk.Tag, 0, 3)];
+                    Spawn(x, y, 0.9f, tint, 0.45f, 1.1f, gem);
+                }
+                else if (pk.Kind == PickupKind.Star)
+                    Spawn(x, y, 1.3f, Color.white, 0.5f, 0.9f, art != null ? art.StarFilled : null);
+                else
+                    Spawn(x, y, 0.7f, new Color(1f, 0.9f, 0.3f, 1f), 0.3f, 0.8f, ArtCatalog.Pick(art != null ? art.Sparkles : null, 0));
+            }
         }
 
         void Spawn(float x, float y, float size, Color color, float life, float rise, Sprite sprite)

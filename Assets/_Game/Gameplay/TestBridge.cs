@@ -118,6 +118,14 @@ namespace BoingTower.Gameplay
             rt.GetWorldCorners(c);   // overlay canvas: world corners are screen pixels (origin bottom-left)
             float x = c[0].x, y = Screen.height - c[2].y, w = c[2].x - c[0].x, h = c[2].y - c[0].y;
             if (w < 1f || h < 1f) return;
+            // Content of a scroll view (the world map) is reported only while it is fully inside the viewport: the rest is clipped away.
+            ScrollRect sr = rt.GetComponentInParent<ScrollRect>();
+            if (sr != null && sr.viewport != null)
+            {
+                var v = new Vector3[4];
+                sr.viewport.GetWorldCorners(v);
+                if (c[0].x < v[0].x - 1f || c[0].y < v[0].y - 1f || c[2].x > v[2].x + 1f || c[2].y > v[2].y + 1f) return;
+            }
             if (count++ > 0) items.Append(',');
             items.Append("{\"k\":\"").Append(kind).Append("\",\"t\":\"").Append(Escape(label)).Append("\",\"n\":\"").Append(Escape(rt.name)).Append("\",\"on\":").Append(enabled ? "true" : "false")
                  .Append(",\"x\":").Append(Mathf.RoundToInt(x)).Append(",\"y\":").Append(Mathf.RoundToInt(y)).Append(",\"w\":").Append(Mathf.RoundToInt(w)).Append(",\"h\":").Append(Mathf.RoundToInt(h)).Append('}');

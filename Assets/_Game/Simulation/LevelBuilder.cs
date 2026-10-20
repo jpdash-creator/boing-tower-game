@@ -184,7 +184,7 @@ namespace BoingTower.Simulation
                 if (rowNo == ladderStart)
                 {
                     Fx gap0 = rng.Range(Fx.Lerp(gapEasyLo, gapHardLo, d), Fx.Lerp(gapEasyHi, gapHardHi, d));
-                    gap0 = Fx.Min(gap0, maxGap);
+                    gap0 = Fx.Min(gap0, cfg.NormalGapMax);
                     if (prevKind == PlatformKind.Sticky) gap0 = Fx.Min(gap0, cfg.StickyNextGapMax);
                     bool lAfterBounce = prevKind == PlatformKind.Bounce || prevKind == PlatformKind.BounceCap;
                     if (lAfterBounce) gap0 = Fx.Min(gap0, cfg.BounceNextGapMax);
@@ -214,7 +214,7 @@ namespace BoingTower.Simulation
                     for (int i = 0; i < ch.Rows.Length; i++)
                     {
                         ChunkRow cr = ch.Rows[i];
-                        Fx cgap = Fx.Min(Fx.FromRatio(cr.GapHundredths, 100), maxGap);
+                        Fx cgap = Fx.Min(Fx.FromRatio(cr.GapHundredths, 100), cfg.NormalGapMax);
                         if (i == 0 && prevKind == PlatformKind.Sticky) cgap = Fx.Min(cgap, cfg.StickyNextGapMax);
                         bool cAfterBounce = i == 0 && (prevKind == PlatformKind.Bounce || prevKind == PlatformKind.BounceCap);
                         if (cAfterBounce) cgap = Fx.Min(cgap, cfg.BounceNextGapMax);
@@ -268,7 +268,7 @@ namespace BoingTower.Simulation
                 patternLeft--;
                 int rowPattern = row > LevelGenerator.FixedRows ? pattern : 0;
                 Fx gap = rng.Range(Fx.Lerp(gapEasyLo, gapHardLo, d), Fx.Lerp(gapEasyHi, gapHardHi, d));
-                gap = Fx.Min(gap, maxGap);
+                gap = Fx.Min(gap, cfg.NormalGapMax);
                 if (prevKind == PlatformKind.Sticky) gap = Fx.Min(gap, cfg.StickyNextGapMax);
                 bool afterBounce = prevKind == PlatformKind.Bounce || prevKind == PlatformKind.BounceCap;
                 if (afterBounce) gap = Fx.Min(gap, cfg.BounceNextGapMax);

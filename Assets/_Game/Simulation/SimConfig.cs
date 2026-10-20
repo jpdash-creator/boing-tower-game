@@ -21,16 +21,21 @@ namespace BoingTower.Simulation
         public Fx Friction = Fx.FromRatio(45, 3600);         // ground deceleration with no input
         public Fx MaxSpeed = Fx.FromRatio(9, 60);            // 9 u/s
         /// <summary>
-        /// Standing jump launch speed. 21 u/s peaks at 5.51 u, the largest gap the generator uses for normal platforms (5.19 u) plus a
-        /// 0.3 u margin: a single standing jump reaches the next platform (owner decision, 2026-10-20; was 14 u/s, peak 2.45 u).
+        /// Standing jump launch speed. 19 u/s peaks at 4.51 u = 1.3 median row gaps (3.48 u); with NormalGapMax 4.2 a single standing
+        /// jump always reaches the next platform. Full speed (19 + 0.58 x 9 = 24.2 u/s) peaks at 7.33 u = 2.1 median gaps.
+        /// History: 14 u/s until 2026-10-20 (2.45 u), 21 u/s with factor 0.85 the same day (too high), 19 u/s with factor 0.58 (owner list 7).
         /// </summary>
-        public Fx JumpBase = Fx.FromRatio(21, 60);           // 21 u/s
+        public Fx JumpBase = Fx.FromRatio(19, 60);           // 19 u/s
         /// <summary>
         /// Launch speed the level layouts are sized for (the pre-2026-10-20 value, 14 u/s). The generator and builder size gaps and reach
         /// from this, so raising JumpBase made the player stronger without stretching the levels (see LayoutMaxJumpHeight, LayoutMaxReachDx).
         /// </summary>
+        /// <summary>Largest vertical gap the generator makes between neighbouring rows (every kind). Below the standing peak (4.51 u) by 0.3 u.</summary>
+        public Fx NormalGapMax = Fx.FromRatio(42, 10);
         public Fx LayoutJumpBase = Fx.FromRatio(14, 60);
-        public Fx JumpSpeedFactor = Fx.FromRatio(85, 100);   // extra jump speed per unit of horizontal speed
+        /// <summary>Speed factor of the layout reference jump (the pre-2026-10-20 0.85). Layout full-speed launch is 21.65 u/s, below the real 24.2 u/s, so every generated dx is covered.</summary>
+        public Fx LayoutJumpSpeedFactor = Fx.FromRatio(85, 100);
+        public Fx JumpSpeedFactor = Fx.FromRatio(58, 100);   // extra jump speed per unit of horizontal speed
         public Fx WallBoost = Fx.FromRatio(11, 10);          // speed multiplier on wall bounce
         public int CoyoteTicks = 5;                          // 80 ms
         public int JumpBufferTicks = 6;                      // 100 ms
@@ -191,7 +196,7 @@ namespace BoingTower.Simulation
         /// <summary>Maximum jump height the layouts are sized for (full speed at LayoutJumpBase); the generator applies its 0.9 safety factor to this.</summary>
         public Fx LayoutMaxJumpHeight()
         {
-            Fx v0 = LayoutJumpBase + JumpSpeedFactor * MaxSpeed;
+            Fx v0 = LayoutJumpBase + LayoutJumpSpeedFactor * MaxSpeed;
             return v0 * v0 / (Gravity * 2);
         }
 
@@ -214,7 +219,7 @@ namespace BoingTower.Simulation
         /// <summary>Layout version of MaxReachDx (launch speed from LayoutJumpBase): the horizontal spread the generator allows between rows.</summary>
         public Fx LayoutMaxReachDx(Fx gap, Fx jumpMultiplier)
         {
-            return ReachDx(LayoutJumpBase + JumpSpeedFactor * MaxSpeed, gap, jumpMultiplier);
+            return ReachDx(LayoutJumpBase + LayoutJumpSpeedFactor * MaxSpeed, gap, jumpMultiplier);
         }
 
         private Fx ReachDx(Fx baseSpeed, Fx gap, Fx jumpMultiplier)
