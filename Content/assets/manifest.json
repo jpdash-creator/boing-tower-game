@@ -13016,9 +13016,9 @@
       "phase": "E",
       "group": "region_019",
       "candidates": 4,
-      "name": "Space Station: platform tileset",
+      "name": "Moon Carnival: platform tileset",
       "purpose": "Platform set for the region skin (normal, narrow, moving, crumbling, bouncy) and side walls.",
-      "prompt": "Match the art style of the reference image exactly (outline weight, neon rim light and glow, glossy shading, colour saturation), but draw only the new subject described here, not the reference's layout or objects. Seamless 2D platformer platform tiles for 'Space Station' (space station with black starry space, cyan panels, planets and floating debris), set of: wide platform, narrow platform, moving platform, crumbling platform, bouncy platform, plus left and right wall tiles; side view, top lit; palette: black, cyan. cute chibi cartoon with neon rim light and glow, thick consistent dark-hue outline, saturated gradient colors, glossy sparkle accents, top-left light, clean vector-like edges, solid flat #808080 mid-grey background, no text, no watermark",
+      "prompt": "Match the art style of the reference image exactly (outline weight, neon rim light and glow, glossy shading, colour saturation), but draw only the new subject described here, not the reference's layout or objects. Seamless 2D platformer platform tiles for 'Moon Carnival' (space station with black starry space, cyan panels, planets and floating debris), set of: wide platform, narrow platform, moving platform, crumbling platform, bouncy platform, plus left and right wall tiles; side view, top lit; palette: rainbow, neon. cute chibi cartoon with neon rim light and glow, thick consistent dark-hue outline, saturated gradient colors, glossy sparkle accents, top-left light, clean vector-like edges, solid flat #808080 mid-grey background, no text, no watermark",
       "aspect": "4:3",
       "size": "2K",
       "reference": [
@@ -13028,7 +13028,7 @@
       "depends_on": [
         "fnd_style_bible"
       ],
-      "path": "Art/Regions/region_019_space_station/tiles/tileset_space_station_v1.png",
+      "path": "Art/Regions/region_019_moon_carnival/tiles/tileset_moon_carnival_v1.png",
       "post": [
         "Slice per platform type",
         "Edge alignment test in Unity",
@@ -13069,9 +13069,9 @@
       "phase": "E",
       "group": "region_019",
       "candidates": 3,
-      "name": "Space Station: background far",
+      "name": "Moon Carnival: background far",
       "purpose": "Parallax layer (far) for the region.",
-      "prompt": "Match the art style of the reference image exactly (outline weight, neon rim light and glow, glossy shading, colour saturation), but draw only the new subject described here, not the reference's layout or objects. Vertical mobile-game background for 'Space Station': space station with black starry space, cyan panels, planets and floating debris, far distant layer: sky gradient with distant silhouettes, horizontally tileable, palette: black, cyan, cute chibi cartoon with neon rim light and glow, thick consistent dark-hue outline, saturated gradient colors, glossy sparkle accents, top-left light, clean vector-like edges, no text, no watermark, simple readable shapes so gameplay stays visible",
+      "prompt": "Match the art style of the reference image exactly (outline weight, neon rim light and glow, glossy shading, colour saturation), but draw only the new subject described here, not the reference's layout or objects. Vertical mobile-game background for 'Moon Carnival': space station with black starry space, cyan panels, planets and floating debris, far distant layer: sky gradient with distant silhouettes, horizontally tileable, palette: rainbow, neon, cute chibi cartoon with neon rim light and glow, thick consistent dark-hue outline, saturated gradient colors, glossy sparkle accents, top-left light, clean vector-like edges, no text, no watermark, simple readable shapes so gameplay stays visible",
       "aspect": "9:16",
       "size": "2K",
       "reference": [
@@ -13080,7 +13080,7 @@
       "depends_on": [
         "fnd_style_bible"
       ],
-      "path": "Art/Regions/region_019_space_station/bg_far/bg_space_station_far_v1.png",
+      "path": "Art/Regions/region_019_moon_carnival/bg_far/bg_moon_carnival_far_v1.png",
       "post": [
         "Make horizontally tileable (offset + blend)",
         "Transparent sky where noted (matte pass)",
@@ -13121,9 +13121,9 @@
       "phase": "E",
       "group": "region_019",
       "candidates": 3,
-      "name": "Space Station: background mid",
+      "name": "Moon Carnival: background mid",
       "purpose": "Parallax layer (mid) for the region.",
-      "prompt": "Match the art style of the reference image exactly (outline weight, neon rim light and glow, glossy shading, colour saturation), but draw only the new subject described here, not the reference's layout or objects. Vertical mobile-game background for 'Space Station': space station with black starry space, cyan panels, planets and floating debris, middle layer: mid-distance landmarks with transparent sky, horizontally tileable, palette: black, cyan, cute chibi cartoon with neon rim light and glow, thick consistent dark-hue outline, saturated gradient colors, glossy sparkle accents, top-left light, clean vector-like edges, no text, no watermark, simple readable shapes so gameplay stays visible",
+      "prompt": "Match the art style of the reference image exactly (outline weight, neon rim light and glow, glossy shading, colour saturation), but draw only the new subject described here, not the reference's layout or objects. Vertical mobile-game background for 'Moon Carnival': space station with black starry space, cyan panels, planets and floating debris, middle layer: mid-distance landmarks with transparent sky, horizontally tileable, palette: rainbow, neon, cute chibi cartoon with neon rim light and glow, thick consistent dark-hue outline, saturated gradient colors, glossy sparkle accents, top-left light, clean vector-like edges, no text, no watermark, simple readable shapes so gameplay stays visible",
       "aspect": "9:16",
       "size": "2K",
       "reference": [
@@ -13132,7 +13132,7 @@
       "depends_on": [
         "fnd_style_bible"
       ],
-      "path": "Art/Regions/region_019_space_station/bg_mid/bg_space_station_mid_v1.png",
+      "path": "Art/Regions/region_019_moon_carnival/bg_mid/bg_moon_carnival_mid_v1.png",
       "post": [
         "Make horizontally tileable (offset + blend)",
         "Transparent sky where noted (matte pass)",
@@ -13173,9 +13173,9 @@
       "phase": "E",
       "group": "region_019",
       "candidates": 3,
-      "name": "Space Station: background near",
+      "name": "Moon Carnival: background near",
       "purpose": "Parallax layer (near) for the region.",
-      "prompt": "Match the art style of the reference image exactly (outline weight, neon rim light and glow, glossy shading, colour saturation), but draw only the new subject described here, not the reference's layout or objects. Vertical mobile-game background for 'Space Station': space station with black starry space, cyan panels, planets and floating debris, near layer: foreground framing elements at the edges, transparent centre, horizontally tileable, palette: black, cyan, cute chibi cartoon with neon rim light and glow, thick consistent dark-hue outline, saturated gradient colors, glossy sparkle accents, top-left light, clean vector-like edges, no text, no watermark, simple readable shapes so gameplay stays visible",
+      "prompt": "Match the art style of the reference image exactly (outline weight, neon rim light and glow, glossy shading, colour saturation), but draw only the new subject described here, not the reference's layout or objects. Vertical mobile-game background for 'Moon Carnival': space station with black starry space, cyan panels, planets and floating debris, near layer: foreground framing elements at the edges, transparent centre, horizontally tileable, palette: rainbow, neon, cute chibi cartoon with neon rim light and glow, thick consistent dark-hue outline, saturated gradient colors, glossy sparkle accents, top-left light, clean vector-like edges, no text, no watermark, simple readable shapes so gameplay stays visible",
       "aspect": "9:16",
       "size": "2K",
       "reference": [
@@ -13184,7 +13184,7 @@
       "depends_on": [
         "fnd_style_bible"
       ],
-      "path": "Art/Regions/region_019_space_station/bg_near/bg_space_station_near_v1.png",
+      "path": "Art/Regions/region_019_moon_carnival/bg_near/bg_moon_carnival_near_v1.png",
       "post": [
         "Make horizontally tileable (offset + blend)",
         "Transparent sky where noted (matte pass)",
@@ -13225,9 +13225,9 @@
       "phase": "E",
       "group": "region_019",
       "candidates": 3,
-      "name": "Space Station: props and decoration sheet",
+      "name": "Moon Carnival: props and decoration sheet",
       "purpose": "Scattered decoration sprites for the region.",
-      "prompt": "Match the art style of the reference image exactly (outline weight, neon rim light and glow, glossy shading, colour saturation), but draw only the new subject described here, not the reference's layout or objects. Sprite sheet of 8 small decoration props for 'Space Station' (space station with black starry space, cyan panels, planets and floating debris), evenly spaced on a grid, separate objects, palette: black, cyan. cute chibi cartoon with neon rim light and glow, thick consistent dark-hue outline, saturated gradient colors, glossy sparkle accents, top-left light, clean vector-like edges, solid flat #808080 mid-grey background, no text, no watermark",
+      "prompt": "Match the art style of the reference image exactly (outline weight, neon rim light and glow, glossy shading, colour saturation), but draw only the new subject described here, not the reference's layout or objects. Sprite sheet of 8 small decoration props for 'Moon Carnival' (space station with black starry space, cyan panels, planets and floating debris), evenly spaced on a grid, separate objects, palette: rainbow, neon. cute chibi cartoon with neon rim light and glow, thick consistent dark-hue outline, saturated gradient colors, glossy sparkle accents, top-left light, clean vector-like edges, solid flat #808080 mid-grey background, no text, no watermark",
       "aspect": "4:3",
       "size": "2K",
       "reference": [
@@ -13236,7 +13236,7 @@
       "depends_on": [
         "fnd_style_bible"
       ],
-      "path": "Art/Regions/region_019_space_station/props/props_space_station_v1.png",
+      "path": "Art/Regions/region_019_moon_carnival/props/props_moon_carnival_v1.png",
       "post": [
         "Slice objects with a matte pass",
         "Pivot at base"
@@ -13273,9 +13273,9 @@
       "phase": "E",
       "group": "region_019",
       "candidates": 3,
-      "name": "Space Station: signature mechanic art (Zero-G Zones)",
-      "purpose": "Art for the region's signature module: Zero-g zones with floaty jumps. Behaviour is code (doc 08 section 5).",
-      "prompt": "Match the art style of the reference image exactly (outline weight, neon rim light and glow, glossy shading, colour saturation), but draw only the new subject described here, not the reference's layout or objects. Game mechanic sprite sheet for 'Space Station': art for 'Zero-G Zones' - Zero-g zones with floaty jumps. Show the active object plus 3 state variations (idle, active, warning) in a row, separate sprites, palette: black, cyan. cute chibi cartoon with neon rim light and glow, thick consistent dark-hue outline, saturated gradient colors, glossy sparkle accents, top-left light, clean vector-like edges, solid flat #808080 mid-grey background, no text, no watermark",
+      "name": "Moon Carnival: signature mechanic art (Carnival Mix)",
+      "purpose": "Art for the region's signature module: Trampolines plus rotating wheels. Behaviour is code (doc 08 section 5).",
+      "prompt": "Match the art style of the reference image exactly (outline weight, neon rim light and glow, glossy shading, colour saturation), but draw only the new subject described here, not the reference's layout or objects. Game mechanic sprite sheet for 'Moon Carnival': art for 'Carnival Mix' - Trampolines plus rotating wheels. Show the active object plus 3 state variations (idle, active, warning) in a row, separate sprites, palette: rainbow, neon. cute chibi cartoon with neon rim light and glow, thick consistent dark-hue outline, saturated gradient colors, glossy sparkle accents, top-left light, clean vector-like edges, solid flat #808080 mid-grey background, no text, no watermark",
       "aspect": "16:9",
       "size": "2K",
       "reference": [
@@ -13284,7 +13284,7 @@
       "depends_on": [
         "fnd_style_bible"
       ],
-      "path": "Art/Regions/region_019_space_station/hazards/signature_space_station_v1.png",
+      "path": "Art/Regions/region_019_moon_carnival/hazards/signature_moon_carnival_v1.png",
       "checks": [
         "States clearly distinguishable (warning must read before danger)",
         "No reliance on colour alone for the warning (add shape/motion)",
@@ -13319,9 +13319,9 @@
       "phase": "E",
       "group": "region_020",
       "candidates": 4,
-      "name": "Moon Carnival: platform tileset",
+      "name": "Dragon Peak: platform tileset",
       "purpose": "Platform set for the region skin (normal, narrow, moving, crumbling, bouncy) and side walls.",
-      "prompt": "Match the art style of the reference image exactly (outline weight, neon rim light and glow, glossy shading, colour saturation), but draw only the new subject described here, not the reference's layout or objects. Seamless 2D platformer platform tiles for 'Moon Carnival' (moon carnival with rainbow neon tents, ferris wheel, trampolines and a big moon), set of: wide platform, narrow platform, moving platform, crumbling platform, bouncy platform, plus left and right wall tiles; side view, top lit; palette: rainbow, neon. cute chibi cartoon with neon rim light and glow, thick consistent dark-hue outline, saturated gradient colors, glossy sparkle accents, top-left light, clean vector-like edges, solid flat #808080 mid-grey background, no text, no watermark",
+      "prompt": "Match the art style of the reference image exactly (outline weight, neon rim light and glow, glossy shading, colour saturation), but draw only the new subject described here, not the reference's layout or objects. Seamless 2D platformer platform tiles for 'Dragon Peak' (moon carnival with rainbow neon tents, ferris wheel, trampolines and a big moon), set of: wide platform, narrow platform, moving platform, crumbling platform, bouncy platform, plus left and right wall tiles; side view, top lit; palette: crimson, gold. cute chibi cartoon with neon rim light and glow, thick consistent dark-hue outline, saturated gradient colors, glossy sparkle accents, top-left light, clean vector-like edges, solid flat #808080 mid-grey background, no text, no watermark",
       "aspect": "4:3",
       "size": "2K",
       "reference": [
@@ -13331,7 +13331,7 @@
       "depends_on": [
         "fnd_style_bible"
       ],
-      "path": "Art/Regions/region_020_moon_carnival/tiles/tileset_moon_carnival_v1.png",
+      "path": "Art/Regions/region_020_dragon_peak/tiles/tileset_dragon_peak_v1.png",
       "post": [
         "Slice per platform type",
         "Edge alignment test in Unity",
@@ -13372,9 +13372,9 @@
       "phase": "E",
       "group": "region_020",
       "candidates": 3,
-      "name": "Moon Carnival: background far",
+      "name": "Dragon Peak: background far",
       "purpose": "Parallax layer (far) for the region.",
-      "prompt": "Match the art style of the reference image exactly (outline weight, neon rim light and glow, glossy shading, colour saturation), but draw only the new subject described here, not the reference's layout or objects. Vertical mobile-game background for 'Moon Carnival': moon carnival with rainbow neon tents, ferris wheel, trampolines and a big moon, far distant layer: sky gradient with distant silhouettes, horizontally tileable, palette: rainbow, neon, cute chibi cartoon with neon rim light and glow, thick consistent dark-hue outline, saturated gradient colors, glossy sparkle accents, top-left light, clean vector-like edges, no text, no watermark, simple readable shapes so gameplay stays visible",
+      "prompt": "Match the art style of the reference image exactly (outline weight, neon rim light and glow, glossy shading, colour saturation), but draw only the new subject described here, not the reference's layout or objects. Vertical mobile-game background for 'Dragon Peak': moon carnival with rainbow neon tents, ferris wheel, trampolines and a big moon, far distant layer: sky gradient with distant silhouettes, horizontally tileable, palette: crimson, gold, cute chibi cartoon with neon rim light and glow, thick consistent dark-hue outline, saturated gradient colors, glossy sparkle accents, top-left light, clean vector-like edges, no text, no watermark, simple readable shapes so gameplay stays visible",
       "aspect": "9:16",
       "size": "2K",
       "reference": [
@@ -13383,7 +13383,7 @@
       "depends_on": [
         "fnd_style_bible"
       ],
-      "path": "Art/Regions/region_020_moon_carnival/bg_far/bg_moon_carnival_far_v1.png",
+      "path": "Art/Regions/region_020_dragon_peak/bg_far/bg_dragon_peak_far_v1.png",
       "post": [
         "Make horizontally tileable (offset + blend)",
         "Transparent sky where noted (matte pass)",
@@ -13424,9 +13424,9 @@
       "phase": "E",
       "group": "region_020",
       "candidates": 3,
-      "name": "Moon Carnival: background mid",
+      "name": "Dragon Peak: background mid",
       "purpose": "Parallax layer (mid) for the region.",
-      "prompt": "Match the art style of the reference image exactly (outline weight, neon rim light and glow, glossy shading, colour saturation), but draw only the new subject described here, not the reference's layout or objects. Vertical mobile-game background for 'Moon Carnival': moon carnival with rainbow neon tents, ferris wheel, trampolines and a big moon, middle layer: mid-distance landmarks with transparent sky, horizontally tileable, palette: rainbow, neon, cute chibi cartoon with neon rim light and glow, thick consistent dark-hue outline, saturated gradient colors, glossy sparkle accents, top-left light, clean vector-like edges, no text, no watermark, simple readable shapes so gameplay stays visible",
+      "prompt": "Match the art style of the reference image exactly (outline weight, neon rim light and glow, glossy shading, colour saturation), but draw only the new subject described here, not the reference's layout or objects. Vertical mobile-game background for 'Dragon Peak': moon carnival with rainbow neon tents, ferris wheel, trampolines and a big moon, middle layer: mid-distance landmarks with transparent sky, horizontally tileable, palette: crimson, gold, cute chibi cartoon with neon rim light and glow, thick consistent dark-hue outline, saturated gradient colors, glossy sparkle accents, top-left light, clean vector-like edges, no text, no watermark, simple readable shapes so gameplay stays visible",
       "aspect": "9:16",
       "size": "2K",
       "reference": [
@@ -13435,7 +13435,7 @@
       "depends_on": [
         "fnd_style_bible"
       ],
-      "path": "Art/Regions/region_020_moon_carnival/bg_mid/bg_moon_carnival_mid_v1.png",
+      "path": "Art/Regions/region_020_dragon_peak/bg_mid/bg_dragon_peak_mid_v1.png",
       "post": [
         "Make horizontally tileable (offset + blend)",
         "Transparent sky where noted (matte pass)",
@@ -13476,9 +13476,9 @@
       "phase": "E",
       "group": "region_020",
       "candidates": 3,
-      "name": "Moon Carnival: background near",
+      "name": "Dragon Peak: background near",
       "purpose": "Parallax layer (near) for the region.",
-      "prompt": "Match the art style of the reference image exactly (outline weight, neon rim light and glow, glossy shading, colour saturation), but draw only the new subject described here, not the reference's layout or objects. Vertical mobile-game background for 'Moon Carnival': moon carnival with rainbow neon tents, ferris wheel, trampolines and a big moon, near layer: foreground framing elements at the edges, transparent centre, horizontally tileable, palette: rainbow, neon, cute chibi cartoon with neon rim light and glow, thick consistent dark-hue outline, saturated gradient colors, glossy sparkle accents, top-left light, clean vector-like edges, no text, no watermark, simple readable shapes so gameplay stays visible",
+      "prompt": "Match the art style of the reference image exactly (outline weight, neon rim light and glow, glossy shading, colour saturation), but draw only the new subject described here, not the reference's layout or objects. Vertical mobile-game background for 'Dragon Peak': moon carnival with rainbow neon tents, ferris wheel, trampolines and a big moon, near layer: foreground framing elements at the edges, transparent centre, horizontally tileable, palette: crimson, gold, cute chibi cartoon with neon rim light and glow, thick consistent dark-hue outline, saturated gradient colors, glossy sparkle accents, top-left light, clean vector-like edges, no text, no watermark, simple readable shapes so gameplay stays visible",
       "aspect": "9:16",
       "size": "2K",
       "reference": [
@@ -13487,7 +13487,7 @@
       "depends_on": [
         "fnd_style_bible"
       ],
-      "path": "Art/Regions/region_020_moon_carnival/bg_near/bg_moon_carnival_near_v1.png",
+      "path": "Art/Regions/region_020_dragon_peak/bg_near/bg_dragon_peak_near_v1.png",
       "post": [
         "Make horizontally tileable (offset + blend)",
         "Transparent sky where noted (matte pass)",
@@ -13528,9 +13528,9 @@
       "phase": "E",
       "group": "region_020",
       "candidates": 3,
-      "name": "Moon Carnival: props and decoration sheet",
+      "name": "Dragon Peak: props and decoration sheet",
       "purpose": "Scattered decoration sprites for the region.",
-      "prompt": "Match the art style of the reference image exactly (outline weight, neon rim light and glow, glossy shading, colour saturation), but draw only the new subject described here, not the reference's layout or objects. Sprite sheet of 8 small decoration props for 'Moon Carnival' (moon carnival with rainbow neon tents, ferris wheel, trampolines and a big moon), evenly spaced on a grid, separate objects, palette: rainbow, neon. cute chibi cartoon with neon rim light and glow, thick consistent dark-hue outline, saturated gradient colors, glossy sparkle accents, top-left light, clean vector-like edges, solid flat #808080 mid-grey background, no text, no watermark",
+      "prompt": "Match the art style of the reference image exactly (outline weight, neon rim light and glow, glossy shading, colour saturation), but draw only the new subject described here, not the reference's layout or objects. Sprite sheet of 8 small decoration props for 'Dragon Peak' (moon carnival with rainbow neon tents, ferris wheel, trampolines and a big moon), evenly spaced on a grid, separate objects, palette: crimson, gold. cute chibi cartoon with neon rim light and glow, thick consistent dark-hue outline, saturated gradient colors, glossy sparkle accents, top-left light, clean vector-like edges, solid flat #808080 mid-grey background, no text, no watermark",
       "aspect": "4:3",
       "size": "2K",
       "reference": [
@@ -13539,7 +13539,7 @@
       "depends_on": [
         "fnd_style_bible"
       ],
-      "path": "Art/Regions/region_020_moon_carnival/props/props_moon_carnival_v1.png",
+      "path": "Art/Regions/region_020_dragon_peak/props/props_dragon_peak_v1.png",
       "post": [
         "Slice objects with a matte pass",
         "Pivot at base"
@@ -13576,9 +13576,9 @@
       "phase": "E",
       "group": "region_020",
       "candidates": 3,
-      "name": "Moon Carnival: signature mechanic art (Carnival Mix)",
-      "purpose": "Art for the region's signature module: Trampolines plus rotating wheels. Behaviour is code (doc 08 section 5).",
-      "prompt": "Match the art style of the reference image exactly (outline weight, neon rim light and glow, glossy shading, colour saturation), but draw only the new subject described here, not the reference's layout or objects. Game mechanic sprite sheet for 'Moon Carnival': art for 'Carnival Mix' - Trampolines plus rotating wheels. Show the active object plus 3 state variations (idle, active, warning) in a row, separate sprites, palette: rainbow, neon. cute chibi cartoon with neon rim light and glow, thick consistent dark-hue outline, saturated gradient colors, glossy sparkle accents, top-left light, clean vector-like edges, solid flat #808080 mid-grey background, no text, no watermark",
+      "name": "Dragon Peak: signature mechanic art (Fire-Breath Sweeps)",
+      "purpose": "Art for the region's signature module: Fire-breath sweeps across the tower. Behaviour is code (doc 08 section 5).",
+      "prompt": "Match the art style of the reference image exactly (outline weight, neon rim light and glow, glossy shading, colour saturation), but draw only the new subject described here, not the reference's layout or objects. Game mechanic sprite sheet for 'Dragon Peak': art for 'Fire-Breath Sweeps' - Fire-breath sweeps across the tower. Show the active object plus 3 state variations (idle, active, warning) in a row, separate sprites, palette: crimson, gold. cute chibi cartoon with neon rim light and glow, thick consistent dark-hue outline, saturated gradient colors, glossy sparkle accents, top-left light, clean vector-like edges, solid flat #808080 mid-grey background, no text, no watermark",
       "aspect": "16:9",
       "size": "2K",
       "reference": [
@@ -13587,7 +13587,7 @@
       "depends_on": [
         "fnd_style_bible"
       ],
-      "path": "Art/Regions/region_020_moon_carnival/hazards/signature_moon_carnival_v1.png",
+      "path": "Art/Regions/region_020_dragon_peak/hazards/signature_dragon_peak_v1.png",
       "checks": [
         "States clearly distinguishable (warning must read before danger)",
         "No reliance on colour alone for the warning (add shape/motion)",
@@ -13622,9 +13622,9 @@
       "phase": "F",
       "group": "teasers",
       "candidates": 3,
-      "name": "Dragon Peak: locked teaser art",
+      "name": "Space Station: locked teaser art",
       "purpose": "Dark silhouette mood art with a padlock for the map (doc 04 teaser recipe).",
-      "prompt": "Match the art style of the reference image exactly (outline weight, neon rim light and glow, glossy shading, colour saturation), but draw only the new subject described here, not the reference's layout or objects. Dark silhouette mood version of 'Dragon Peak' (dragon peak with crimson volcanic mountains, gold temples and a sleeping dragon silhouette) with a glowing padlock, mysterious purple tint, hints of the theme shapes. cute chibi cartoon with neon rim light and glow, thick consistent dark-hue outline, saturated gradient colors, glossy sparkle accents, top-left light, clean vector-like edges, no text, no watermark",
+      "prompt": "Match the art style of the reference image exactly (outline weight, neon rim light and glow, glossy shading, colour saturation), but draw only the new subject described here, not the reference's layout or objects. Dark silhouette mood version of 'Space Station' (dragon peak with crimson volcanic mountains, gold temples and a sleeping dragon silhouette) with a glowing padlock, mysterious purple tint, hints of the theme shapes. cute chibi cartoon with neon rim light and glow, thick consistent dark-hue outline, saturated gradient colors, glossy sparkle accents, top-left light, clean vector-like edges, no text, no watermark",
       "aspect": "1:1",
       "size": "2K",
       "reference": [
@@ -13633,7 +13633,7 @@
       "depends_on": [
         "fnd_style_bible"
       ],
-      "path": "Art/Regions/region_021_dragon_peak/teaser/teaser_dragon_peak_v1.png",
+      "path": "Art/Regions/region_021_space_station/teaser/teaser_space_station_v1.png",
       "notes": [
         "Full tileset/backgrounds for this region are generated only when the region goes live (live-ops)."
       ],

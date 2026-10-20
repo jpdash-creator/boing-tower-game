@@ -1,23 +1,23 @@
 {
-  "id": "region_021_dragon_peak",
+  "id": "region_021_space_station",
   "index": 21,
-  "nameKey": "region.dragon_peak",
-  "name": "Dragon Peak",
+  "nameKey": "region.space_station",
+  "name": "Space Station",
   "status": "teaser",
   "unlock": {
-    "requires": "region_020_moon_carnival",
+    "requires": "region_020_dragon_peak",
     "gemSkip": 416
   },
   "theme": {
     "bundle": "region_021",
     "palette": [
-      "crimson",
-      "gold"
+      "black",
+      "cyan"
     ],
     "music": null
   },
   "rules": {
-    "signatureModule": "mod_fire_breath_sweeps",
+    "signatureModule": "mod_zero_g_zones",
     "difficultyOffset": 0.1724,
     "platformWeights": {
       "normal": 1.0,

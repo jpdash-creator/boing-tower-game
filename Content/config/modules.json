@@ -162,20 +162,11 @@
     "buildStatus": "planned"
   },
   {
-    "id": "mod_zero_g_zones",
-    "name": "Zero-G Zones",
-    "description": "Zero-g zones with floaty jumps",
-    "regions": [
-      19
-    ],
-    "buildStatus": "planned"
-  },
-  {
     "id": "mod_carnival_mix",
     "name": "Carnival Mix",
     "description": "Trampolines plus rotating wheels",
     "regions": [
-      20
+      19
     ],
     "buildStatus": "planned"
   },
@@ -183,6 +174,15 @@
     "id": "mod_fire_breath_sweeps",
     "name": "Fire-Breath Sweeps",
     "description": "Fire-breath sweeps across the tower",
+    "regions": [
+      20
+    ],
+    "buildStatus": "planned"
+  },
+  {
+    "id": "mod_zero_g_zones",
+    "name": "Zero-G Zones",
+    "description": "Zero-g zones with floaty jumps",
     "regions": [
       21
     ],

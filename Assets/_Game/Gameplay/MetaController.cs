@@ -15,12 +15,24 @@ namespace BoingTower.Gameplay
     /// </summary>
     public sealed class MetaController : MonoBehaviour
     {
-        // Positions of the five live regions on the map (fractions of the screen), bottom to top, then "coming soon".
-        static readonly Vector2[] MapSpots =
+        // World map (Tools/art_pipeline/build_world_map.py): 10 stitched segments of 3 regions each, bottom to top, in the Resources/Map chunks.
+        [System.Serializable] class MapChunkMeta { public string file; public int height; }
+        [System.Serializable] class MapSpanMeta { public int bottom; public int height; }
+        [System.Serializable] class WorldMapMeta
         {
-            new Vector2(0.28f, 0.19f), new Vector2(0.70f, 0.302f), new Vector2(0.30f, 0.414f), new Vector2(0.70f, 0.526f), new Vector2(0.32f, 0.638f),
-            new Vector2(0.70f, 0.75f)
-        };
+            public int width = 1080, totalHeight = 15764;
+            public MapChunkMeta[] chunks = new MapChunkMeta[0];
+            public MapSpanMeta[] segmentSpans = new MapSpanMeta[0];
+        }
+
+        const float MapTopBar = 330f;                                              // fixed bar (home, title, wallet); the map scrolls below it
+        static readonly float[] PinRise = { 0.20f, 0.50f, 0.80f };                 // height of a segment's three regions, bottom to top
+        static readonly float[] PinSide = { 0.30f, 0.68f, 0.34f };                 // left / right / left, so the pins zig-zag up the map
+        static float lastMapOffset = -1f; static int lastMapCurrent = -1;                                          // scroll position kept while visiting a region's levels
+        RectTransform mapContent, mapViewport;
+        ScrollRect mapScroll;
+        float mapAspect = 1f, mapWidthSeen = -1f, mapHeightSeen = -1f;
+        int mapCurrent;
 
         ContentRepository repo;
         ProgressService progress;
@@ -63,6 +75,12 @@ namespace BoingTower.Gameplay
 
         void Update()
         {
+            if (mapContent != null && mapViewport != null && (Mathf.Abs(mapViewport.rect.width - mapWidthSeen) > 0.5f || Mathf.Abs(mapViewport.rect.height - mapHeightSeen) > 0.5f) && mapViewport.rect.width > 2f)
+            {
+                float norm = mapScroll.verticalNormalizedPosition;
+                SizeMap();
+                mapScroll.verticalNormalizedPosition = norm;   // the window changed shape: keep looking at the same part of the map
+            }
             if (momo != null && !GameSettings.ReducedMotion) momo.anchoredPosition = momoBase + new Vector2(0f, Mathf.Sin(Time.unscaledTime * 2.2f) * 22f);
         }
 
@@ -176,6 +194,7 @@ namespace BoingTower.Gameplay
         public void ShowMenu()
         {
             NewScreen("Menu");
+            lastMapOffset = -1f;   // the map opens on the current region again after a visit to the menu
             RegionArt meadow = art != null ? art.ForRegion(1) : null;
             Background(meadow != null ? meadow.BgFar : null, new Color(0.08f, 0.09f, 0.16f, 1f));
             Text title = UiKit.AddText(screen, "Title", "BOING\nTOWER", 150, Color.white);
@@ -202,25 +221,121 @@ namespace BoingTower.Gameplay
         {
             NewScreen("Map");
             currentRegionId = null;
-            Background(art != null ? art.MapBackground : null, new Color(0.1f, 0.14f, 0.25f, 1f));
+            mapContent = null;
+            Image bgFill = UiKit.AddImage(screenRoot, "Bg", null, new Color(0.10f, 0.14f, 0.25f, 1f));
+            UiKit.Stretch(bgFill.rectTransform);
+            bgFill.transform.SetAsFirstSibling();
+
+            WorldMapMeta meta = new WorldMapMeta();
+            TextAsset metaAsset = Resources.Load<TextAsset>("Map/world_map");
+            if (metaAsset != null) meta = JsonUtility.FromJson<WorldMapMeta>(metaAsset.text);
+            int total = Mathf.Max(1, meta.totalHeight);
+
+            // Scrolling viewport below the fixed top bar. Its content keeps the art's aspect, so the map is never stretched.
+            mapViewport = UiKit.Rect(screen, "MapViewport");
+            UiKit.Stretch(mapViewport);
+            mapViewport.offsetMax = new Vector2(0f, -MapTopBar);
+            mapViewport.gameObject.AddComponent<RectMask2D>();
+            Image hit = mapViewport.gameObject.AddComponent<Image>();
+            hit.color = new Color(0f, 0f, 0f, 0f);
+            mapContent = UiKit.Rect(mapViewport, "MapContent");
+            mapContent.anchorMin = new Vector2(0f, 1f);
+            mapContent.anchorMax = new Vector2(1f, 1f);
+            mapContent.pivot = new Vector2(0.5f, 1f);
+            mapContent.offsetMin = mapContent.offsetMax = Vector2.zero;
+            mapContent.gameObject.AddComponent<CanvasGroup>().alpha = 0f;   // shown once the first layout pass has placed it
+            mapAspect = (float)meta.width / total;   // content height follows the viewport width (SizeMap), so the art is never stretched
+            var scroll = mapViewport.gameObject.AddComponent<ScrollRect>();
+            scroll.content = mapContent;
+            scroll.viewport = mapViewport;
+            scroll.horizontal = false;
+            scroll.vertical = true;
+            scroll.movementType = ScrollRect.MovementType.Elastic;
+            scroll.scrollSensitivity = 60f;
+            mapScroll = scroll;
+
+            float bottomPx = 0f;
+            foreach (MapChunkMeta c in meta.chunks)
+            {
+                Texture2D tex = Resources.Load<Texture2D>("Map/" + c.file);
+                var raw = UiKit.Rect(mapContent, c.file).gameObject.AddComponent<RawImage>();
+                raw.texture = tex;
+                raw.color = tex != null ? Color.white : new Color(0.2f, 0.3f, 0.5f, 1f);
+                raw.raycastTarget = false;
+                raw.rectTransform.anchorMin = new Vector2(0f, bottomPx / total);
+                raw.rectTransform.anchorMax = new Vector2(1f, (bottomPx + c.height) / total);
+                raw.rectTransform.offsetMin = raw.rectTransform.offsetMax = Vector2.zero;
+                bottomPx += c.height;
+            }
+
+            float currentRise = 0f;
+            int current = Mathf.Clamp(progress.HighestUnlockedRegionIndex(), 1, Mathf.Max(1, GameSession.PlayableRegions));
+            mapCurrent = current;
+            for (int i = 1; i <= 30; i++)
+            {
+                RegionDef region = repo.TryGetRegionByIndex(i);
+                if (region == null) continue;
+                int seg = (i - 1) / 3, k = (i - 1) % 3;
+                MapSpanMeta span = seg < meta.segmentSpans.Length ? meta.segmentSpans[seg] : new MapSpanMeta { bottom = seg * 1538, height = 1538 };
+                float rise = (span.bottom + span.height * PinRise[k]) / total;
+                float side = seg % 2 == 0 ? PinSide[k] : 1f - PinSide[k];
+                AddRegionPin(region, new Vector2(side, rise));
+                if (i == current) currentRise = rise;
+            }
+
+            // Fixed overlay: dark top bar with the home button, the title and the wallet.
+            Image bar = UiKit.AddPanel(screen, "TopBacking", new Color(0.05f, 0.07f, 0.16f, 0.97f));
+            bar.rectTransform.anchorMin = new Vector2(0f, 1f);
+            bar.rectTransform.anchorMax = new Vector2(1f, 1f);
+            bar.rectTransform.pivot = new Vector2(0.5f, 1f);
+            bar.rectTransform.offsetMin = new Vector2(0f, -MapTopBar);
+            bar.rectTransform.offsetMax = Vector2.zero;
             AddWallet();
             AddBack("Menu", ShowMenu);
             Text hdr = UiKit.AddText(screen, "Header", "World map", 64, Color.white, TextAnchor.MiddleLeft);
             BesideWallet((RectTransform)hdr.transform, -30f, 130f);
 
-            for (int i = 0; i < MapSpots.Length; i++)
-            {
-                RegionDef region = repo.TryGetRegionByIndex(i + 1);
-                if (region == null) continue;
-                AddRegionNode(region, MapSpots[i]);
-            }
+            CenterMap(currentRise);
+            StartCoroutine(CenterMapAgain(currentRise));
         }
 
-        void AddRegionNode(RegionDef region, Vector2 anchor)
+        System.Collections.IEnumerator CenterMapAgain(float rise)
+        {
+            yield return null;     // again after the first real layout passes (the canvas size and safe area settle then)
+            CenterMap(rise);
+            if (mapContent != null) mapContent.GetComponent<CanvasGroup>().alpha = 1f;
+            yield return null;
+            CenterMap(rise);
+        }
+
+        /// <summary>Content height = viewport width / art aspect. Done by hand: it is exact on the frame it runs and the ScrollRect sees it at once.</summary>
+        void SizeMap()
+        {
+            float w = mapViewport.rect.width;
+            mapWidthSeen = w;
+            mapHeightSeen = mapViewport.rect.height;
+            mapContent.sizeDelta = new Vector2(0f, w / mapAspect);
+        }
+
+        void CenterMap(float rise)
+        {
+            if (mapContent == null || mapViewport == null || mapScroll == null) return;
+            Canvas.ForceUpdateCanvases();
+            if (mapViewport.rect.height < 2f) return;   // not laid out yet; the next pass does it
+            SizeMap();
+            float contentH = mapContent.rect.height, viewH = mapViewport.rect.height;
+            float scrollable = Mathf.Max(1f, contentH - viewH);
+            float n = lastMapOffset >= 0f && lastMapCurrent == mapCurrent
+                ? lastMapOffset
+                : 1f - Mathf.Clamp01(((1f - rise) * contentH - viewH * 0.5f) / scrollable);
+            mapScroll.verticalNormalizedPosition = n;     // 0 = bottom of the map, 1 = top (the ScrollRect keeps its own bounds right)
+        }
+
+        /// <summary>A round pin on the map with a slim dark name tag beside it. Locked and not-yet-built regions show a padlock.</summary>
+        void AddRegionPin(RegionDef region, Vector2 anchor)
         {
             bool playable = progress.IsRegionPlayable(region);
             bool unlocked = progress.IsRegionUnlocked(region);
-            int stars = playable ? progress.StarsInRegion(region) : 0;
             int cleared = 0;
             if (playable) foreach (string id in region.Levels) if (progress.IsLevelCleared(id)) cleared++;
 
@@ -228,39 +343,29 @@ namespace BoingTower.Gameplay
             int sprite = !playable ? 4 : (!unlocked ? 3 : (cleared >= region.Levels.Count ? 2 : (cleared > 0 ? 1 : 0)));
             Sprite nodeSprite = art != null ? ArtCatalog.Pick(art.MapNodes, sprite) : null;
 
-            Button b = UiKit.AddButton(screen, "Region" + region.Index, "", nodeSprite, Color.white, new Vector2(180f, 180f), () => OnRegionTapped(region), 40);
+            const float pin = 110f;
+            Button b = UiKit.AddButton(mapContent, "Region" + region.Index, "", nodeSprite, Color.white, new Vector2(pin, pin), () => OnRegionTapped(region), 40);
+            b.GetComponent<A11yLabel>().Text = region.Name;
             RectTransform rt = (RectTransform)b.transform;
             rt.anchorMin = rt.anchorMax = anchor;
             rt.pivot = new Vector2(0.5f, 0.5f);
             rt.anchoredPosition = Vector2.zero;
-            Image img = b.GetComponent<Image>();
-            img.preserveAspect = true;
+            b.GetComponent<Image>().preserveAspect = true;
 
-            // No number on the node: the node art and the name label identify the region (owner, 2026-10-19).
-
-            // Ribbon banner under the node (the game's own ribbon art): cream for open regions, tan for locked, no black boxes.
-            int ribbonIdx = !playable ? 3 : (!unlocked ? 3 : (cleared >= region.Levels.Count ? 2 : 0));
-            Sprite ribbon = art != null ? ArtCatalog.Pick(art.Ribbons, ribbonIdx) : null;
-            float rw = 500f, rh = 140f;   // the ribbon overlaps the lower rim of the node, so the labels need little vertical room
-            if (ribbon != null) { Vector2 rs = ribbon.bounds.size; rh = rw * rs.y / rs.x; }
-            Image rib = UiKit.AddImage(rt, "Ribbon", ribbon, ribbon != null ? Color.white : new Color(0.95f, 0.9f, 0.8f, 1f));
-            rib.rectTransform.anchorMin = rib.rectTransform.anchorMax = new Vector2(0.5f, 0f);
-            rib.rectTransform.pivot = new Vector2(0.5f, 1f);
-            rib.rectTransform.anchoredPosition = new Vector2(0f, 44f);
-            rib.rectTransform.sizeDelta = new Vector2(rw, rh);
-            string label = playable ? region.Name : "Coming soon";
-            Text name = UiKit.AddText(rt, "Name", label, 44, UiKit.ButtonInk, TextAnchor.MiddleCenter, true);
-            DropOutline(name);
-            RectTransform nrt = (RectTransform)name.transform;
-            nrt.anchorMin = nrt.anchorMax = new Vector2(0.5f, 0f);
-            nrt.pivot = new Vector2(0.5f, 0.5f);
-            nrt.anchoredPosition = new Vector2(0f, 44f - rh * 0.5f);
-            nrt.sizeDelta = new Vector2(rw * 0.80f, rh * 0.5f);
-            // Star counts live on the level-select screen and in the wallet; the map stays uncluttered.
+            bool open = playable && unlocked;
+            Image tag = UiKit.AddPanel(rt, "NameBacking", open ? new Color(0.05f, 0.07f, 0.16f, 0.92f) : new Color(0.16f, 0.14f, 0.24f, 0.92f));
+            Text name = UiKit.AddText(tag.transform, "Name", region.Name, 36, open ? Color.white : new Color(0.88f, 0.88f, 0.95f, 1f), TextAnchor.MiddleCenter);
+            name.horizontalOverflow = HorizontalWrapMode.Overflow;
+            float w = name.preferredWidth + 40f;
+            bool tagRight = anchor.x < 0.5f;
+            UiKit.Place(tag.rectTransform, new Vector2(tagRight ? 1f : 0f, 0.5f), new Vector2(tagRight ? 10f : -10f, 0f), new Vector2(w, 60f));
+            tag.rectTransform.pivot = new Vector2(tagRight ? 0f : 1f, 0.5f);
+            UiKit.Stretch((RectTransform)name.transform);
         }
 
         public void OnRegionTapped(RegionDef region)
         {
+            if (mapScroll != null) { lastMapOffset = mapScroll.verticalNormalizedPosition; lastMapCurrent = mapCurrent; }
             if (!progress.IsRegionPlayable(region)) { ShowMessage("Coming soon", region.Name + " is not open yet."); return; }
             if (progress.IsRegionUnlocked(region)) { ShowLevels(region); return; }
             ShowUnlockPopup(region);

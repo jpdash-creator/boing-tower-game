@@ -1,9 +1,9 @@
 [
   {
-    "id": "lvl_021_01",
-    "region": "region_021_dragon_peak",
+    "id": "lvl_019_01",
+    "region": "region_019_moon_carnival",
     "index": 1,
-    "seed": 283373,
+    "seed": 267535,
     "class": "simple",
     "difficulty": 0.05,
     "goal": {
@@ -33,10 +33,10 @@
     }
   },
   {
-    "id": "lvl_021_02",
-    "region": "region_021_dragon_peak",
+    "id": "lvl_019_02",
+    "region": "region_019_moon_carnival",
     "index": 2,
-    "seed": 388102,
+    "seed": 372264,
     "class": "simple",
     "difficulty": 0.1,
     "goal": {
@@ -66,10 +66,10 @@
     }
   },
   {
-    "id": "lvl_021_03",
-    "region": "region_021_dragon_peak",
+    "id": "lvl_019_03",
+    "region": "region_019_moon_carnival",
     "index": 3,
-    "seed": 492831,
+    "seed": 476993,
     "class": "simple",
     "difficulty": 0.15,
     "goal": {
@@ -99,10 +99,10 @@
     }
   },
   {
-    "id": "lvl_021_04",
-    "region": "region_021_dragon_peak",
+    "id": "lvl_019_04",
+    "region": "region_019_moon_carnival",
     "index": 4,
-    "seed": 597560,
+    "seed": 581722,
     "class": "simple",
     "difficulty": 0.22,
     "goal": {
@@ -132,10 +132,10 @@
     }
   },
   {
-    "id": "lvl_021_05",
-    "region": "region_021_dragon_peak",
+    "id": "lvl_019_05",
+    "region": "region_019_moon_carnival",
     "index": 5,
-    "seed": 702289,
+    "seed": 686451,
     "class": "complex",
     "difficulty": 0.4,
     "goal": {
@@ -171,10 +171,10 @@
     }
   },
   {
-    "id": "lvl_021_06",
-    "region": "region_021_dragon_peak",
+    "id": "lvl_019_06",
+    "region": "region_019_moon_carnival",
     "index": 6,
-    "seed": 807018,
+    "seed": 791180,
     "class": "medium",
     "difficulty": 0.35,
     "goal": {
@@ -204,10 +204,10 @@
     }
   },
   {
-    "id": "lvl_021_07",
-    "region": "region_021_dragon_peak",
+    "id": "lvl_019_07",
+    "region": "region_019_moon_carnival",
     "index": 7,
-    "seed": 911747,
+    "seed": 895909,
     "class": "medium",
     "difficulty": 0.42,
     "goal": {
@@ -237,10 +237,10 @@
     }
   },
   {
-    "id": "lvl_021_08",
-    "region": "region_021_dragon_peak",
+    "id": "lvl_019_08",
+    "region": "region_019_moon_carnival",
     "index": 8,
-    "seed": 1016476,
+    "seed": 1000638,
     "class": "medium",
     "difficulty": 0.5,
     "goal": {
@@ -269,10 +269,10 @@
     }
   },
   {
-    "id": "lvl_021_09",
-    "region": "region_021_dragon_peak",
+    "id": "lvl_019_09",
+    "region": "region_019_moon_carnival",
     "index": 9,
-    "seed": 1121205,
+    "seed": 1105367,
     "class": "medium",
     "difficulty": 0.58,
     "goal": {
@@ -302,10 +302,10 @@
     }
   },
   {
-    "id": "lvl_021_10",
-    "region": "region_021_dragon_peak",
+    "id": "lvl_019_10",
+    "region": "region_019_moon_carnival",
     "index": 10,
-    "seed": 1225934,
+    "seed": 1210096,
     "class": "complex",
     "difficulty": 0.7,
     "goal": {
@@ -340,10 +340,10 @@
     }
   },
   {
-    "id": "lvl_021_11",
-    "region": "region_021_dragon_peak",
+    "id": "lvl_019_11",
+    "region": "region_019_moon_carnival",
     "index": 11,
-    "seed": 1330663,
+    "seed": 1314825,
     "class": "hard",
     "difficulty": 0.62,
     "goal": {
@@ -374,10 +374,10 @@
     }
   },
   {
-    "id": "lvl_021_12",
-    "region": "region_021_dragon_peak",
+    "id": "lvl_019_12",
+    "region": "region_019_moon_carnival",
     "index": 12,
-    "seed": 1435392,
+    "seed": 1419554,
     "class": "hard",
     "difficulty": 0.7,
     "goal": {
@@ -407,10 +407,10 @@
     }
   },
   {
-    "id": "lvl_021_13",
-    "region": "region_021_dragon_peak",
+    "id": "lvl_019_13",
+    "region": "region_019_moon_carnival",
     "index": 13,
-    "seed": 1540121,
+    "seed": 1524283,
     "class": "hard",
     "difficulty": 0.78,
     "goal": {
@@ -440,10 +440,10 @@
     }
   },
   {
-    "id": "lvl_021_14",
-    "region": "region_021_dragon_peak",
+    "id": "lvl_019_14",
+    "region": "region_019_moon_carnival",
     "index": 14,
-    "seed": 1644850,
+    "seed": 1629012,
     "class": "hard",
     "difficulty": 0.86,
     "goal": {
@@ -473,10 +473,10 @@
     }
   },
   {
-    "id": "lvl_021_15",
-    "region": "region_021_dragon_peak",
+    "id": "lvl_019_15",
+    "region": "region_019_moon_carnival",
     "index": 15,
-    "seed": 1749579,
+    "seed": 1733741,
     "class": "highly_complex",
     "difficulty": 1.0,
     "goal": {

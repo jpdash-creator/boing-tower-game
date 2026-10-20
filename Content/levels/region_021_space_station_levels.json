@@ -1,9 +1,9 @@
 [
   {
-    "id": "lvl_020_01",
-    "region": "region_020_moon_carnival",
+    "id": "lvl_021_01",
+    "region": "region_021_space_station",
     "index": 1,
-    "seed": 275454,
+    "seed": 283373,
     "class": "simple",
     "difficulty": 0.05,
     "goal": {
@@ -33,10 +33,10 @@
     }
   },
   {
-    "id": "lvl_020_02",
-    "region": "region_020_moon_carnival",
+    "id": "lvl_021_02",
+    "region": "region_021_space_station",
     "index": 2,
-    "seed": 380183,
+    "seed": 388102,
     "class": "simple",
     "difficulty": 0.1,
     "goal": {
@@ -66,10 +66,10 @@
     }
   },
   {
-    "id": "lvl_020_03",
-    "region": "region_020_moon_carnival",
+    "id": "lvl_021_03",
+    "region": "region_021_space_station",
     "index": 3,
-    "seed": 484912,
+    "seed": 492831,
     "class": "simple",
     "difficulty": 0.15,
     "goal": {
@@ -99,10 +99,10 @@
     }
   },
   {
-    "id": "lvl_020_04",
-    "region": "region_020_moon_carnival",
+    "id": "lvl_021_04",
+    "region": "region_021_space_station",
     "index": 4,
-    "seed": 589641,
+    "seed": 597560,
     "class": "simple",
     "difficulty": 0.22,
     "goal": {
@@ -132,10 +132,10 @@
     }
   },
   {
-    "id": "lvl_020_05",
-    "region": "region_020_moon_carnival",
+    "id": "lvl_021_05",
+    "region": "region_021_space_station",
     "index": 5,
-    "seed": 694370,
+    "seed": 702289,
     "class": "complex",
     "difficulty": 0.4,
     "goal": {
@@ -171,10 +171,10 @@
     }
   },
   {
-    "id": "lvl_020_06",
-    "region": "region_020_moon_carnival",
+    "id": "lvl_021_06",
+    "region": "region_021_space_station",
     "index": 6,
-    "seed": 799099,
+    "seed": 807018,
     "class": "medium",
     "difficulty": 0.35,
     "goal": {
@@ -204,10 +204,10 @@
     }
   },
   {
-    "id": "lvl_020_07",
-    "region": "region_020_moon_carnival",
+    "id": "lvl_021_07",
+    "region": "region_021_space_station",
     "index": 7,
-    "seed": 903828,
+    "seed": 911747,
     "class": "medium",
     "difficulty": 0.42,
     "goal": {
@@ -237,10 +237,10 @@
     }
   },
   {
-    "id": "lvl_020_08",
-    "region": "region_020_moon_carnival",
+    "id": "lvl_021_08",
+    "region": "region_021_space_station",
     "index": 8,
-    "seed": 1008557,
+    "seed": 1016476,
     "class": "medium",
     "difficulty": 0.5,
     "goal": {
@@ -269,10 +269,10 @@
     }
   },
   {
-    "id": "lvl_020_09",
-    "region": "region_020_moon_carnival",
+    "id": "lvl_021_09",
+    "region": "region_021_space_station",
     "index": 9,
-    "seed": 1113286,
+    "seed": 1121205,
     "class": "medium",
     "difficulty": 0.58,
     "goal": {
@@ -302,10 +302,10 @@
     }
   },
   {
-    "id": "lvl_020_10",
-    "region": "region_020_moon_carnival",
+    "id": "lvl_021_10",
+    "region": "region_021_space_station",
     "index": 10,
-    "seed": 1218015,
+    "seed": 1225934,
     "class": "complex",
     "difficulty": 0.7,
     "goal": {
@@ -340,10 +340,10 @@
     }
   },
   {
-    "id": "lvl_020_11",
-    "region": "region_020_moon_carnival",
+    "id": "lvl_021_11",
+    "region": "region_021_space_station",
     "index": 11,
-    "seed": 1322744,
+    "seed": 1330663,
     "class": "hard",
     "difficulty": 0.62,
     "goal": {
@@ -374,10 +374,10 @@
     }
   },
   {
-    "id": "lvl_020_12",
-    "region": "region_020_moon_carnival",
+    "id": "lvl_021_12",
+    "region": "region_021_space_station",
     "index": 12,
-    "seed": 1427473,
+    "seed": 1435392,
     "class": "hard",
     "difficulty": 0.7,
     "goal": {
@@ -407,10 +407,10 @@
     }
   },
   {
-    "id": "lvl_020_13",
-    "region": "region_020_moon_carnival",
+    "id": "lvl_021_13",
+    "region": "region_021_space_station",
     "index": 13,
-    "seed": 1532202,
+    "seed": 1540121,
     "class": "hard",
     "difficulty": 0.78,
     "goal": {
@@ -440,10 +440,10 @@
     }
   },
   {
-    "id": "lvl_020_14",
-    "region": "region_020_moon_carnival",
+    "id": "lvl_021_14",
+    "region": "region_021_space_station",
     "index": 14,
-    "seed": 1636931,
+    "seed": 1644850,
     "class": "hard",
     "difficulty": 0.86,
     "goal": {
@@ -473,10 +473,10 @@
     }
   },
   {
-    "id": "lvl_020_15",
-    "region": "region_020_moon_carnival",
+    "id": "lvl_021_15",
+    "region": "region_021_space_station",
     "index": 15,
-    "seed": 1741660,
+    "seed": 1749579,
     "class": "highly_complex",
     "difficulty": 1.0,
     "goal": {

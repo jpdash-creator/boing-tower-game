@@ -1,23 +1,23 @@
 {
-  "id": "region_020_moon_carnival",
+  "id": "region_020_dragon_peak",
   "index": 20,
-  "nameKey": "region.moon_carnival",
-  "name": "Moon Carnival",
+  "nameKey": "region.dragon_peak",
+  "name": "Dragon Peak",
   "status": "live",
   "unlock": {
-    "requires": "region_019_space_station",
+    "requires": "region_019_moon_carnival",
     "gemSkip": 400
   },
   "theme": {
     "bundle": "region_020",
     "palette": [
-      "rainbow",
-      "neon"
+      "crimson",
+      "gold"
     ],
     "music": null
   },
   "rules": {
-    "signatureModule": "mod_carnival_mix",
+    "signatureModule": "mod_fire_breath_sweeps",
     "difficultyOffset": 0.1638,
     "platformWeights": {
       "normal": 1.0,

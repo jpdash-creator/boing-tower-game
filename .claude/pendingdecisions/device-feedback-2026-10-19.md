@@ -45,3 +45,7 @@ Verbatim themes (10 points) and the answers given via AskUserQuestion. Wording a
 5. WORLD MAP V2: scrollable vertical map with all 30 regions and many 'coming soon'. DECIDED by the owner: 10 chained vertical OpenArt segments of 3 regions each (richer detail, higher cost accepted). Region marker = small pin on the path plus a slim name tag beside it, never covering the art. Needs an OpenArt approval packet.
 6. Map icons did not fit the map art (Meadow Springs and the locked ones): redo markers with the new map.
 7. Level info popup (Goal, stars, PLAY): fix position and fonts, center content.
+
+## Map stitching (2026-10-20)
+- Owner: do not stitch the 10 segments directly; separate them with a thin stream of clouds. Implemented in build_world_map.py (segments butt together, a 240 px procedural cloud band is laid over every joint; free, no OpenArt credits). Joint positions are written to world_map.json (cloudJoints). Owner to review the look on the full map.
+- Owner (seg 7 pick): region order must follow the picture (Moon Carnival, Dragon Peak, Space Station from bottom); content region order + golden hashes to be updated after the chain.

@@ -1,0 +1,80 @@
+{
+  "width": 1080,
+  "totalHeight": 15764,
+  "segments": 10,
+  "cloudJoints": [
+    13842,
+    12304,
+    10766,
+    9228,
+    7690,
+    6152,
+    4614,
+    3076,
+    1538
+  ],
+  "segmentSpans": [
+    {
+      "bottom": 0,
+      "height": 1922
+    },
+    {
+      "bottom": 1922,
+      "height": 1538
+    },
+    {
+      "bottom": 3460,
+      "height": 1538
+    },
+    {
+      "bottom": 4998,
+      "height": 1538
+    },
+    {
+      "bottom": 6536,
+      "height": 1538
+    },
+    {
+      "bottom": 8074,
+      "height": 1538
+    },
+    {
+      "bottom": 9612,
+      "height": 1538
+    },
+    {
+      "bottom": 11150,
+      "height": 1538
+    },
+    {
+      "bottom": 12688,
+      "height": 1538
+    },
+    {
+      "bottom": 14226,
+      "height": 1538
+    }
+  ],
+  "chunks": [
+    {
+      "file": "world_chunk_01",
+      "height": 3840
+    },
+    {
+      "file": "world_chunk_02",
+      "height": 3840
+    },
+    {
+      "file": "world_chunk_03",
+      "height": 3840
+    },
+    {
+      "file": "world_chunk_04",
+      "height": 3840
+    },
+    {
+      "file": "world_chunk_05",
+      "height": 404
+    }
+  ]
+}

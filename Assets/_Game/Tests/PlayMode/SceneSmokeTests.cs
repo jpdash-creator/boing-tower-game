@@ -113,8 +113,19 @@ namespace BoingTower.Tests
 
             meta.ShowMap();
             yield return null;
+            yield return null;
+            yield return null;
             Assert.AreEqual("Map", meta.CurrentScreen);
+            for (int w = 0; w < 30; w++) yield return null;
             yield return Shot("11_map_fresh");
+            var mapScroll = Object.FindFirstObjectByType<UnityEngine.UI.ScrollRect>();
+            foreach (float n in new[] { 0f, 0.02f, 0.3f, 0.6f, 1f })
+            {
+                mapScroll.verticalNormalizedPosition = n;
+                yield return null;
+                yield return null;
+                yield return Shot("11x_map_scroll_" + (int)(n * 100));
+            }
 
             RegionDef r1 = GameSession.Repo.GetRegionByIndex(1);
             meta.ShowLevels(r1);
@@ -131,6 +142,8 @@ namespace BoingTower.Tests
             yield return Shot("13_levels_progress");
 
             meta.ShowMap();
+            yield return null;
+            yield return null;
             yield return null;
             yield return Shot("14_map_progress");
 

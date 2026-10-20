@@ -1,8 +1,8 @@
 {
-  "id": "region_019_space_station",
+  "id": "region_019_moon_carnival",
   "index": 19,
-  "nameKey": "region.space_station",
-  "name": "Space Station",
+  "nameKey": "region.moon_carnival",
+  "name": "Moon Carnival",
   "status": "live",
   "unlock": {
     "requires": "region_018_deep_sea_reef",
@@ -11,13 +11,13 @@
   "theme": {
     "bundle": "region_019",
     "palette": [
-      "black",
-      "cyan"
+      "rainbow",
+      "neon"
     ],
     "music": null
   },
   "rules": {
-    "signatureModule": "mod_zero_g_zones",
+    "signatureModule": "mod_carnival_mix",
     "difficultyOffset": 0.1552,
     "platformWeights": {
       "normal": 1.0,

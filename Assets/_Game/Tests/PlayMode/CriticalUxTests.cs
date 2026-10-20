@@ -136,6 +136,19 @@ namespace BoingTower.Tests
                         problems.Add(screen + ": touch target below 48 dp (" + Mathf.RoundToInt(box.width) + "x" + Mathf.RoundToInt(box.height) + "): " + Path(rt));
                 }
 
+                // Content inside a scroll view (the world map) is only audited where the viewport shows it; the mask clips the rest.
+                for (int n = items.Count - 1; n >= 0; n--)
+                {
+                    ScrollRect sr = items[n].Rt.GetComponentInParent<ScrollRect>();
+                    if (sr == null || sr.viewport == null || sr.GetComponentInParent<Canvas>() != canvas) continue;
+                    Rect vp = ToCanvasUnits(sr.viewport, cam, scale);
+                    Rect b = items[n].Box;
+                    float x0 = Mathf.Max(b.xMin, vp.xMin), x1 = Mathf.Min(b.xMax, vp.xMax);
+                    float y0 = Mathf.Max(b.yMin, vp.yMin), y1 = Mathf.Min(b.yMax, vp.yMax);
+                    if (x1 <= x0 || y1 <= y0) { items.RemoveAt(n); continue; }
+                    items[n].Box = new Rect(x0, y0, x1 - x0, y1 - y0);
+                }
+
                 // A modal popup or overlay hides everything behind it: only the modal is audited.
                 if (items.Exists(i => i.Name.StartsWith("Popup/") || i.Name.StartsWith("Overlay/")))
                     items.RemoveAll(i => !(i.Name.StartsWith("Popup/") || i.Name.StartsWith("Overlay/")));

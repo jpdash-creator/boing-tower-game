@@ -5,7 +5,7 @@
   "name": "Pyramid Sands",
   "status": "teaser",
   "unlock": {
-    "requires": "region_021_dragon_peak",
+    "requires": "region_021_space_station",
     "gemSkip": 433
   },
   "theme": {

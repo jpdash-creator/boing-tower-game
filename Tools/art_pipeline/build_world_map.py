@@ -22,6 +22,48 @@ WIDTH = 1080
 CHUNK = 3840
 
 
+def cloud_band(width, height, seed):
+    """A thin stream of stylised clouds (white puffs, soft lavender underside, dark-hue outline) as RGBA, wavy and feathered at top and bottom."""
+    from PIL import ImageDraw, ImageFilter
+    rng = np.random.RandomState(seed)
+    ss = 2
+    W, H = width * ss, height * ss
+    puffs = []
+    x = -80 * ss
+    while x < W + 80 * ss:
+        r = int(rng.uniform(46, 84) * ss)
+        cy = int(H / 2 + np.sin(x / (170.0 * ss)) * H * 0.10 + rng.uniform(-0.12, 0.12) * H)
+        puffs.append((x, cy, r))
+        if rng.rand() < 0.55:
+            puffs.append((x + int(rng.uniform(-30, 30) * ss), cy + int(rng.uniform(-40, 40) * ss), int(r * rng.uniform(0.5, 0.75))))
+        x += int(r * rng.uniform(0.9, 1.5))
+    layer = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    d = ImageDraw.Draw(layer)
+    ol = 7 * ss // 2
+    for (cx, cy, r) in puffs:                      # outline pass
+        d.ellipse((cx - r - ol, cy - r - ol, cx + r + ol, cy + r + ol), fill=(70, 70, 120, 255))
+    for (cx, cy, r) in puffs:                      # lavender body
+        d.ellipse((cx - r, cy - r, cx + r, cy + r), fill=(196, 206, 244, 255))
+    for (cx, cy, r) in puffs:                      # white top-left highlight
+        k = int(r * 0.80)
+        d.ellipse((cx - r + 6 * ss, cy - r + 4 * ss, cx - r + 6 * ss + 2 * k, cy - r + 4 * ss + 2 * k), fill=(255, 255, 255, 255))
+    layer = layer.resize((width, height), Image.LANCZOS)
+    soft = layer.filter(ImageFilter.GaussianBlur(26))          # wispy halo around the outlined clouds
+    halo = np.asarray(soft).astype(np.float32)
+    halo[..., :3] = 255
+    halo[..., 3] = np.clip(halo[..., 3] * 0.9, 0, 255)
+    out = np.asarray(layer).astype(np.float32)
+    a = out[..., 3:4] / 255.0
+    rgb = halo[..., :3] * (1 - a) + out[..., :3] * a
+    alpha = np.maximum(halo[..., 3:4], out[..., 3:4])
+    fade = np.minimum(np.linspace(0, 1, height), np.linspace(1, 0, height))[:, None, None]
+    alpha = alpha * np.clip(fade * 6.0, 0, 1)
+    return np.concatenate([rgb, alpha], axis=2)
+
+
+BAND = 240          # height of the cloud stream
+
+
 def main():
     files = sorted(glob.glob(os.path.join(ROOT, "Art", "Map", "segments", "map_seg_*.png")))
     segs = []
@@ -29,28 +71,31 @@ def main():
         im = Image.open(f).convert("RGB")
         im = im.resize((WIDTH, round(im.height * WIDTH / im.width)), Image.LANCZOS)
         segs.append(np.asarray(im).astype(np.float32))
+    # Segment i (above segment i-1) loses its bottom OVERLAP part, which only repeats the strip below, so the segments butt together;
+    # a stream of clouds is laid over each butt joint.
     ov = [int(min(segs[i].shape[0], segs[i + 1].shape[0]) * OVERLAP) for i in range(len(segs) - 1)]
-    total = sum(s.shape[0] for s in segs) - sum(ov)
+    parts = [segs[0]] + [segs[i][: segs[i].shape[0] - ov[i - 1]] for i in range(1, len(segs))]
+    total = sum(p.shape[0] for p in parts)
     canvas = np.zeros((total, WIDTH, 3), np.float32)
-    y = total                                   # bottom of the next segment to place (canvas y grows downward)
-    seg_bottoms = []
-    for i, s in enumerate(segs):
-        h = s.shape[0]
-        top = y - h
-        seg_bottoms.append(y)
-        if i == 0:
-            canvas[top:y] = s
-        else:
-            o = ov[i - 1]
-            t = np.linspace(0.0, 1.0, o)[:, None, None]
-            w = t * t * (3 - 2 * t)             # smoothstep: weight of the NEW segment rises toward the top of... see below
-            # new segment's bottom o rows overlay the old segment's top o rows; new weight is 1 at the bottom, 0 at the top of the overlap? no:
-            # the old segment is complete below the overlap, the new one is complete above it, so the new weight rises going UP.
-            w = w[::-1]
-            region = canvas[top + h - o: top + h]
-            canvas[top + h - o: top + h] = s[h - o:] * (1 - w) * 0 + region * w + s[h - o:] * (1 - w)
-            canvas[top: top + h - o] = s[: h - o]
-        y = top + (ov[i] if i < len(ov) else 0)
+    y = total
+    joints = []
+    for p in parts:
+        canvas[y - p.shape[0]: y] = p
+        y -= p.shape[0]
+        joints.append(y)                           # canvas y of this part's top edge
+    seam_meta = []
+    spans = []
+    below = 0
+    for p_ in parts:                                # segment spans measured in px from the bottom of the map
+        spans.append({"bottom": below, "height": int(p_.shape[0])})
+        below += p_.shape[0]
+    for i, jy in enumerate(joints[:-1]):           # joint above part i
+        band = cloud_band(WIDTH, BAND, 100 + i)
+        top = max(0, jy - BAND // 2)
+        sl = canvas[top: top + BAND]
+        al = band[: sl.shape[0], :, 3:4] / 255.0
+        canvas[top: top + sl.shape[0]] = sl * (1 - al) + band[: sl.shape[0], :, :3] * al
+        seam_meta.append(top + BAND // 2)
     out_dir = os.path.join(ROOT, "Assets", "Resources", "Map")
     os.makedirs(out_dir, exist_ok=True)
     for old in glob.glob(os.path.join(out_dir, "world_chunk_*.png")):
@@ -64,7 +109,7 @@ def main():
         chunks.append({"file": "world_chunk_%02d" % n, "height": bottom - top})
         bottom = top
         n += 1
-    meta = {"width": WIDTH, "totalHeight": total, "segments": len(segs), "chunks": chunks}
+    meta = {"width": WIDTH, "totalHeight": total, "segments": len(segs), "cloudJoints": seam_meta, "segmentSpans": spans, "chunks": chunks}
     with open(os.path.join(out_dir, "world_map.json"), "w", encoding="utf-8", newline="\n") as fh:
         json.dump(meta, fh, indent=2)
     print("segments", len(segs), "total", WIDTH, "x", total, "chunks", len(chunks))

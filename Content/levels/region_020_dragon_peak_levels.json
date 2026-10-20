@@ -1,9 +1,9 @@
 [
   {
-    "id": "lvl_019_01",
-    "region": "region_019_space_station",
+    "id": "lvl_020_01",
+    "region": "region_020_dragon_peak",
     "index": 1,
-    "seed": 267535,
+    "seed": 275454,
     "class": "simple",
     "difficulty": 0.05,
     "goal": {
@@ -33,10 +33,10 @@
     }
   },
   {
-    "id": "lvl_019_02",
-    "region": "region_019_space_station",
+    "id": "lvl_020_02",
+    "region": "region_020_dragon_peak",
     "index": 2,
-    "seed": 372264,
+    "seed": 380183,
     "class": "simple",
     "difficulty": 0.1,
     "goal": {
@@ -66,10 +66,10 @@
     }
   },
   {
-    "id": "lvl_019_03",
-    "region": "region_019_space_station",
+    "id": "lvl_020_03",
+    "region": "region_020_dragon_peak",
     "index": 3,
-    "seed": 476993,
+    "seed": 484912,
     "class": "simple",
     "difficulty": 0.15,
     "goal": {
@@ -99,10 +99,10 @@
     }
   },
   {
-    "id": "lvl_019_04",
-    "region": "region_019_space_station",
+    "id": "lvl_020_04",
+    "region": "region_020_dragon_peak",
     "index": 4,
-    "seed": 581722,
+    "seed": 589641,
     "class": "simple",
     "difficulty": 0.22,
     "goal": {
@@ -132,10 +132,10 @@
     }
   },
   {
-    "id": "lvl_019_05",
-    "region": "region_019_space_station",
+    "id": "lvl_020_05",
+    "region": "region_020_dragon_peak",
     "index": 5,
-    "seed": 686451,
+    "seed": 694370,
     "class": "complex",
     "difficulty": 0.4,
     "goal": {
@@ -171,10 +171,10 @@
     }
   },
   {
-    "id": "lvl_019_06",
-    "region": "region_019_space_station",
+    "id": "lvl_020_06",
+    "region": "region_020_dragon_peak",
     "index": 6,
-    "seed": 791180,
+    "seed": 799099,
     "class": "medium",
     "difficulty": 0.35,
     "goal": {
@@ -204,10 +204,10 @@
     }
   },
   {
-    "id": "lvl_019_07",
-    "region": "region_019_space_station",
+    "id": "lvl_020_07",
+    "region": "region_020_dragon_peak",
     "index": 7,
-    "seed": 895909,
+    "seed": 903828,
     "class": "medium",
     "difficulty": 0.42,
     "goal": {
@@ -237,10 +237,10 @@
     }
   },
   {
-    "id": "lvl_019_08",
-    "region": "region_019_space_station",
+    "id": "lvl_020_08",
+    "region": "region_020_dragon_peak",
     "index": 8,
-    "seed": 1000638,
+    "seed": 1008557,
     "class": "medium",
     "difficulty": 0.5,
     "goal": {
@@ -269,10 +269,10 @@
     }
   },
   {
-    "id": "lvl_019_09",
-    "region": "region_019_space_station",
+    "id": "lvl_020_09",
+    "region": "region_020_dragon_peak",
     "index": 9,
-    "seed": 1105367,
+    "seed": 1113286,
     "class": "medium",
     "difficulty": 0.58,
     "goal": {
@@ -302,10 +302,10 @@
     }
   },
   {
-    "id": "lvl_019_10",
-    "region": "region_019_space_station",
+    "id": "lvl_020_10",
+    "region": "region_020_dragon_peak",
     "index": 10,
-    "seed": 1210096,
+    "seed": 1218015,
     "class": "complex",
     "difficulty": 0.7,
     "goal": {
@@ -340,10 +340,10 @@
     }
   },
   {
-    "id": "lvl_019_11",
-    "region": "region_019_space_station",
+    "id": "lvl_020_11",
+    "region": "region_020_dragon_peak",
     "index": 11,
-    "seed": 1314825,
+    "seed": 1322744,
     "class": "hard",
     "difficulty": 0.62,
     "goal": {
@@ -374,10 +374,10 @@
     }
   },
   {
-    "id": "lvl_019_12",
-    "region": "region_019_space_station",
+    "id": "lvl_020_12",
+    "region": "region_020_dragon_peak",
     "index": 12,
-    "seed": 1419554,
+    "seed": 1427473,
     "class": "hard",
     "difficulty": 0.7,
     "goal": {
@@ -407,10 +407,10 @@
     }
   },
   {
-    "id": "lvl_019_13",
-    "region": "region_019_space_station",
+    "id": "lvl_020_13",
+    "region": "region_020_dragon_peak",
     "index": 13,
-    "seed": 1524283,
+    "seed": 1532202,
     "class": "hard",
     "difficulty": 0.78,
     "goal": {
@@ -440,10 +440,10 @@
     }
   },
   {
-    "id": "lvl_019_14",
-    "region": "region_019_space_station",
+    "id": "lvl_020_14",
+    "region": "region_020_dragon_peak",
     "index": 14,
-    "seed": 1629012,
+    "seed": 1636931,
     "class": "hard",
     "difficulty": 0.86,
     "goal": {
@@ -473,10 +473,10 @@
     }
   },
   {
-    "id": "lvl_019_15",
-    "region": "region_019_space_station",
+    "id": "lvl_020_15",
+    "region": "region_020_dragon_peak",
     "index": 15,
-    "seed": 1733741,
+    "seed": 1741660,
     "class": "highly_complex",
     "difficulty": 1.0,
     "goal": {

@@ -29,8 +29,31 @@ namespace ProjectBootstrap
             }
         }
 
+        // World-map chunks (1080 x up to 3840) are plain textures shown through a RawImage, never scaled down below 4096.
+        void ApplyWorldMap(TextureImporter ti)
+        {
+            ti.textureType = TextureImporterType.Default;
+            ti.mipmapEnabled = false;
+            ti.filterMode = UnityEngine.FilterMode.Bilinear;
+            ti.wrapMode = TextureWrapMode.Clamp;
+            ti.npotScale = TextureImporterNPOTScale.None;
+            ti.isReadable = false;
+            ti.alphaSource = TextureImporterAlphaSource.None;
+            ti.maxTextureSize = 4096;
+            ti.textureCompression = TextureImporterCompression.Compressed;
+            foreach (var platform in new[] { "Android", "iPhone" })
+            {
+                var ps = ti.GetPlatformTextureSettings(platform);
+                ps.overridden = true;
+                ps.maxTextureSize = 4096;
+                ps.format = TextureImporterFormat.ASTC_6x6;
+                ti.SetPlatformTextureSettings(ps);
+            }
+        }
+
         void OnPreprocessTexture()
         {
+            if (assetPath.StartsWith("Assets/Resources/Map/")) { ApplyWorldMap((TextureImporter)assetImporter); return; }
             if (!assetPath.StartsWith("Assets/Art/")) return;
             var ti = (TextureImporter)assetImporter;
             ti.textureType = TextureImporterType.Sprite;
