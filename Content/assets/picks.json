@@ -600,6 +600,30 @@
       "sourceCandidate": "Art/_candidates/reg001_platforms/1.png",
       "finalPath": "Assets/Art/Regions/region_001_meadow_springs/tiles/reg001_platforms.png",
       "note": "T25 owner-approved region-1 pilot; default pick 1 (thin, consistent) pending owner verification"
+    },
+    "reg002_platforms": {
+      "pick": 1,
+      "sourceCandidate": "Art/_candidates/reg002_platforms/1.png",
+      "finalPath": "Assets/Art/Regions/region_002_mushroom_grove/tiles/reg002_platforms.png",
+      "note": "T25 region 2 platforms, owner-approved batch 2026-10-20; picked by Claude default (owner said use your picks)"
+    },
+    "reg003_platforms": {
+      "pick": 1,
+      "sourceCandidate": "Art/_candidates/reg003_platforms/1.png",
+      "finalPath": "Assets/Art/Regions/region_003_sunny_beach/tiles/reg003_platforms.png",
+      "note": "T25 region 3 platforms, owner-approved batch 2026-10-20; picked by Claude default (owner said use your picks)"
+    },
+    "reg004_platforms": {
+      "pick": 1,
+      "sourceCandidate": "Art/_candidates/reg004_platforms/1.png",
+      "finalPath": "Assets/Art/Regions/region_004_candy_canyon/tiles/reg004_platforms.png",
+      "note": "T25 region 4 platforms, owner-approved batch 2026-10-20; picked by Claude default (owner said use your picks)"
+    },
+    "reg005_platforms": {
+      "pick": 2,
+      "sourceCandidate": "Art/_candidates/reg005_platforms/2.png",
+      "finalPath": "Assets/Art/Regions/region_005_bamboo_temple/tiles/reg005_platforms.png",
+      "note": "T25 region 5 platforms, owner-approved batch 2026-10-20; picked by Claude default (owner said use your picks)"
     }
   }
 }

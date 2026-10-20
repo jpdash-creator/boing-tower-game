@@ -1,0 +1,54 @@
+{
+  "asset": "reg004_platforms",
+  "mode": "sheet",
+  "pick": 1,
+  "sprites": [
+    {
+      "file": "reg004_platforms_01.png",
+      "x": 81,
+      "y": 252,
+      "w": 886,
+      "h": 356
+    },
+    {
+      "file": "reg004_platforms_02.png",
+      "x": 1032,
+      "y": 302,
+      "w": 504,
+      "h": 320
+    },
+    {
+      "file": "reg004_platforms_03.png",
+      "x": 1607,
+      "y": 326,
+      "w": 623,
+      "h": 279
+    },
+    {
+      "file": "reg004_platforms_04.png",
+      "x": 111,
+      "y": 809,
+      "w": 796,
+      "h": 428
+    },
+    {
+      "file": "reg004_platforms_05.png",
+      "x": 938,
+      "y": 860,
+      "w": 705,
+      "h": 236
+    },
+    {
+      "file": "reg004_platforms_06.png",
+      "x": 1691,
+      "y": 802,
+      "w": 491,
+      "h": 492
+    }
+  ],
+  "keyColour": [
+    92,
+    100,
+    116
+  ]
+}

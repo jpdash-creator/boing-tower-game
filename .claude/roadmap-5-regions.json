@@ -261,8 +261,8 @@
       "id": "T25",
       "task": "Thin on-style platform art: region 1 pilot approved (30 credits, pick pending), test end to end, then regions 2-5 in the same style (120 credits, needs a new approval)",
       "status": "active",
-      "minutes": 90,
-      "blocker": "Owner verifies region 1 platform pick; then OpenArt packet for regions 2-5 (120 credits)",
+      "minutes": 20,
+      "blocker": "Regions 2-5 sliced and wired (Claude picks); owner verifies the picks",
       "depends": [
         "T20"
       ]
@@ -300,9 +300,9 @@
     {
       "id": "T29",
       "task": "Difficulty setting (5 levels: scroll +5/10/15/20/25 percent per 5 s, base +20 percent) with gem-in-place-of-coin chance 5/5/7/9/10 percent; economy check of gem inflow",
-      "status": "active",
-      "minutes": 45,
-      "blocker": "Economy check of gem inflow pending",
+      "status": "done",
+      "minutes": 0,
+      "blocker": "Report: Tests/Simulation/ECONOMY_REPORT.md",
       "depends": [
         "T23"
       ]
@@ -340,9 +340,9 @@
     {
       "id": "T33",
       "task": "World map v2: 10 chained OpenArt segments of 3 regions each, scrollable 30 regions plus coming soon, pin and slim name tag markers",
-      "status": "pending",
-      "minutes": 360,
-      "blocker": "OpenArt approval packet (about 10 jobs); you pick per segment",
+      "status": "done",
+      "minutes": 0,
+      "blocker": "Verified on the phone 2026-10-20 (map opens on region 1, tags, padlocks)",
       "depends": [
         "T25"
       ]
